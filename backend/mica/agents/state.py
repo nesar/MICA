@@ -231,37 +231,91 @@ class AnalysisPlan:
         """
         Parse an analysis plan from LLM response.
 
-        This is a simplified parser. Production implementations should
-        use structured output parsing (e.g., with Pydantic models).
+        Handles formats like:
+        - ## Step 1: Title
+          **Tool:** tool_name
+          **Inputs:** ...
+        - Simple numbered lists
         """
-        # Default plan structure
+        import re
+
         steps = []
         reasoning = response
-
-        # Try to extract structured steps
-        lines = response.split("\n")
         current_step_num = step_counter
 
-        for line in lines:
-            line = line.strip()
-            if line.startswith(("1.", "2.", "3.", "4.", "5.", "-", "*")):
-                # This looks like a step
-                step_text = line.lstrip("0123456789.-* ")
+        # Tool name mapping
+        tool_mapping = {
+            "web_search": "web_search",
+            "websearch": "web_search",
+            "search": "web_search",
+            "pdf_rag": "pdf_rag",
+            "pdf": "pdf_rag",
+            "rag": "pdf_rag",
+            "excel_handler": "excel_handler",
+            "excel": "excel_handler",
+            "code_agent": "code_agent",
+            "code": "code_agent",
+            "python": "code_agent",
+            "analysis": "code_agent",
+            "simulation": "simulation",
+            "simulate": "simulation",
+            "doc_generator": "doc_generator",
+            "document": "doc_generator",
+            "report": "doc_generator",
+        }
 
-                # Determine tool from keywords
-                tool = "orchestrator"
-                if any(w in step_text.lower() for w in ["search", "find", "look up"]):
-                    tool = "web_search"
-                elif any(w in step_text.lower() for w in ["pdf", "document", "read"]):
-                    tool = "pdf_rag"
-                elif any(w in step_text.lower() for w in ["excel", "spreadsheet", "data"]):
-                    tool = "excel_handler"
-                elif any(w in step_text.lower() for w in ["analyze", "calculate", "compute"]):
-                    tool = "code_agent"
-                elif any(w in step_text.lower() for w in ["simulate", "model", "scenario"]):
-                    tool = "simulation"
-                elif any(w in step_text.lower() for w in ["report", "document", "generate"]):
-                    tool = "doc_generator"
+        # Try to parse structured format with ## Step headers
+        step_pattern = r'##\s*Step\s*\d+[:\s]+([^\n]+)'
+        tool_pattern = r'\*\*Tool[:\*]*\s*([a-z_]+)'
+
+        step_headers = list(re.finditer(step_pattern, response, re.IGNORECASE))
+
+        if step_headers:
+            # Parse structured format
+            for i, match in enumerate(step_headers):
+                step_title = match.group(1).strip()
+
+                # Find the content between this step and the next
+                start_pos = match.end()
+                end_pos = step_headers[i + 1].start() if i + 1 < len(step_headers) else len(response)
+                step_content = response[start_pos:end_pos]
+
+                # Extract tool from **Tool:** line
+                tool_match = re.search(tool_pattern, step_content, re.IGNORECASE)
+                if tool_match:
+                    tool_name = tool_match.group(1).lower().strip()
+                    tool = tool_mapping.get(tool_name, "orchestrator")
+                else:
+                    # Infer tool from step title/content
+                    tool = cls._infer_tool(step_title + " " + step_content, tool_mapping)
+
+                # Extract inputs (simplified - just capture query strings)
+                inputs = {}
+                input_matches = re.findall(r'"([^"]+)"', step_content)
+                if input_matches:
+                    inputs["queries"] = input_matches[:5]  # Limit to 5 queries
+
+                steps.append(PlanStep(
+                    step_id=f"step_{current_step_num}",
+                    tool=tool,
+                    description=step_title,
+                    inputs=inputs,
+                    status="pending",
+                    output=None,
+                    error=None,
+                ))
+                current_step_num += 1
+        else:
+            # Fallback: parse simple numbered list (only top-level numbered items)
+            simple_step_pattern = r'^(\d+)\.\s+(.+?)(?=^\d+\.|$)'
+            matches = re.findall(simple_step_pattern, response, re.MULTILINE | re.DOTALL)
+
+            for num, step_text in matches:
+                step_text = step_text.strip().split('\n')[0]  # Take first line only
+                if len(step_text) < 10:  # Skip very short items
+                    continue
+
+                tool = cls._infer_tool(step_text, tool_mapping)
 
                 steps.append(PlanStep(
                     step_id=f"step_{current_step_num}",
@@ -274,7 +328,11 @@ class AnalysisPlan:
                 ))
                 current_step_num += 1
 
-        estimated_tools = list(set(s["tool"] for s in steps))
+        # Limit to reasonable number of steps
+        if len(steps) > 20:
+            steps = steps[:20]
+
+        estimated_tools = list(set(s["tool"] for s in steps)) if steps else []
 
         return cls(
             reasoning=reasoning,
@@ -284,3 +342,23 @@ class AnalysisPlan:
             requires_web_search="web_search" in estimated_tools,
             requires_document_analysis="pdf_rag" in estimated_tools,
         )
+
+    @classmethod
+    def _infer_tool(cls, text: str, tool_mapping: dict) -> str:
+        """Infer tool from text content."""
+        text_lower = text.lower()
+
+        if any(w in text_lower for w in ["search", "find", "look up", "query", "usgs", "federal"]):
+            return "web_search"
+        elif any(w in text_lower for w in ["pdf", "document analysis", "extract from"]):
+            return "pdf_rag"
+        elif any(w in text_lower for w in ["excel", "spreadsheet", "csv"]):
+            return "excel_handler"
+        elif any(w in text_lower for w in ["analyze", "calculate", "compute", "visuali", "plot", "chart", "graph"]):
+            return "code_agent"
+        elif any(w in text_lower for w in ["simulat", "model run", "scenario"]):
+            return "simulation"
+        elif any(w in text_lower for w in ["report", "generate", "compile", "create pdf"]):
+            return "doc_generator"
+
+        return "orchestrator"

@@ -1,0 +1,10 @@
+{
+  "session_id": "85ca8b95-0337-4725-99fe-e9972f262375",
+  "created_at": "2026-01-26T07:26:18.226035",
+  "status": "awaiting_approval",
+  "query": "approve",
+  "user_id": "webui_user",
+  "model": null,
+  "updated_at": "2026-01-26T07:27:05.137547",
+  "plan_proposed_at": "2026-01-26T07:27:05.137536"
+}

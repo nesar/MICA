@@ -1,0 +1,5 @@
+[2026-01-26T07:22:59.093514] INFO: Agent orchestrator started
+[2026-01-26T07:22:59.093789] INFO: Preliminary research completed
+[2026-01-26T07:22:59.094001] DEBUG: Output: {"summary": "## Preliminary Research Summary\n\n### Query Understanding\n\nThe user is asking for:\n1. **Top 3 critical materials found in Greenland** that are NOT available in mainland US or Alaska\n2. **Historical context** covering the last 5 years (2019-2024)\n\n### Key Clarifications Needed\n\nThis query requires clarification on several points:\n\n1. **\"Not available\" interpretation**: Does this mean:\n   - Materials with NO deposits/reserves in US/Alaska?\n   - Materials not currently b
+[2026-01-26T07:22:59.094014] INFO: Agent orchestrator completed
+[2026-01-26T07:22:59.094073] INFO: Duration: 0.00s

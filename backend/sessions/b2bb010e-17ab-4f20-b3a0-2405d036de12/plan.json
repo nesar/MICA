@@ -1,0 +1,235 @@
+{
+  "reasoning": "# Detailed Analysis Plan: Rare Earth Magnet Supply Risks\n\n## Phase 1: Supply Chain Mapping and Current State Assessment\n\n### Step 1: Quantify Current Import Dependencies\n**Tool:** `web_search`\n**Inputs:** \n- \"USGS rare earth elements 2024 mineral commodity summary\"\n- \"U.S. rare earth magnet imports China statistics\"\n- \"neodymium praseodymium import reliance United States\"\n\n**Expected Output:** \n- Current U.S. import reliance percentages for REEs and magnets\n- Volume and value of imports by country of origin\n- Domestic production capacity (if any) for mining, separation, and magnet manufacturing\n\n### Step 2: Map Global Production Capacity by Supply Chain Stage\n**Tool:** `web_search`\n**Inputs:**\n- \"global rare earth mining production by country 2023\"\n- \"rare earth oxide separation capacity China vs rest of world\"\n- \"NdFeB magnet manufacturing capacity global distribution\"\n- \"rare earth metal alloy production capacity\"\n\n**Expected Output:**\n- Production capacity data for each stage: Mining \u2192 REO separation \u2192 Metal production \u2192 Alloy production \u2192 Magnet manufacturing\n- Geographic distribution showing China's dominance at each stage\n- Identification of specific bottlenecks in non-Chinese supply chains\n\n### Step 3: Identify Critical Applications and Demand Drivers\n**Tool:** `web_search`\n**Inputs:**\n- \"IEA critical minerals rare earth demand projections 2030 2040\"\n- \"electric vehicle rare earth magnet demand forecast\"\n- \"wind turbine permanent magnet demand growth\"\n- \"DOE critical materials assessment 2023\"\n\n**Expected Output:**\n- Demand projections by application sector through 2030/2040\n- Growth rates for EVs, wind energy, defense applications\n- Technology-specific magnet intensity requirements (kg per vehicle, kg per MW)\n\n### Step 4: Extract Historical Trade Data\n**Tool:** `web_search`\n**Inputs:**\n- \"UN Comtrade rare earth permanent magnets HS code 850511\"\n- \"U.S. import statistics rare earth magnets 2015-2024\"\n- \"rare earth magnet prices historical trends\"\n\n**Expected Output:**\n- 10-year trend data on U.S. magnet imports\n- Price volatility data\n- Supplier concentration metrics (HHI index if available)\n\n---\n\n## Phase 2: Risk Assessment and Vulnerability Analysis\n\n### Step 5: Document Geopolitical and Policy Risks\n**Tool:** `web_search`\n**Inputs:**\n- \"China rare earth export controls 2023 2024\"\n- \"China gallium germanium export restrictions impact\"\n- \"U.S. China trade restrictions critical minerals\"\n- \"Defense Production Act rare earth magnets\"\n\n**Expected Output:**\n- Timeline of recent Chinese export control actions\n- U.S. policy responses (DPA, CHIPS Act provisions, IRA requirements)\n- Analysis of potential disruption scenarios\n- Historical precedents (2010 rare earth crisis)\n\n### Step 6: Assess Technical and Economic Barriers\n**Tool:** `web_search`\n**Inputs:**\n- \"rare earth separation technology barriers environmental\"\n- \"cost comparison rare earth processing China vs United States\"\n- \"rare earth magnet manufacturing intellectual property\"\n- \"sintered NdFeB production process challenges\"\n\n**Expected Output:**\n- Technical complexity factors (separation chemistry, waste management)\n- Cost differential analysis (labor, energy, environmental compliance)\n- IP and know-how gaps outside China\n- Environmental and regulatory challenges\n\n### Step 7: Evaluate Alternative Supply Chain Resilience\n**Tool:** `web_search`\n**Inputs:**\n- \"MP Materials rare earth production Mountain Pass\"\n- \"Lynas rare earth processing capacity\"\n- \"Australia rare earth mining projects\"\n- \"Vietnam rare earth processing\"\n- \"rare earth magnet recycling technology readiness\"\n\n**Expected Output:**\n- Status of non-Chinese production projects\n- Timeline to commercial operation\n- Capacity compared to projected demand\n- Recycling potential and current recovery rates\n\n---\n\n## Phase 3: Quantitative Analysis and Modeling\n\n### Step 8: Analyze Available Datasets\n**Tool:** `excel_handler` (if datasets are available) OR `web_search` for published data\n**Inputs:**\n- USGS historical production data files\n- Trade statistics databases\n- DOE critical materials assessments\n\n**Expected Output:**\n- Time-series analysis of production/consumption trends\n- Import dependency calculations\n- Concentration ratios and vulnerability indices\n\n### Step 9: Create Supply-Demand Visualizations\n**Tool:** `code_agent`\n**Inputs:**\n- Data extracted from Steps 1-4 and 8\n- Demand projections by sector\n- Production capacity by country/stage\n\n**Code Requirements:**\n```python\n# Generate visualizations:\n# 1. Supply chain flow diagram (Sankey chart)\n# 2. Import dependency trends (line chart)\n# 3. Demand growth projections by application (stacked area chart)\n# 4. Geographic concentration by supply chain stage (bar charts)\n# 5. Supply-demand gap analysis 2025-2040 (scenario chart)\n```\n\n**Expected Output:**\n- 5-7 publication-ready visualizations\n- Summary statistics tables\n- Gap analysis quantifying shortfall risks\n\n### Step 10: Risk Scenario Modeling (if applicable)\n**Tool:** `simulation` (if GCMat/RELOG models contain rare earth modules)\n**Inputs:**\n- Current supply chain configuration\n- Disruption scenarios (e.g., 50% reduction in Chinese exports)\n- Demand growth trajectories\n\n**Expected Output:**\n- Price impact estimates under disruption scenarios\n- Supply shortfall quantification\n- Time-to-recovery analysis\n- Alternative sourcing feasibility assessment\n\n---\n\n## Phase 4: Mitigation Strategies and Policy Analysis\n\n### Step 11: Research Current Mitigation Initiatives\n**Tool:** `web_search`\n**Inputs:**\n- \"DOE rare earth magnet research programs ARPA-E\"\n- \"Defense Production Act Title III rare earth investments\"\n- \"DOE loan programs critical minerals\"\n- \"rare earth magnet substitution research ferrite motors\"\n- \"magnet recycling demonstration projects\"\n\n**Expected Output:**\n- Inventory of federal programs and funding levels\n- Private sector initiatives and partnerships\n- Technology development status (TRL levels)\n- Timeline for commercial deployment\n\n### Step 12: Evaluate Substitution and Efficiency Opportunities\n**Tool:** `web_search`\n**Inputs:**\n- \"permanent magnet-free electric motor efficiency\"\n- \"rare earth magnet material intensity reduction\"\n- \"dysprosium-free NdFeB magnets grain boundary diffusion\"\n- \"ferrite magnet performance EVs\"\n\n**Expected Output:**\n- Technical feasibility of substitution by application\n- Performance trade-offs\n- Cost implications\n- Adoption barriers and timeline\n\n### Step 13: Analyze Allied Country Coordination\n**Tool:** `web_search`\n**Inputs:**\n- \"Minerals Security Partnership rare earths\"\n- \"EU Critical Raw Materials Act rare earth magnets\"\n- \"Japan rare earth supply chain initiatives\"\n- \"Five Eyes critical minerals cooperation\"\n\n**Expected Output:**\n- Allied production and processing initiatives\n- Trade agreement provisions\n- Coordinated stockpiling or purchasing arrangements\n- Technology sharing agreements\n\n---\n\n## Phase 5: Synthesis and Report Generation\n\n### Step 14: Compile Findings into Structured Analysis\n**Tool:** Manual synthesis + `code_agent` for final data tables\n**Inputs:** All outputs from Steps 1-13\n\n**Expected Output:**\n- Executive summary of key risks (1-2 pages)\n- Detailed risk assessment by category:\n  - Supply concentration risks (quantified)\n  - Geopolitical risks (scenario-based)\n  - Demand growth risks (gap analysis)\n  - Technical/economic barriers (qualitative + cost data)\n- Mitigation strategy assessment with timelines\n- Data appendix with all visualizations and tables\n\n### Step 15: Generate Comprehensive Report\n**Tool:** `doc_generator`\n**Inputs:**\n- Structured analysis from Step 14\n- All visualizations from Step 9\n- Key data tables\n- References and sources\n\n**Report Structure:**\n1. Executive Summary\n2. Introduction and Scope\n3. Current Supply Chain Assessment\n   - Global production landscape\n   - U.S. import dependencies\n   - Critical applications\n4. Risk Analysis\n   - Geographic concentration\n   - Geopolitical vulnerabilities\n   - Supply-demand gaps\n   - Technical and economic barriers\n5. Demand Projections and Future Vulnerabilities\n6. Mitigation Strategies and Initiatives\n   - Domestic production development\n   - Recycling and circular economy\n   - Substitution and efficiency\n   - Allied cooperation\n7. Conclusions and Recommendations\n8. Appendices (data tables, methodology, references)\n\n**Expected Output:** \n- Comprehensive PDF report (20-30 pages)\n- Standalone executive summary (2-3 pages)\n- Data package with source files\n\n---\n\n## Contingency Steps\n\n### Step 16: If Key Data Gaps Identified\n**Tool:** `web_search` with refined queries\n**Inputs:** Specific data needs identified during analysis\n**Action:** Targeted searches for:\n- Industry reports (Adamas Intelligence, Roskill)\n- Academic papers (supply chain mapping studies)\n- Company reports and presentations\n- Government testimony and briefings\n\n### Step 17: Quality Check and Validation\n**Tool:** `web_search`\n**Inputs:** Cross-reference key statistics against multiple sources\n**Action:** Validate critical numbers (import percentages, production figures, demand projections) against at least 2-3 authoritative sources\n\n---\n\n## Expected Timeline\n- Phase 1 (Steps 1-4): Establish baseline understanding\n- Phase 2 (Steps 5-7): Deep dive on risks and alternatives  \n- Phase 3 (Steps 8-10): Quantitative analysis\n- Phase 4 (Steps 11-13): Solutions landscape\n- Phase 5 (Steps 14-15): Synthesis and reporting\n\nThis plan provides a comprehensive, data-driven assessment of rare earth magnet supply risks with actionable insights for DOE decision-makers.",
+  "steps": [
+    {
+      "step_id": "step_0",
+      "tool": "web_search",
+      "description": "Quantify Current Import Dependencies",
+      "inputs": {
+        "queries": [
+          "USGS rare earth elements 2024 mineral commodity summary",
+          "U.S. rare earth magnet imports China statistics",
+          "neodymium praseodymium import reliance United States"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_1",
+      "tool": "web_search",
+      "description": "Map Global Production Capacity by Supply Chain Stage",
+      "inputs": {
+        "queries": [
+          "global rare earth mining production by country 2023",
+          "rare earth oxide separation capacity China vs rest of world",
+          "NdFeB magnet manufacturing capacity global distribution",
+          "rare earth metal alloy production capacity"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_2",
+      "tool": "web_search",
+      "description": "Identify Critical Applications and Demand Drivers",
+      "inputs": {
+        "queries": [
+          "IEA critical minerals rare earth demand projections 2030 2040",
+          "electric vehicle rare earth magnet demand forecast",
+          "wind turbine permanent magnet demand growth",
+          "DOE critical materials assessment 2023"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_3",
+      "tool": "web_search",
+      "description": "Extract Historical Trade Data",
+      "inputs": {
+        "queries": [
+          "UN Comtrade rare earth permanent magnets HS code 850511",
+          "U.S. import statistics rare earth magnets 2015-2024",
+          "rare earth magnet prices historical trends"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_4",
+      "tool": "web_search",
+      "description": "Document Geopolitical and Policy Risks",
+      "inputs": {
+        "queries": [
+          "China rare earth export controls 2023 2024",
+          "China gallium germanium export restrictions impact",
+          "U.S. China trade restrictions critical minerals",
+          "Defense Production Act rare earth magnets"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_5",
+      "tool": "web_search",
+      "description": "Assess Technical and Economic Barriers",
+      "inputs": {
+        "queries": [
+          "rare earth separation technology barriers environmental",
+          "cost comparison rare earth processing China vs United States",
+          "rare earth magnet manufacturing intellectual property",
+          "sintered NdFeB production process challenges"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_6",
+      "tool": "web_search",
+      "description": "Evaluate Alternative Supply Chain Resilience",
+      "inputs": {
+        "queries": [
+          "MP Materials rare earth production Mountain Pass",
+          "Lynas rare earth processing capacity",
+          "Australia rare earth mining projects",
+          "Vietnam rare earth processing",
+          "rare earth magnet recycling technology readiness"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_7",
+      "tool": "web_search",
+      "description": "Analyze Available Datasets",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_8",
+      "tool": "code_agent",
+      "description": "Create Supply-Demand Visualizations",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_9",
+      "tool": "simulation",
+      "description": "Risk Scenario Modeling (if applicable)",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_10",
+      "tool": "web_search",
+      "description": "Research Current Mitigation Initiatives",
+      "inputs": {
+        "queries": [
+          "DOE rare earth magnet research programs ARPA-E",
+          "Defense Production Act Title III rare earth investments",
+          "DOE loan programs critical minerals",
+          "rare earth magnet substitution research ferrite motors",
+          "magnet recycling demonstration projects"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_11",
+      "tool": "web_search",
+      "description": "Evaluate Substitution and Efficiency Opportunities",
+      "inputs": {
+        "queries": [
+          "permanent magnet-free electric motor efficiency",
+          "rare earth magnet material intensity reduction",
+          "dysprosium-free NdFeB magnets grain boundary diffusion",
+          "ferrite magnet performance EVs"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_12",
+      "tool": "web_search",
+      "description": "Analyze Allied Country Coordination",
+      "inputs": {
+        "queries": [
+          "Minerals Security Partnership rare earths",
+          "EU Critical Raw Materials Act rare earth magnets",
+          "Japan rare earth supply chain initiatives",
+          "Five Eyes critical minerals cooperation"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_13",
+      "tool": "orchestrator",
+      "description": "Compile Findings into Structured Analysis",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_14",
+      "tool": "pdf_rag",
+      "description": "Generate Comprehensive Report",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_15",
+      "tool": "web_search",
+      "description": "If Key Data Gaps Identified",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_16",
+      "tool": "web_search",
+      "description": "Quality Check and Validation",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    }
+  ],
+  "estimated_tools": [
+    "pdf_rag",
+    "code_agent",
+    "simulation",
+    "web_search",
+    "orchestrator"
+  ]
+}

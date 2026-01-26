@@ -106,19 +106,23 @@ async def run_workflow_until_interrupt(session_id: str):
         # Run workflow with config
         config_dict = {"configurable": {"thread_id": session_id}}
 
-        # Stream until interrupt
+        # Stream until interrupt - LangGraph returns {node_name: state} dicts
         async for event in workflow.astream(state, config_dict):
-            # Update stored state
             if isinstance(event, dict):
-                for key, value in event.items():
-                    if key in state:
-                        _sessions[session_id] = value
-                        state = value
+                # LangGraph events are {node_name: updated_state}
+                for node_name, updated_state in event.items():
+                    if isinstance(updated_state, dict):
+                        # Merge the updated state
+                        state.update(updated_state)
+                        _sessions[session_id] = state
+                        logger.debug(f"Updated state from node: {node_name}")
 
-        logger.info(f"Workflow paused at: {state.get('current_step')}")
+        # Always update the final state
+        _sessions[session_id] = state
+        logger.info(f"Workflow paused at: {state.get('current_step')}, status: {state.get('status')}")
 
     except Exception as e:
-        logger.error(f"Workflow error: {e}")
+        logger.error(f"Workflow error: {e}", exc_info=True)
         state["status"] = WorkflowStatus.FAILED
         state["errors"].append({
             "error": str(e),
@@ -227,7 +231,7 @@ async def approve_plan(
     """
     state = get_session(session_id)
 
-    if state["status"] != WorkflowStatus.AWAITING_APPROVAL:
+    if state["status"] not in [WorkflowStatus.AWAITING_APPROVAL, WorkflowStatus.PLAN_PROPOSED]:
         raise HTTPException(
             status_code=400,
             detail=f"Session is not awaiting approval (status: {state['status']})",
@@ -370,9 +374,170 @@ async def list_tools():
 @router.get("/config")
 async def get_config():
     """Get current configuration (non-sensitive)."""
+    from ..credentials import credentials_manager
+
     return {
         "llm_provider": config.llm.llm_provider,
         "default_model": config.llm.default_model,
         "search_provider": config.search.search_provider,
         "log_level": config.logging.log_level,
+        "credentials": credentials_manager.get_credentials_status(),
     }
+
+
+# =============================================================================
+# Credentials Endpoints
+# =============================================================================
+
+class CredentialsRequest(BaseModel):
+    """Request model for setting credentials."""
+    provider: str = Field(..., description="Provider: 'argo' or 'gemini'")
+    credential: str = Field(..., description="Username for Argo, API key for Gemini")
+
+
+class CredentialsResponse(BaseModel):
+    """Response model for credentials operations."""
+    success: bool
+    provider: str
+    message: str
+
+
+@router.get("/credentials")
+async def get_credentials_status():
+    """
+    Check which credentials are configured.
+
+    Returns the status of each LLM provider's credentials without exposing
+    the actual values. Use this to determine if credentials need to be set.
+    """
+    from ..credentials import credentials_manager
+
+    status = credentials_manager.get_credentials_status()
+
+    return {
+        "credentials": status,
+        "requires_setup": not (
+            status["argo"]["configured"] or status["gemini"]["configured"]
+        ),
+        "message": (
+            "At least one LLM provider must be configured."
+            if not (status["argo"]["configured"] or status["gemini"]["configured"])
+            else "Credentials configured."
+        ),
+    }
+
+
+@router.post("/credentials", response_model=CredentialsResponse)
+async def set_credentials(request: CredentialsRequest):
+    """
+    Set credentials for an LLM provider.
+
+    For Argo: provide your Argo username
+    For Gemini: provide your Google API key
+
+    Credentials are stored in memory and will need to be re-entered
+    if the server restarts.
+    """
+    from ..credentials import credentials_manager
+
+    provider = request.provider.lower()
+
+    if provider == "argo":
+        credentials_manager.set_argo_username(request.credential)
+        return CredentialsResponse(
+            success=True,
+            provider="argo",
+            message="Argo username set successfully.",
+        )
+    elif provider in ("gemini", "google"):
+        credentials_manager.set_google_api_key(request.credential)
+        return CredentialsResponse(
+            success=True,
+            provider="gemini",
+            message="Google API key set successfully.",
+        )
+    else:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Unknown provider: {provider}. Use 'argo' or 'gemini'.",
+        )
+
+
+@router.delete("/credentials/{provider}")
+async def clear_credentials(provider: str):
+    """Clear credentials for a specific provider."""
+    from ..credentials import credentials_manager
+
+    provider = provider.lower()
+
+    if provider == "argo":
+        credentials_manager.clear_argo_credentials()
+        return {"message": "Argo credentials cleared."}
+    elif provider in ("gemini", "google"):
+        credentials_manager.clear_google_credentials()
+        return {"message": "Gemini credentials cleared."}
+    else:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Unknown provider: {provider}. Use 'argo' or 'gemini'.",
+        )
+
+
+@router.post("/credentials/test")
+async def test_credentials():
+    """
+    Test if the configured credentials work.
+
+    Makes a simple API call to verify the credentials are valid.
+    """
+    from langchain_core.messages import HumanMessage
+    from ..credentials import credentials_manager
+    from ..llm import create_llm
+
+    results = {}
+
+    # Test Argo if configured
+    if credentials_manager.has_argo_credentials():
+        try:
+            llm = create_llm(provider="argo")
+            messages = [HumanMessage(content="Say 'Hello from MICA!' in exactly 5 words.")]
+            response = llm.invoke(messages)
+            results["argo"] = {
+                "success": True,
+                "message": "Argo credentials verified.",
+                "response_preview": response.content[:100] if response.content else None,
+            }
+        except Exception as e:
+            results["argo"] = {
+                "success": False,
+                "message": f"Argo test failed: {str(e)}",
+            }
+    else:
+        results["argo"] = {
+            "success": False,
+            "message": "Argo credentials not configured.",
+        }
+
+    # Test Gemini if configured
+    if credentials_manager.has_google_credentials():
+        try:
+            llm = create_llm(provider="gemini")
+            messages = [HumanMessage(content="Say 'Hello from MICA!' in exactly 5 words.")]
+            response = llm.invoke(messages)
+            results["gemini"] = {
+                "success": True,
+                "message": "Gemini credentials verified.",
+                "response_preview": response.content[:100] if response.content else None,
+            }
+        except Exception as e:
+            results["gemini"] = {
+                "success": False,
+                "message": f"Gemini test failed: {str(e)}",
+            }
+    else:
+        results["gemini"] = {
+            "success": False,
+            "message": "Gemini credentials not configured.",
+        }
+
+    return {"results": results}

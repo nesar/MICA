@@ -7,9 +7,19 @@ Provides a unified interface to create LLM instances from different providers.
 from typing import Optional
 
 from ..config import config
+from ..credentials import credentials_manager
 from .argo import ArgoLLM, get_available_argo_models
 from .base import BaseLLM
 from .gemini import GeminiLLM, get_available_gemini_models
+
+
+class CredentialsRequiredError(Exception):
+    """Raised when credentials are required but not configured."""
+
+    def __init__(self, provider: str, message: str):
+        self.provider = provider
+        self.message = message
+        super().__init__(message)
 
 
 def create_llm(
@@ -29,7 +39,8 @@ def create_llm(
         BaseLLM instance
 
     Raises:
-        ValueError: If provider is unknown or configuration is missing
+        CredentialsRequiredError: If credentials are not configured
+        ValueError: If provider is unknown
 
     Example:
         # Use default configuration
@@ -46,18 +57,22 @@ def create_llm(
     model_id = model_id or config.llm.default_model
 
     if provider == "argo":
-        username = kwargs.pop("username", None) or config.argo.username
+        # Check for username in kwargs, then credentials manager
+        username = kwargs.pop("username", None) or credentials_manager.get_argo_username()
         if not username:
-            raise ValueError(
-                "Argo username required. Set ARGO_USERNAME environment variable."
+            raise CredentialsRequiredError(
+                provider="argo",
+                message="Argo username required. Please set credentials via POST /api/v1/credentials",
             )
         return ArgoLLM(model_id=model_id, username=username, **kwargs)
 
     elif provider == "gemini":
-        api_key = kwargs.pop("api_key", None) or config.gemini.api_key
+        # Check for api_key in kwargs, then credentials manager
+        api_key = kwargs.pop("api_key", None) or credentials_manager.get_google_api_key()
         if not api_key:
-            raise ValueError(
-                "Google API key required. Set GOOGLE_API_KEY environment variable."
+            raise CredentialsRequiredError(
+                provider="gemini",
+                message="Google API key required. Please set credentials via POST /api/v1/credentials",
             )
         return GeminiLLM(model_id=model_id, api_key=api_key, **kwargs)
 

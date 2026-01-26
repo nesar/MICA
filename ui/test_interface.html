@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MICA - Materials Intelligence Co-Analyst</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #1a1a2e; color: #eee; min-height: 100vh;
+            display: flex; flex-direction: column;
+        }
+        header {
+            background: #16213e; padding: 1rem 2rem;
+            border-bottom: 1px solid #0f3460;
+        }
+        header h1 { font-size: 1.5rem; color: #e94560; }
+        header p { color: #888; font-size: 0.9rem; }
+        main { flex: 1; display: flex; max-width: 1400px; margin: 0 auto; width: 100%; }
+
+        .sidebar {
+            width: 300px; background: #16213e; padding: 1rem;
+            border-right: 1px solid #0f3460;
+        }
+        .sidebar h3 { color: #e94560; margin-bottom: 1rem; }
+        .status-card {
+            background: #1a1a2e; border-radius: 8px; padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        .status-card label { color: #888; font-size: 0.8rem; display: block; }
+        .status-card .value { font-size: 1.1rem; margin-top: 0.3rem; }
+        .status-badge {
+            display: inline-block; padding: 0.3rem 0.8rem;
+            border-radius: 20px; font-size: 0.8rem; font-weight: 600;
+        }
+        .status-badge.healthy { background: #28a745; }
+        .status-badge.processing { background: #ffc107; color: #000; }
+        .status-badge.error { background: #dc3545; }
+        .status-badge.pending { background: #6c757d; }
+
+        .chat-area { flex: 1; display: flex; flex-direction: column; }
+        .messages {
+            flex: 1; overflow-y: auto; padding: 1rem;
+            display: flex; flex-direction: column; gap: 1rem;
+        }
+        .message {
+            max-width: 80%; padding: 1rem; border-radius: 12px;
+            line-height: 1.5;
+        }
+        .message.user {
+            background: #0f3460; align-self: flex-end;
+        }
+        .message.assistant {
+            background: #16213e; align-self: flex-start;
+            border: 1px solid #0f3460;
+        }
+        .message.system {
+            background: #2d2d44; align-self: center;
+            font-size: 0.9rem; color: #888;
+        }
+        .message pre {
+            background: #1a1a2e; padding: 0.5rem; border-radius: 4px;
+            overflow-x: auto; margin: 0.5rem 0; font-size: 0.85rem;
+        }
+
+        .input-area {
+            padding: 1rem; background: #16213e;
+            border-top: 1px solid #0f3460;
+        }
+        .input-row { display: flex; gap: 0.5rem; }
+        .input-row input {
+            flex: 1; padding: 0.8rem 1rem; border-radius: 8px;
+            border: 1px solid #0f3460; background: #1a1a2e; color: #eee;
+            font-size: 1rem;
+        }
+        .input-row input:focus { outline: none; border-color: #e94560; }
+        .input-row button {
+            padding: 0.8rem 1.5rem; border-radius: 8px;
+            border: none; background: #e94560; color: white;
+            font-weight: 600; cursor: pointer;
+        }
+        .input-row button:hover { background: #d63850; }
+        .input-row button:disabled { background: #555; cursor: not-allowed; }
+
+        .plan-steps {
+            background: #1a1a2e; border-radius: 8px; padding: 1rem;
+            margin: 1rem 0;
+        }
+        .plan-step {
+            padding: 0.5rem; margin: 0.3rem 0;
+            border-left: 3px solid #0f3460;
+            padding-left: 1rem; font-size: 0.9rem;
+        }
+        .plan-step.pending { border-color: #6c757d; }
+        .plan-step.running { border-color: #ffc107; }
+        .plan-step.completed { border-color: #28a745; }
+
+        .action-buttons { display: flex; gap: 0.5rem; margin-top: 1rem; }
+        .action-buttons button {
+            padding: 0.6rem 1.2rem; border-radius: 6px;
+            border: none; cursor: pointer; font-weight: 600;
+        }
+        .btn-approve { background: #28a745; color: white; }
+        .btn-reject { background: #dc3545; color: white; }
+
+        .credentials-form {
+            background: #1a1a2e; padding: 1rem; border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+        .credentials-form input {
+            width: 100%; padding: 0.5rem; margin: 0.5rem 0;
+            border-radius: 4px; border: 1px solid #0f3460;
+            background: #16213e; color: #eee;
+        }
+        .credentials-form button {
+            width: 100%; padding: 0.5rem; margin-top: 0.5rem;
+            border-radius: 4px; border: none;
+            background: #e94560; color: white; cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>MICA - Materials Intelligence Co-Analyst</h1>
+        <p>AI-powered critical materials supply chain analysis</p>
+    </header>
+
+    <main>
+        <aside class="sidebar">
+            <h3>System Status</h3>
+            <div class="status-card">
+                <label>Backend</label>
+                <div class="value">
+                    <span id="backend-status" class="status-badge pending">Checking...</span>
+                </div>
+            </div>
+            <div class="status-card">
+                <label>Credentials</label>
+                <div class="value">
+                    <span id="creds-status" class="status-badge pending">Not Set</span>
+                </div>
+            </div>
+            <div class="status-card">
+                <label>Session</label>
+                <div class="value" id="session-id">None</div>
+            </div>
+            <div class="status-card">
+                <label>Workflow Status</label>
+                <div class="value">
+                    <span id="workflow-status" class="status-badge pending">Idle</span>
+                </div>
+            </div>
+
+            <h3 style="margin-top: 1.5rem;">Set Credentials</h3>
+            <div class="credentials-form">
+                <select id="provider">
+                    <option value="argo">Argo (Claude)</option>
+                    <option value="gemini">Google Gemini</option>
+                </select>
+                <input type="text" id="credential" placeholder="Username or API Key">
+                <button onclick="setCredentials()">Set Credentials</button>
+            </div>
+        </aside>
+
+        <section class="chat-area">
+            <div class="messages" id="messages">
+                <div class="message system">
+                    Welcome to MICA! Enter a query about critical materials supply chains.
+                </div>
+            </div>
+
+            <div class="input-area">
+                <div class="input-row">
+                    <input type="text" id="query-input"
+                           placeholder="e.g., What are the supply chain risks for rare earth magnets?"
+                           onkeypress="if(event.key==='Enter') submitQuery()">
+                    <button onclick="submitQuery()" id="submit-btn">Send</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const API_BASE = 'http://localhost:8000';
+        let currentSessionId = null;
+        let pollInterval = null;
+
+        // Check backend health on load
+        async function checkHealth() {
+            try {
+                const res = await fetch(`${API_BASE}/health`);
+                const data = await res.json();
+                document.getElementById('backend-status').className = 'status-badge healthy';
+                document.getElementById('backend-status').textContent = 'Connected';
+                checkCredentials();
+            } catch (e) {
+                document.getElementById('backend-status').className = 'status-badge error';
+                document.getElementById('backend-status').textContent = 'Offline';
+            }
+        }
+
+        async function checkCredentials() {
+            try {
+                const res = await fetch(`${API_BASE}/api/v1/credentials`);
+                const data = await res.json();
+                if (!data.requires_setup) {
+                    document.getElementById('creds-status').className = 'status-badge healthy';
+                    document.getElementById('creds-status').textContent = 'Configured';
+                } else {
+                    document.getElementById('creds-status').className = 'status-badge error';
+                    document.getElementById('creds-status').textContent = 'Required';
+                }
+            } catch (e) {
+                console.error('Failed to check credentials:', e);
+            }
+        }
+
+        async function setCredentials() {
+            const provider = document.getElementById('provider').value;
+            const credential = document.getElementById('credential').value;
+
+            if (!credential) {
+                alert('Please enter a credential');
+                return;
+            }
+
+            try {
+                const res = await fetch(`${API_BASE}/api/v1/credentials`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ provider, credential })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    document.getElementById('creds-status').className = 'status-badge healthy';
+                    document.getElementById('creds-status').textContent = 'Configured';
+                    document.getElementById('credential').value = '';
+                    addMessage('system', `${provider} credentials set successfully.`);
+                }
+            } catch (e) {
+                alert('Failed to set credentials: ' + e.message);
+            }
+        }
+
+        function addMessage(type, content) {
+            const messages = document.getElementById('messages');
+            const div = document.createElement('div');
+            div.className = `message ${type}`;
+            div.innerHTML = content;
+            messages.appendChild(div);
+            messages.scrollTop = messages.scrollHeight;
+        }
+
+        async function submitQuery() {
+            const input = document.getElementById('query-input');
+            const query = input.value.trim();
+            if (!query) return;
+
+            addMessage('user', query);
+            input.value = '';
+            document.getElementById('submit-btn').disabled = true;
+
+            try {
+                const res = await fetch(`${API_BASE}/api/v1/query`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ query, user_id: 'web_user' })
+                });
+                const data = await res.json();
+                currentSessionId = data.session_id;
+                document.getElementById('session-id').textContent = currentSessionId.slice(0, 8) + '...';
+
+                addMessage('system', 'Query submitted. Generating analysis plan...');
+                updateWorkflowStatus('processing');
+
+                // Start polling for status
+                startPolling();
+
+            } catch (e) {
+                addMessage('assistant', `Error: ${e.message}`);
+                document.getElementById('submit-btn').disabled = false;
+            }
+        }
+
+        function startPolling() {
+            if (pollInterval) clearInterval(pollInterval);
+            pollInterval = setInterval(checkSessionStatus, 5000);
+        }
+
+        function stopPolling() {
+            if (pollInterval) {
+                clearInterval(pollInterval);
+                pollInterval = null;
+            }
+        }
+
+        async function checkSessionStatus() {
+            if (!currentSessionId) return;
+
+            try {
+                const res = await fetch(`${API_BASE}/api/v1/session/${currentSessionId}`);
+                const data = await res.json();
+
+                updateWorkflowStatus(data.status);
+
+                if (data.status === 'plan_proposed' || data.status === 'awaiting_approval') {
+                    stopPolling();
+                    showPlan(data.plan, data.plan_reasoning);
+                    document.getElementById('submit-btn').disabled = false;
+                } else if (data.status === 'completed' || data.status === 'awaiting_feedback') {
+                    stopPolling();
+                    showResults(data);
+                    document.getElementById('submit-btn').disabled = false;
+                } else if (data.status === 'failed') {
+                    stopPolling();
+                    addMessage('assistant', `Analysis failed: ${data.errors.map(e => e.error).join(', ')}`);
+                    document.getElementById('submit-btn').disabled = false;
+                }
+            } catch (e) {
+                console.error('Polling error:', e);
+            }
+        }
+
+        function updateWorkflowStatus(status) {
+            const badge = document.getElementById('workflow-status');
+            badge.textContent = status.replace(/_/g, ' ');
+
+            if (status === 'completed') badge.className = 'status-badge healthy';
+            else if (status === 'failed') badge.className = 'status-badge error';
+            else if (status.includes('awaiting')) badge.className = 'status-badge processing';
+            else badge.className = 'status-badge processing';
+        }
+
+        function showPlan(plan, reasoning) {
+            let html = '<strong>Analysis Plan Generated</strong><br><br>';
+            html += '<div class="plan-steps">';
+            plan.forEach((step, i) => {
+                html += `<div class="plan-step pending">
+                    <strong>Step ${i + 1}:</strong> ${step.description}<br>
+                    <small>Tool: ${step.tool}</small>
+                </div>`;
+            });
+            html += '</div>';
+            html += '<div class="action-buttons">';
+            html += '<button class="btn-approve" onclick="approvePlan(true)">Approve Plan</button>';
+            html += '<button class="btn-reject" onclick="approvePlan(false)">Reject</button>';
+            html += '</div>';
+
+            addMessage('assistant', html);
+        }
+
+        async function approvePlan(approved) {
+            try {
+                const res = await fetch(`${API_BASE}/api/v1/session/${currentSessionId}/approve`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        session_id: currentSessionId,
+                        approved,
+                        feedback: approved ? null : 'User rejected the plan'
+                    })
+                });
+                const data = await res.json();
+
+                if (approved) {
+                    addMessage('system', 'Plan approved. Executing analysis...');
+                    updateWorkflowStatus('executing');
+                    startPolling();
+                } else {
+                    addMessage('system', 'Plan rejected.');
+                    updateWorkflowStatus('idle');
+                }
+            } catch (e) {
+                addMessage('assistant', `Error: ${e.message}`);
+            }
+        }
+
+        function showResults(data) {
+            let html = '<strong>Analysis Complete</strong><br><br>';
+            if (data.final_summary) {
+                html += `<div>${data.final_summary}</div>`;
+            }
+            if (data.report_path) {
+                html += `<br><a href="${data.report_path}" target="_blank">Download Report</a>`;
+            }
+            addMessage('assistant', html);
+        }
+
+        // Initialize
+        checkHealth();
+    </script>
+</body>
+</html>

@@ -1,0 +1,160 @@
+{
+  "reasoning": "# Detailed Analysis Plan for Query: \"approve\"\n\nGiven the ambiguous nature of the query and lack of user clarification, I'll create a conditional plan that addresses the most likely interpretations in the context of critical materials and supply chain analysis.\n\n## Plan Structure: Multi-Path Approach\n\nSince \"approve\" could relate to several contexts, I'll outline parallel investigation paths and then await user confirmation before proceeding.\n\n---\n\n## **PATH A: Mining/Processing Project Approval Analysis**\n*Assumption: User seeks analysis of approval processes for critical materials projects*\n\n### Step 1: Identify Current Approval Frameworks\n- **Tool**: `web_search`\n- **Specific Inputs**: \n  - \"critical minerals mining approval process United States\"\n  - \"NEPA environmental review mining projects timeline\"\n  - \"permitting requirements rare earth processing facilities\"\n- **Expected Output**: Overview of federal approval requirements, typical timelines, regulatory agencies involved\n\n### Step 2: Search Relevant Policy Documents\n- **Tool**: `pdf_rag`\n- **Specific Inputs**: \n  - Query: \"approval process, permitting, environmental review, NEPA\"\n  - Focus on Executive Orders, DOE reports, USGS documents\n- **Expected Output**: Specific regulatory requirements, approval timelines, bottlenecks identified in policy documents\n\n### Step 3: Analyze Recent Project Approvals\n- **Tool**: `web_search`\n- **Specific Inputs**:\n  - \"lithium mining permits approved 2023 2024\"\n  - \"rare earth processing facility approvals United States\"\n  - \"critical minerals project environmental impact statement\"\n- **Expected Output**: Case studies of recent approvals/denials, timeline data, success factors\n\n---\n\n## **PATH B: Supply Chain Investment/Initiative Approval**\n*Assumption: User needs decision support for approving a supply chain investment*\n\n### Step 4: Gather Supply Chain Risk Data\n- **Tool**: `web_search`\n- **Specific Inputs**:\n  - \"critical materials supply chain vulnerabilities 2024\"\n  - \"import dependence rare earths lithium cobalt\"\n  - \"supply chain disruption risks critical minerals\"\n- **Expected Output**: Current risk assessment data, dependency metrics, geopolitical factors\n\n### Step 5: Review Investment Criteria\n- **Tool**: `pdf_rag`\n- **Specific Inputs**:\n  - Query: \"investment criteria, funding priorities, strategic objectives\"\n  - Search DOE funding announcements, strategic plans\n- **Expected Output**: Federal investment priorities, evaluation criteria, strategic alignment factors\n\n### Step 6: Analyze Economic Viability Data\n- **Tool**: `excel_handler` (if data files available)\n- **Specific Inputs**: \n  - Cost-benefit analysis templates\n  - Market price data for critical materials\n  - Production cost estimates\n- **Expected Output**: Financial metrics, ROI calculations, economic feasibility assessment\n\n---\n\n## **PATH C: Regulatory/Policy Approval Analysis**\n*Assumption: User seeks analysis of policy approvals or regulatory changes*\n\n### Step 7: Search Recent Policy Actions\n- **Tool**: `web_search`\n- **Specific Inputs**:\n  - \"critical minerals executive order 2024\"\n  - \"Defense Production Act Title III approvals\"\n  - \"DOE critical materials funding approved projects\"\n- **Expected Output**: Recent policy approvals, regulatory changes, funding allocations\n\n### Step 8: Extract Policy Details from Documents\n- **Tool**: `pdf_rag`\n- **Specific Inputs**:\n  - Query: \"approved, enacted, authorized, implemented\"\n  - Focus on recent federal register notices, executive orders\n- **Expected Output**: Specific policy provisions, implementation timelines, affected stakeholders\n\n---\n\n## **PATH D: Technical/Standards Approval**\n*Assumption: User seeks information on technical standards or specifications*\n\n### Step 9: Research Technical Standards\n- **Tool**: `web_search`\n- **Specific Inputs**:\n  - \"critical materials specifications standards approved\"\n  - \"battery materials technical standards\"\n  - \"recycling standards critical minerals\"\n- **Expected Output**: Approved technical standards, certification requirements, quality specifications\n\n---\n\n## **SYNTHESIS PHASE** (After Path Selection)\n\n### Step 10: Compile Findings\n- **Tool**: `code_agent`\n- **Specific Inputs**: \n  - Data collected from previous steps\n  - Create comparative analysis tables\n  - Generate timeline visualizations\n- **Expected Output**: Structured data analysis, charts showing approval timelines/processes\n\n### Step 11: Run Scenario Analysis (if applicable)\n- **Tool**: `simulation`\n- **Specific Inputs**:\n  - Supply chain parameters based on approval scenarios\n  - Timeline variations for different approval pathways\n- **Expected Output**: Impact projections for different approval scenarios\n\n### Step 12: Generate Comprehensive Report\n- **Tool**: `doc_generator`\n- **Specific Inputs**:\n  - All findings from previous steps\n  - Visualizations and data tables\n  - Executive summary with recommendations\n- **Expected Output**: PDF report with approval process analysis, recommendations, and supporting data\n\n---\n\n## **IMMEDIATE NEXT ACTION REQUIRED**\n\n**Before proceeding with any path, I need user clarification on:**\n\n1. **Which interpretation is correct?**\n   - Mining/processing project approvals (Path A)\n   - Investment/initiative approval decision support (Path B)\n   - Policy/regulatory approval analysis (Path C)\n   - Technical standards approval (Path D)\n   - Something else entirely\n\n2. **Specific context:**\n   - What material(s) are involved?\n   - What geographic region?\n   - What timeframe?\n   - What is the decision-making purpose?\n\n**Recommended User Action**: Please provide additional context so I can execute the appropriate analysis path efficiently and deliver relevant results.\n\nWould you like me to proceed with a specific path, or can you provide more details about what needs to be approved/analyzed?",
+  "steps": [
+    {
+      "step_id": "step_0",
+      "tool": "web_search",
+      "description": "Identify Current Approval Frameworks",
+      "inputs": {
+        "queries": [
+          "critical minerals mining approval process United States",
+          "NEPA environmental review mining projects timeline",
+          "permitting requirements rare earth processing facilities"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_1",
+      "tool": "web_search",
+      "description": "Search Relevant Policy Documents",
+      "inputs": {
+        "queries": [
+          "approval process, permitting, environmental review, NEPA"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_2",
+      "tool": "web_search",
+      "description": "Analyze Recent Project Approvals",
+      "inputs": {
+        "queries": [
+          "lithium mining permits approved 2023 2024",
+          "rare earth processing facility approvals United States",
+          "critical minerals project environmental impact statement"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_3",
+      "tool": "web_search",
+      "description": "Gather Supply Chain Risk Data",
+      "inputs": {
+        "queries": [
+          "critical materials supply chain vulnerabilities 2024",
+          "import dependence rare earths lithium cobalt",
+          "supply chain disruption risks critical minerals"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_4",
+      "tool": "web_search",
+      "description": "Review Investment Criteria",
+      "inputs": {
+        "queries": [
+          "investment criteria, funding priorities, strategic objectives"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_5",
+      "tool": "excel_handler",
+      "description": "Analyze Economic Viability Data",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_6",
+      "tool": "web_search",
+      "description": "Search Recent Policy Actions",
+      "inputs": {
+        "queries": [
+          "critical minerals executive order 2024",
+          "Defense Production Act Title III approvals",
+          "DOE critical materials funding approved projects"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_7",
+      "tool": "web_search",
+      "description": "Extract Policy Details from Documents",
+      "inputs": {
+        "queries": [
+          "approved, enacted, authorized, implemented"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_8",
+      "tool": "web_search",
+      "description": "Research Technical Standards",
+      "inputs": {
+        "queries": [
+          "critical materials specifications standards approved",
+          "battery materials technical standards",
+          "recycling standards critical minerals"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_9",
+      "tool": "web_search",
+      "description": "Compile Findings",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_10",
+      "tool": "simulation",
+      "description": "Run Scenario Analysis (if applicable)",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_11",
+      "tool": "web_search",
+      "description": "Generate Comprehensive Report",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    }
+  ],
+  "estimated_tools": [
+    "simulation",
+    "excel_handler",
+    "web_search"
+  ]
+}

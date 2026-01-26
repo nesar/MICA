@@ -1,0 +1,211 @@
+{
+  "reasoning": "# Analysis Plan for Query \"approve\"\n\n## Strategic Approach\n\nGiven the ambiguous nature of the query, I will create a **general-purpose approval framework analysis plan** that covers the most common critical materials approval scenarios. This plan can be adapted once more context is provided.\n\n---\n\n## PHASE 1: Context Discovery & Framework Establishment\n\n### Step 1: Search for Recent DOE Approval Processes\n**Tool:** `web_search`\n\n**Inputs:**\n- Query: \"DOE critical materials approval process 2024\"\n- Query: \"Department of Energy project approval framework critical minerals\"\n- Query: \"DOE funding approval criteria rare earth elements battery materials\"\n\n**Expected Output:**\n- Current DOE approval frameworks and criteria\n- Recent approval decisions for reference\n- Standard approval requirements and timelines\n\n### Step 2: Identify Common Approval Categories\n**Tool:** `web_search`\n\n**Inputs:**\n- Query: \"DOE critical materials project approval types mining processing\"\n- Query: \"federal approval requirements critical mineral supply chain investments\"\n- Query: \"NEPA environmental approval critical materials facilities\"\n\n**Expected Output:**\n- Classification of approval types (regulatory, funding, environmental, strategic)\n- Typical approval pathways for different project types\n- Stakeholder requirements for each category\n\n---\n\n## PHASE 2: Multi-Scenario Approval Framework Analysis\n\n### Step 3: Mining/Production Project Approval Framework\n**Tool:** `web_search`\n\n**Inputs:**\n- Query: \"critical minerals mining project approval process federal requirements\"\n- Query: \"DOE loan program office critical materials approval criteria\"\n- Query: \"permitting timeline critical mineral extraction United States\"\n\n**Expected Output:**\n- Regulatory approval requirements (federal, state, local)\n- Environmental review processes\n- Financial approval criteria\n- Timeline expectations\n\n### Step 4: R&D and Technology Approval Framework\n**Tool:** `web_search`\n\n**Inputs:**\n- Query: \"DOE research funding approval critical materials technology\"\n- Query: \"ARPA-E approval process energy critical materials\"\n- Query: \"DOE grant approval criteria rare earth processing innovation\"\n\n**Expected Output:**\n- R&D funding approval criteria\n- Technical merit evaluation standards\n- Commercialization pathway requirements\n\n### Step 5: Supply Chain Investment Approval Framework\n**Tool:** `web_search`\n\n**Inputs:**\n- Query: \"Defense Production Act Title III critical materials approval\"\n- Query: \"DOE supply chain resilience funding approval requirements\"\n- Query: \"Infrastructure Investment and Jobs Act critical minerals approval\"\n\n**Expected Output:**\n- Strategic investment approval criteria\n- National security considerations\n- Economic impact requirements\n\n### Step 6: Policy/Regulatory Approval Framework\n**Tool:** `web_search`\n\n**Inputs:**\n- Query: \"critical materials policy approval process federal agencies\"\n- Query: \"interagency approval critical mineral strategy implementation\"\n- Query: \"OMB approval process critical materials regulations\"\n\n**Expected Output:**\n- Policy development and approval workflows\n- Interagency coordination requirements\n- Public comment and review processes\n\n---\n\n## PHASE 3: Decision Support Analysis\n\n### Step 7: Risk Assessment Framework\n**Tool:** `pdf_rag`\n\n**Inputs:**\n- Search DOE documents for: \"risk assessment criteria approval\"\n- Search for: \"due diligence requirements critical materials projects\"\n- Search for: \"environmental social governance ESG approval standards\"\n\n**Expected Output:**\n- Standard risk assessment criteria\n- Red flags and disqualifying factors\n- Mitigation requirements\n\n### Step 8: Financial and Economic Analysis Requirements\n**Tool:** `web_search`\n\n**Inputs:**\n- Query: \"cost-benefit analysis requirements DOE project approval\"\n- Query: \"economic impact assessment critical materials federal funding\"\n- Query: \"financial viability criteria critical mineral projects\"\n\n**Expected Output:**\n- Required financial documentation\n- Economic analysis methodologies\n- Performance metrics and benchmarks\n\n### Step 9: Technical Feasibility Standards\n**Tool:** `pdf_rag`\n\n**Inputs:**\n- Search for: \"technical readiness level TRL approval requirements\"\n- Search for: \"feasibility study standards critical materials\"\n- Search for: \"technology validation requirements DOE\"\n\n**Expected Output:**\n- Technical maturity requirements\n- Validation and demonstration standards\n- Scale-up considerations\n\n---\n\n## PHASE 4: Comparative Analysis\n\n### Step 10: Benchmark Against Recent Approvals\n**Tool:** `web_search`\n\n**Inputs:**\n- Query: \"DOE critical materials projects approved 2023 2024\"\n- Query: \"Defense Production Act Title III awards critical minerals\"\n- Query: \"DOE loan guarantees critical materials battery supply chain\"\n\n**Expected Output:**\n- Case studies of recently approved projects\n- Success factors and approval criteria met\n- Funding levels and project characteristics\n\n### Step 11: Analyze Rejection Patterns\n**Tool:** `web_search`\n\n**Inputs:**\n- Query: \"DOE project denial reasons critical materials\"\n- Query: \"failed critical mineral project approvals lessons learned\"\n- Query: \"environmental review rejection mining projects\"\n\n**Expected Output:**\n- Common reasons for denial\n- Gaps in unsuccessful applications\n- Areas requiring additional attention\n\n---\n\n## PHASE 5: Approval Checklist Development\n\n### Step 12: Create Comprehensive Approval Checklist\n**Tool:** `excel_handler`\n\n**Inputs:**\n- Data from Steps 1-11\n- Approval criteria across all categories\n- Required documentation lists\n\n**Expected Output:**\n- Excel spreadsheet with approval checklist organized by:\n  - Project type\n  - Approval stage\n  - Required documentation\n  - Review timeline\n  - Responsible agencies\n  - Decision criteria\n\n### Step 13: Develop Decision Matrix\n**Tool:** `code_agent`\n\n**Inputs:**\n- Approval criteria from research\n- Weighting factors for different criteria\n- Scoring methodology\n\n**Expected Output:**\n- Python-based decision matrix tool\n- Visualization of approval criteria weights\n- Scoring template for evaluation\n\n---\n\n## PHASE 6: Documentation and Reporting\n\n### Step 14: Generate Approval Framework Report\n**Tool:** `doc_generator`\n\n**Inputs:**\n- All research findings from Steps 1-13\n- Approval frameworks for each scenario\n- Decision support tools and checklists\n\n**Expected Output:**\n- Comprehensive PDF report including:\n  - Executive summary of approval pathways\n  - Detailed frameworks for each approval type\n  - Decision criteria and evaluation methods\n  - Checklists and templates\n  - Case studies and benchmarks\n  - Recommendations for specific scenarios\n\n---\n\n## CONTINGENCY STEPS (If Context Becomes Available)\n\n### Step 15: Focused Deep-Dive Analysis\n**Tool:** Depends on specific context\n\n**Trigger:** User provides specific approval scenario\n\n**Actions:**\n- Execute targeted search on specific project/policy\n- Conduct detailed risk assessment for specific materials\n- Run supply chain simulation if relevant\n- Perform financial modeling for specific investment\n\n**Expected Output:**\n- Tailored approval recommendation\n- Specific risk mitigation strategies\n- Detailed implementation timeline\n\n---\n\n## DELIVERABLES SUMMARY\n\nUpon completion of this plan, the following will be available:\n\n1. **Comprehensive Approval Framework Guide** - covering all major critical materials approval scenarios\n2. **Decision Support Checklist** - Excel-based tool for evaluating approval readiness\n3. **Risk Assessment Matrix** - for identifying and mitigating approval obstacles\n4. **Benchmark Database** - recent approvals and denials for comparison\n5. **Final Report** - PDF document synthesizing all findings with actionable recommendations\n\n---\n\n## PLAN ADAPTATION NOTE\n\nThis plan is designed to be **flexible and comprehensive**. Once the user provides specific context about what needs approval, I can:\n\n- **Pivot immediately** to the relevant section (Steps 3-6)\n- **Execute focused analysis** using Step 15\n- **Accelerate timeline** by skipping irrelevant scenarios\n- **Provide immediate preliminary assessment** while conducting deeper analysis\n\n**Estimated Execution Time:** \n- Full plan: 45-60 minutes\n- Focused scenario (with context): 15-20 minutes\n\n**Ready to execute upon confirmation or context clarification.**",
+  "steps": [
+    {
+      "step_id": "step_0",
+      "tool": "web_search",
+      "description": "Search for Recent DOE Approval Processes",
+      "inputs": {
+        "queries": [
+          "DOE critical materials approval process 2024",
+          "Department of Energy project approval framework critical minerals",
+          "DOE funding approval criteria rare earth elements battery materials"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_1",
+      "tool": "web_search",
+      "description": "Identify Common Approval Categories",
+      "inputs": {
+        "queries": [
+          "DOE critical materials project approval types mining processing",
+          "federal approval requirements critical mineral supply chain investments",
+          "NEPA environmental approval critical materials facilities"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_2",
+      "tool": "web_search",
+      "description": "Mining/Production Project Approval Framework",
+      "inputs": {
+        "queries": [
+          "critical minerals mining project approval process federal requirements",
+          "DOE loan program office critical materials approval criteria",
+          "permitting timeline critical mineral extraction United States"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_3",
+      "tool": "web_search",
+      "description": "R&D and Technology Approval Framework",
+      "inputs": {
+        "queries": [
+          "DOE research funding approval critical materials technology",
+          "ARPA-E approval process energy critical materials",
+          "DOE grant approval criteria rare earth processing innovation"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_4",
+      "tool": "web_search",
+      "description": "Supply Chain Investment Approval Framework",
+      "inputs": {
+        "queries": [
+          "Defense Production Act Title III critical materials approval",
+          "DOE supply chain resilience funding approval requirements",
+          "Infrastructure Investment and Jobs Act critical minerals approval"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_5",
+      "tool": "web_search",
+      "description": "Policy/Regulatory Approval Framework",
+      "inputs": {
+        "queries": [
+          "critical materials policy approval process federal agencies",
+          "interagency approval critical mineral strategy implementation",
+          "OMB approval process critical materials regulations"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_6",
+      "tool": "web_search",
+      "description": "Risk Assessment Framework",
+      "inputs": {
+        "queries": [
+          "risk assessment criteria approval",
+          "due diligence requirements critical materials projects",
+          "environmental social governance ESG approval standards"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_7",
+      "tool": "web_search",
+      "description": "Financial and Economic Analysis Requirements",
+      "inputs": {
+        "queries": [
+          "cost-benefit analysis requirements DOE project approval",
+          "economic impact assessment critical materials federal funding",
+          "financial viability criteria critical mineral projects"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_8",
+      "tool": "web_search",
+      "description": "Technical Feasibility Standards",
+      "inputs": {
+        "queries": [
+          "technical readiness level TRL approval requirements",
+          "feasibility study standards critical materials",
+          "technology validation requirements DOE"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_9",
+      "tool": "web_search",
+      "description": "Benchmark Against Recent Approvals",
+      "inputs": {
+        "queries": [
+          "DOE critical materials projects approved 2023 2024",
+          "Defense Production Act Title III awards critical minerals",
+          "DOE loan guarantees critical materials battery supply chain"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_10",
+      "tool": "web_search",
+      "description": "Analyze Rejection Patterns",
+      "inputs": {
+        "queries": [
+          "DOE project denial reasons critical materials",
+          "failed critical mineral project approvals lessons learned",
+          "environmental review rejection mining projects"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_11",
+      "tool": "excel_handler",
+      "description": "Create Comprehensive Approval Checklist",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_12",
+      "tool": "web_search",
+      "description": "Develop Decision Matrix",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_13",
+      "tool": "web_search",
+      "description": "Generate Approval Framework Report",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_14",
+      "tool": "orchestrator",
+      "description": "Focused Deep-Dive Analysis",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    }
+  ],
+  "estimated_tools": [
+    "orchestrator",
+    "excel_handler",
+    "web_search"
+  ]
+}

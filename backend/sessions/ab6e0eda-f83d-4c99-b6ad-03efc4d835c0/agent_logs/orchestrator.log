@@ -1,0 +1,5 @@
+[2026-01-26T07:17:34.530464] INFO: Agent orchestrator started
+[2026-01-26T07:17:34.530558] INFO: Preliminary research completed
+[2026-01-26T07:17:34.530626] DEBUG: Output: {"summary": "# Initial Assessment of Query\n\n## Query Analysis\nThe user has sent a simple greeting: \"hello\"\n\n## Understanding\n\nThis is an introductory message with no specific information request about critical materials or supply chains. The user appears to be:\n- Initiating contact with MICA\n- Testing the system\n- Potentially preparing to ask a substantive question\n\n## No Immediate Research Required\n\nSince this is a greeting rather than a substantive query, no specific data sourc
+[2026-01-26T07:17:34.530646] INFO: Agent orchestrator completed
+[2026-01-26T07:17:34.530705] INFO: Duration: 0.00s

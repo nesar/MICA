@@ -1,0 +1,245 @@
+{
+  "reasoning": "# Detailed Analysis Plan\n\n## Phase 1: Establish Baseline Definitions and Criteria\n\n### Step 1: Identify Official US Critical Minerals List\n**Tool:** web_search\n**Inputs:** \n- \"US Geological Survey critical minerals list 2024\"\n- \"Department of Interior critical minerals final list\"\n- \"Executive Order 13817 critical minerals\"\n**Expected Output:** \n- Official list of US-designated critical minerals (should be 50 materials as of 2022)\n- Definitions and strategic importance criteria\n- Confirmation of which materials qualify as \"critical\"\n\n### Step 2: Determine US Domestic Production Baseline\n**Tool:** web_search\n**Inputs:**\n- \"USGS Mineral Commodity Summaries 2024 rare earth elements\"\n- \"USGS Mineral Commodity Summaries 2024 graphite\"\n- \"USGS Mineral Commodity Summaries 2024 fluorspar\"\n- \"US domestic production critical minerals mainland Alaska 2023\"\n- \"Mountain Pass rare earth production California\"\n**Expected Output:**\n- Current production volumes for candidate materials in US (mainland + Alaska)\n- Import dependency percentages for each material\n- Identification of materials with zero domestic production\n\n### Step 3: Map Greenland's Known Critical Mineral Deposits\n**Tool:** web_search\n**Inputs:**\n- \"Greenland mineral resources rare earth elements deposits\"\n- \"Kvanefjeld Kuannersuit project resource estimate\"\n- \"Greenland graphite deposits Amitsoq Graphite Storm\"\n- \"Tanbreez rare earth project Greenland\"\n- \"Greenland Government mineral license database\"\n**Expected Output:**\n- Confirmed list of major mineral deposits in Greenland\n- Resource estimates (tonnage and grade) for each deposit\n- Geographic distribution of deposits\n\n## Phase 2: Comparative Analysis - Greenland vs US/Alaska\n\n### Step 4: Cross-Reference Material Availability\n**Tool:** code_agent\n**Inputs:**\n- US critical minerals list (from Step 1)\n- US production data (from Step 2)\n- Greenland deposits data (from Step 3)\n**Expected Output:**\n- Matrix comparing each critical material:\n  - Present in Greenland? (Yes/No + deposit size)\n  - Produced in US mainland? (Yes/No + volume)\n  - Produced in Alaska? (Yes/No + volume)\n- Filtered list of materials meeting \"not available in US/Alaska\" criteria\n\n### Step 5: Verify Alaska-Specific Mineral Resources\n**Tool:** web_search\n**Inputs:**\n- \"Alaska critical minerals production graphite\"\n- \"Alaska rare earth elements deposits Bokan Mountain\"\n- \"Alaska uranium deposits production\"\n- \"Alaska fluorspar production\"\n- \"USGS Alaska mineral resources assessment\"\n**Expected Output:**\n- Confirmation of which materials are/aren't produced or present in Alaska\n- Distinction between deposits (geological presence) vs. production (economic extraction)\n- Identification of materials truly absent from both mainland US and Alaska\n\n### Step 6: Determine Top 3 Materials Based on Strategic Importance\n**Tool:** web_search\n**Inputs:**\n- \"US import reliance critical minerals China\"\n- \"supply chain vulnerabilities rare earth elements\"\n- \"critical minerals national security priority\"\n- \"Department of Energy critical materials strategy\"\n**Expected Output:**\n- Strategic importance ranking factors (national security, economic impact, supply chain risk)\n- Import dependency data and primary source countries\n- Final selection criteria for \"top 3\" designation\n\n## Phase 3: Five-Year Historical Analysis (2019-2024)\n\n### Step 7: Greenland Mining Policy and Regulatory Timeline\n**Tool:** web_search\n**Inputs:**\n- \"Greenland uranium mining ban 2021\"\n- \"Greenland election 2021 mining policy Inuit Ataqatigiit\"\n- \"Kvanefjeld project approval status 2019 2020 2021 2022 2023 2024\"\n- \"Greenland Parliament Inatsisartut mining decisions\"\n- \"Greenland zero tolerance uranium policy\"\n**Expected Output:**\n- Chronological timeline of major policy changes (2019-2024)\n- Key regulatory decisions affecting critical minerals projects\n- Political context (elections, government changes, policy shifts)\n\n### Step 8: Major Project Developments - Material #1\n**Tool:** web_search\n**Inputs:**\n- \"Kvanefjeld rare earth project timeline 2019-2024\"\n- \"Greenland Minerals Energy Transition Minerals project status\"\n- \"Tanbreez rare earth project development 2019-2024\"\n- \"rare earth elements Greenland exploration licenses\"\n**Expected Output:**\n- Project-specific timeline for rare earth developments\n- Milestones: exploration results, feasibility studies, license applications, approvals/rejections\n- Current status as of 2024\n\n### Step 9: Major Project Developments - Material #2\n**Tool:** web_search\n**Inputs:**\n- \"Amitsoq graphite project Greenland 2019-2024\"\n- \"Graphite Storm project Greenland status\"\n- \"Greenland graphite exploration production timeline\"\n- \"battery-grade graphite Greenland deposits\"\n**Expected Output:**\n- Project-specific timeline for graphite developments\n- Technical specifications (grade, purity, suitability for batteries)\n- Development stage and production timeline\n\n### Step 10: Major Project Developments - Material #3\n**Tool:** web_search\n**Inputs:**\n- Based on results from Step 6, search for third material (likely fluorspar, uranium, or specific heavy REEs)\n- \"Greenland [material] project 2019-2024\"\n- \"Greenland [material] exploration license production\"\n**Expected Output:**\n- Project-specific timeline for third material\n- Development milestones and current status\n\n### Step 11: Geopolitical Context and International Interest\n**Tool:** web_search\n**Inputs:**\n- \"Trump Greenland purchase 2019 critical minerals\"\n- \"US Greenland critical minerals MOU agreement\"\n- \"China Greenland mining investments\"\n- \"US-Denmark-Greenland cooperation minerals 2020-2024\"\n- \"Greenland rare earth strategic importance\"\n**Expected Output:**\n- Timeline of international political developments\n- US government interest and engagement (2019-2024)\n- Competing international interests (China, EU, others)\n- Bilateral agreements and diplomatic initiatives\n\n### Step 12: Market and Economic Developments\n**Tool:** web_search\n**Inputs:**\n- \"rare earth elements prices 2019-2024\"\n- \"graphite prices battery demand 2019-2024\"\n- \"critical minerals market dynamics supply chain\"\n- \"Greenland mining investment 2019-2024\"\n**Expected Output:**\n- Price trends for each of the top 3 materials\n- Market drivers (EV demand, renewable energy, defense applications)\n- Investment flows into Greenland mineral sector\n\n## Phase 4: Synthesis and Validation\n\n### Step 13: Compile Comprehensive Timeline\n**Tool:** code_agent\n**Inputs:**\n- All timeline data from Steps 7-12\n- Key dates, events, and milestones\n**Expected Output:**\n- Integrated chronological timeline (2019-2024) showing:\n  - Regulatory/policy events\n  - Project milestones for each material\n  - Geopolitical developments\n  - Market/economic events\n- Visual timeline chart/graph\n\n### Step 14: Create Comparative Data Tables\n**Tool:** code_agent\n**Inputs:**\n- Material availability data (Steps 2, 3, 4, 5)\n- Resource estimates and production data\n- Import dependency statistics\n**Expected Output:**\n- Table 1: Top 3 Materials - Greenland vs US/Alaska Comparison\n  - Columns: Material, Greenland Deposits (size/grade), US Production, Alaska Production, Import Dependency %\n- Table 2: Strategic Importance Metrics\n  - Columns: Material, Primary Uses, Supply Risk, Economic Impact, National Security Priority\n\n### Step 15: Validate Findings Against Latest Sources\n**Tool:** web_search\n**Inputs:**\n- \"Greenland critical minerals 2024 latest news\"\n- \"USGS Mineral Commodity Summaries 2024\"\n- \"Greenland mining projects status November 2024\"\n**Expected Output:**\n- Confirmation that analysis reflects most current information\n- Any breaking developments or recent changes\n- Validation of top 3 selection\n\n## Phase 5: Report Generation\n\n### Step 16: Structure Final Response\n**Tool:** doc_generator\n**Inputs:**\n- Top 3 materials identification with justification (from Steps 4-6)\n- Five-year historical narrative for each material (from Steps 7-12)\n- Timeline visualization (from Step 13)\n- Comparative tables (from Step 14)\n**Expected Output:**\n- Structured report with sections:\n  1. Executive Summary: Top 3 Materials Identified\n  2. Material #1 Profile and 5-Year History\n  3. Material #2 Profile and 5-Year History\n  4. Material #3 Profile and 5-Year History\n  5. Comparative Analysis Tables\n  6. Integrated Timeline (2019-2024)\n  7. Current Status and Outlook\n\n---\n\n## Execution Priority and Dependencies\n\n**Critical Path (Must Execute):**\n- Steps 1-6: Identification of top 3 materials\n- Steps 7-10: Historical timelines for each material\n- Step 16: Final report structure\n\n**Supporting Analysis (High Value):**\n- Steps 11-12: Geopolitical and economic context\n- Steps 13-14: Visualizations and tables\n\n**Validation (Quality Assurance):**\n- Step 15: Currency check\n\n**Estimated Total Execution Time:** 25-35 minutes for comprehensive analysis\n\n**Key Decision Point:** After Step 6, confirm the top 3 materials before proceeding with detailed historical analysis for each.",
+  "steps": [
+    {
+      "step_id": "step_0",
+      "tool": "web_search",
+      "description": "Identify Official US Critical Minerals List",
+      "inputs": {
+        "queries": [
+          "US Geological Survey critical minerals list 2024",
+          "Department of Interior critical minerals final list",
+          "Executive Order 13817 critical minerals",
+          "critical"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_1",
+      "tool": "web_search",
+      "description": "Determine US Domestic Production Baseline",
+      "inputs": {
+        "queries": [
+          "USGS Mineral Commodity Summaries 2024 rare earth elements",
+          "USGS Mineral Commodity Summaries 2024 graphite",
+          "USGS Mineral Commodity Summaries 2024 fluorspar",
+          "US domestic production critical minerals mainland Alaska 2023",
+          "Mountain Pass rare earth production California"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_2",
+      "tool": "web_search",
+      "description": "Map Greenland's Known Critical Mineral Deposits",
+      "inputs": {
+        "queries": [
+          "Greenland mineral resources rare earth elements deposits",
+          "Kvanefjeld Kuannersuit project resource estimate",
+          "Greenland graphite deposits Amitsoq Graphite Storm",
+          "Tanbreez rare earth project Greenland",
+          "Greenland Government mineral license database"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_3",
+      "tool": "code_agent",
+      "description": "Cross-Reference Material Availability",
+      "inputs": {
+        "queries": [
+          "not available in US/Alaska"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_4",
+      "tool": "web_search",
+      "description": "Verify Alaska-Specific Mineral Resources",
+      "inputs": {
+        "queries": [
+          "Alaska critical minerals production graphite",
+          "Alaska rare earth elements deposits Bokan Mountain",
+          "Alaska uranium deposits production",
+          "Alaska fluorspar production",
+          "USGS Alaska mineral resources assessment"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_5",
+      "tool": "web_search",
+      "description": "Determine Top 3 Materials Based on Strategic Importance",
+      "inputs": {
+        "queries": [
+          "US import reliance critical minerals China",
+          "supply chain vulnerabilities rare earth elements",
+          "critical minerals national security priority",
+          "Department of Energy critical materials strategy",
+          "top 3"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_6",
+      "tool": "web_search",
+      "description": "Greenland Mining Policy and Regulatory Timeline",
+      "inputs": {
+        "queries": [
+          "Greenland uranium mining ban 2021",
+          "Greenland election 2021 mining policy Inuit Ataqatigiit",
+          "Kvanefjeld project approval status 2019 2020 2021 2022 2023 2024",
+          "Greenland Parliament Inatsisartut mining decisions",
+          "Greenland zero tolerance uranium policy"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_7",
+      "tool": "web_search",
+      "description": "Major Project Developments - Material #1",
+      "inputs": {
+        "queries": [
+          "Kvanefjeld rare earth project timeline 2019-2024",
+          "Greenland Minerals Energy Transition Minerals project status",
+          "Tanbreez rare earth project development 2019-2024",
+          "rare earth elements Greenland exploration licenses"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_8",
+      "tool": "web_search",
+      "description": "Major Project Developments - Material #2",
+      "inputs": {
+        "queries": [
+          "Amitsoq graphite project Greenland 2019-2024",
+          "Graphite Storm project Greenland status",
+          "Greenland graphite exploration production timeline",
+          "battery-grade graphite Greenland deposits"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_9",
+      "tool": "web_search",
+      "description": "Major Project Developments - Material #3",
+      "inputs": {
+        "queries": [
+          "Greenland [material] project 2019-2024",
+          "Greenland [material] exploration license production"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_10",
+      "tool": "web_search",
+      "description": "Geopolitical Context and International Interest",
+      "inputs": {
+        "queries": [
+          "Trump Greenland purchase 2019 critical minerals",
+          "US Greenland critical minerals MOU agreement",
+          "China Greenland mining investments",
+          "US-Denmark-Greenland cooperation minerals 2020-2024",
+          "Greenland rare earth strategic importance"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_11",
+      "tool": "web_search",
+      "description": "Market and Economic Developments",
+      "inputs": {
+        "queries": [
+          "rare earth elements prices 2019-2024",
+          "graphite prices battery demand 2019-2024",
+          "critical minerals market dynamics supply chain",
+          "Greenland mining investment 2019-2024"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_12",
+      "tool": "code_agent",
+      "description": "Compile Comprehensive Timeline",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_13",
+      "tool": "code_agent",
+      "description": "Create Comparative Data Tables",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_14",
+      "tool": "web_search",
+      "description": "Validate Findings Against Latest Sources",
+      "inputs": {
+        "queries": [
+          "Greenland critical minerals 2024 latest news",
+          "USGS Mineral Commodity Summaries 2024",
+          "Greenland mining projects status November 2024"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_15",
+      "tool": "doc_generator",
+      "description": "Structure Final Response",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    }
+  ],
+  "estimated_tools": [
+    "code_agent",
+    "doc_generator",
+    "web_search"
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "reasoning": "# Detailed Analysis Plan for Query: \"approve\"\n\n## Current Situation Assessment\n\nGiven the extreme ambiguity of the single-word query \"approve\" with no context, preliminary research, or user clarifications, I cannot create a meaningful critical materials analysis plan. This query does not contain sufficient information to engage any of the available analytical tools appropriately.\n\n## Critical Issues Preventing Analysis Plan Development\n\n1. **No Subject Matter Identified**: No critical material, supply chain, policy, or decision is referenced\n2. **No Analytical Objective**: Unknown what requires approval or what analysis would support such approval\n3. **No Scope Definition**: No geographic, temporal, or sectoral boundaries\n4. **No Data Direction**: Cannot determine which tools or datasets would be relevant\n\n## Conditional Analysis Plan (Requires User Input First)\n\n**STEP 0: MANDATORY PREREQUISITE - User Clarification Required**\n\nBefore any analysis can proceed, I need the user to provide:\n\n- **What** needs to be approved (policy, procurement, project, regulation, etc.)\n- **Which critical material(s)** are involved\n- **What analysis** would support the approval decision\n- **What timeframe** is relevant\n- **What stakeholders** are involved\n\n---\n\n## Placeholder Framework (Cannot Execute Without Context)\n\n**IF** the user were to clarify their request, a typical analysis plan might follow this structure:\n\n### **Step 1: Context Gathering**\n- **Tool**: web_search\n- **Input**: [UNDEFINED - awaiting user clarification on topic]\n- **Output**: [CANNOT SPECIFY]\n\n### **Step 2: Data Collection**\n- **Tool**: [CANNOT DETERMINE without knowing subject]\n- **Input**: [UNDEFINED]\n- **Output**: [CANNOT SPECIFY]\n\n### **Step 3: Analysis**\n- **Tool**: [CANNOT DETERMINE]\n- **Input**: [UNDEFINED]\n- **Output**: [CANNOT SPECIFY]\n\n### **Step 4: Report Generation**\n- **Tool**: doc_generator\n- **Input**: [UNDEFINED]\n- **Output**: [CANNOT SPECIFY]\n\n---\n\n## Required Action\n\n**\u26a0\ufe0f ANALYSIS PLAN CANNOT BE CREATED \u26a0\ufe0f**\n\n**I need the user to provide a complete query with sufficient context before I can develop an actionable analysis plan.**\n\n**Suggested user responses might include:**\n- \"Approve domestic lithium mining project in Nevada\"\n- \"Approve rare earth element import diversification strategy\"\n- \"Approve critical minerals stockpile release\"\n- \"Approve semiconductor supply chain resilience funding\"\n\n**Please provide clarification to proceed with analysis.**",
+  "steps": [
+    {
+      "step_id": "step_0",
+      "tool": "orchestrator",
+      "description": "**No Subject Matter Identified**: No critical material, supply chain, policy, or decision is referenced",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_1",
+      "tool": "orchestrator",
+      "description": "**No Analytical Objective**: Unknown what requires approval or what analysis would support such approval",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_2",
+      "tool": "code_agent",
+      "description": "**No Scope Definition**: No geographic, temporal, or sectoral boundaries",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_3",
+      "tool": "orchestrator",
+      "description": "**No Data Direction**: Cannot determine which tools or datasets would be relevant",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    }
+  ],
+  "estimated_tools": [
+    "code_agent",
+    "orchestrator"
+  ]
+}

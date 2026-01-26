@@ -1,0 +1,1173 @@
+{
+  "reasoning": "# Detailed Analysis Plan: Rare Earth Magnet Supply Chain Risks for EVs\n\n## Step 1: Establish Baseline Supply Chain Structure\n**Tool:** web_search\n**Inputs:** \n- \"USGS rare earth elements production statistics 2023\"\n- \"neodymium praseodymium global production by country\"\n- \"rare earth magnet manufacturing capacity by region\"\n**Expected Output:** Current production volumes, country-level market shares, and capacity data for each supply chain stage (mining \u2192 separation \u2192 metal production \u2192 magnet manufacturing)\n\n## Step 2: Quantify Chinese Dominance Across Value Chain\n**Tool:** web_search\n**Inputs:**\n- \"China rare earth processing capacity percentage global\"\n- \"NdFeB magnet production China market share\"\n- \"rare earth separation technology China monopoly\"\n**Expected Output:** Specific percentages of Chinese control at each stage, identification of processing technology barriers, export quota/restriction policies\n\n## Step 3: Map Current EV Motor Technology Landscape\n**Tool:** web_search\n**Inputs:**\n- \"permanent magnet synchronous motor EV adoption rate\"\n- \"Tesla induction motor vs permanent magnet\"\n- \"EV traction motor technology comparison 2024\"\n**Expected Output:** Breakdown of motor types used in EVs (PMSM vs. induction vs. wound rotor), which manufacturers use REPMs, material intensity per vehicle\n\n## Step 4: Project Rare Earth Demand from EV Growth\n**Tool:** web_search\n**Inputs:**\n- \"IEA Global EV Outlook 2024 projections\"\n- \"rare earth demand forecast electric vehicles 2030\"\n- \"neodymium demand growth electric motors wind turbines\"\n**Expected Output:** EV sales projections through 2030-2035, kg of REEs per EV motor, competing demand sectors (wind, consumer electronics)\n\n## Step 5: Analyze Supply-Demand Balance and Gap Analysis\n**Tool:** code_agent\n**Inputs:** \n- Data from Steps 1 and 4 (current production capacity, projected demand)\n- Historical price data for Nd, Pr, Dy, Tb\n**Expected Output:** \n- Time-series visualization of supply vs. demand (2024-2035)\n- Identification of deficit years and magnitude\n- Price volatility analysis and correlation with supply disruptions\n\n## Step 6: Identify Geographic and Geopolitical Chokepoints\n**Tool:** web_search\n**Inputs:**\n- \"Bayan Obo mine rare earth production percentage\"\n- \"Mountain Pass rare earth mine capacity\"\n- \"Lynas rare earth processing Malaysia Australia\"\n- \"China rare earth export restrictions 2010 2023\"\n**Expected Output:** List of critical single-point facilities, historical export restriction events, alternative production projects in development\n\n## Step 7: Assess Heavy REE Criticality (Dy, Tb)\n**Tool:** web_search\n**Inputs:**\n- \"dysprosium terbium supply deficit\"\n- \"heavy rare earth elements ion-adsorption deposits\"\n- \"dysprosium-free permanent magnets research\"\n**Expected Output:** Heavy vs. light REE supply constraints, geographic concentration of heavy REE deposits (Southern China, Myanmar), technical requirements for high-performance motors\n\n## Step 8: Evaluate Alternative Sources and Diversification Efforts\n**Tool:** web_search\n**Inputs:**\n- \"MP Materials rare earth production capacity expansion\"\n- \"Australian rare earth projects Lynas Arafura\"\n- \"DOE rare earth processing facility funding\"\n- \"Vietnam rare earth reserves development\"\n**Expected Output:** Pipeline of non-Chinese projects, timeline to production, capacity targets, processing capability gaps\n\n## Step 9: Analyze Substitution and Technology Alternatives\n**Tool:** web_search\n**Inputs:**\n- \"rare earth-free electric motor technologies\"\n- \"ferrite magnets electric vehicles limitations\"\n- \"switched reluctance motor EV applications\"\n- \"NdFeB magnet dysprosium reduction research\"\n**Expected Output:** Technical feasibility of alternatives, performance trade-offs, commercial readiness levels, manufacturers pursuing magnet-free designs\n\n## Step 10: Assess Recycling Potential and Circular Economy\n**Tool:** web_search\n**Inputs:**\n- \"rare earth magnet recycling technology\"\n- \"end-of-life EV motor recycling rates\"\n- \"urban mining rare earth elements economics\"\n**Expected Output:** Current recycling rates, technical/economic barriers, projected secondary supply by 2030-2040, policy initiatives\n\n## Step 11: Review Recent Policy Responses and Strategic Initiatives\n**Tool:** web_search\n**Inputs:**\n- \"US critical minerals strategy rare earths\"\n- \"European Raw Materials Act rare earth elements\"\n- \"Japan rare earth stockpiling policy\"\n- \"Defense Production Act rare earth magnets\"\n**Expected Output:** Government programs, stockpiling initiatives, domestic capacity incentives, international partnerships (Minerals Security Partnership)\n\n## Step 12: Identify Recent Supply Chain Disruptions and Case Studies\n**Tool:** web_search\n**Inputs:**\n- \"China rare earth export controls 2023 gallium germanium\"\n- \"Myanmar rare earth supply disruption\"\n- \"COVID-19 impact rare earth magnet supply\"\n**Expected Output:** Historical disruption events, impact on prices and availability, industry response patterns\n\n## Step 13: Synthesize Risk Matrix\n**Tool:** code_agent\n**Inputs:** All data from previous steps\n**Expected Output:** \n- Risk categorization framework (likelihood \u00d7 impact)\n- Visualization: Heat map of risks across supply chain stages\n- Quantified risk scores for: geographic concentration, demand surge, geopolitical disruption, technical constraints, price volatility\n\n## Step 14: Develop Scenario Analysis\n**Tool:** code_agent\n**Inputs:** Supply-demand data, alternative source timelines, policy scenarios\n**Expected Output:**\n- Scenario 1: Business as usual (continued Chinese dominance)\n- Scenario 2: Moderate diversification (Western projects come online)\n- Scenario 3: Supply disruption (export restrictions/conflict)\n- Scenario 4: Technology shift (widespread adoption of magnet-free motors)\n- Quantified outcomes for each scenario (price impacts, supply security metrics)\n\n## Step 15: Compile Mitigation Strategy Assessment\n**Tool:** web_search + synthesis\n**Inputs:**\n- \"rare earth supply chain resilience strategies\"\n- \"strategic partnerships rare earth processing\"\n**Expected Output:** Evaluation matrix of mitigation options:\n- Domestic capacity building (timeline, cost, feasibility)\n- Diversification of suppliers (risk reduction potential)\n- Stockpiling (coverage duration, cost)\n- Technology substitution (R&D investment needed)\n- Recycling infrastructure (ROI timeline)\n\n## Step 16: Create Executive Summary Visualizations\n**Tool:** code_agent\n**Inputs:** All synthesized data\n**Expected Output:**\n- Supply chain flow diagram with concentration metrics\n- Timeline chart: Current state \u2192 2030 projections\n- Risk ranking chart (tornado diagram)\n- Geographic map of production/processing facilities\n- Supply-demand gap projection chart\n\n## Step 17: Generate Comprehensive Report\n**Tool:** doc_generator\n**Inputs:** All findings, visualizations, and analysis from Steps 1-16\n**Expected Output:** Structured PDF report containing:\n- Executive summary with key risk findings\n- Supply chain mapping section\n- Detailed risk analysis by category\n- Scenario modeling results\n- Mitigation strategy recommendations\n- Data appendices and methodology notes\n\n## Contingency Steps (if needed):\n\n**Step 18 (Optional): Deep Dive on Specific Facility/Company**\n**Tool:** web_search\n**Use if:** Need detailed information on specific chokepoint facilities\n**Inputs:** Company/facility-specific queries\n**Expected Output:** Capacity, ownership, expansion plans, vulnerability factors\n\n**Step 19 (Optional): Regulatory/Trade Flow Analysis**\n**Tool:** web_search\n**Use if:** Need detailed trade policy analysis\n**Inputs:** \"HS code 2805.30 rare earth trade data\", \"Section 232 investigation rare earths\"\n**Expected Output:** Import dependency metrics, tariff structures, trade agreement implications\n\nThis plan provides a comprehensive, data-driven analysis of rare earth magnet supply chain risks for EVs, with clear deliverables at each stage that build toward actionable insights and recommendations.",
+  "steps": [
+    {
+      "step_id": "step_0",
+      "tool": "web_search",
+      "description": "Tool:** web_search",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_1",
+      "tool": "orchestrator",
+      "description": "Inputs:**",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_2",
+      "tool": "orchestrator",
+      "description": "\"USGS rare earth elements production statistics 2023\"",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_3",
+      "tool": "orchestrator",
+      "description": "\"neodymium praseodymium global production by country\"",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_4",
+      "tool": "orchestrator",
+      "description": "\"rare earth magnet manufacturing capacity by region\"",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_5",
+      "tool": "excel_handler",
+      "description": "Expected Output:** Current production volumes, country-level market shares, and capacity data for each supply chain stage (mining \u2192 separation \u2192 metal production \u2192 magnet manufacturing)",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_6",
+      "tool": "web_search",
+      "description": "Tool:** web_search",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_7",
+      "tool": "orchestrator",
+      "description": "Inputs:**",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_8",
+      "tool": "orchestrator",
+      "description": "\"China rare earth processing capacity percentage global\"",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_9",
+      "tool": "orchestrator",
+      "description": "\"NdFeB magnet production China market share\"",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_10",
+      "tool": "orchestrator",
+      "description": "\"rare earth separation technology China monopoly\"",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_11",
+      "tool": "orchestrator",
+      "description": "Expected Output:** Specific percentages of Chinese control at each stage, identification of processing technology barriers, export quota/restriction policies",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_12",
+      "tool": "web_search",
+      "description": "Tool:** web_search",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_13",
+      "tool": "orchestrator",
+      "description": "Inputs:**",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_14",
+      "tool": "orchestrator",
+      "description": "\"permanent magnet synchronous motor EV adoption rate\"",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_15",
+      "tool": "orchestrator",
+      "description": "\"Tesla induction motor vs permanent magnet\"",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_16",
+      "tool": "orchestrator",
+      "description": "\"EV traction motor technology comparison 2024\"",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_17",
+      "tool": "orchestrator",
+      "description": "Expected Output:** Breakdown of motor types used in EVs (PMSM vs. induction vs. wound rotor), which manufacturers use REPMs, material intensity per vehicle",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_18",
+      "tool": "web_search",
+      "description": "Tool:** web_search",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_19",
+      "tool": "orchestrator",
+      "description": "Inputs:**",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_20",
+      "tool": "orchestrator",
+      "description": "\"IEA Global EV Outlook 2024 projections\"",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_21",
+      "tool": "orchestrator",
+      "description": "\"rare earth demand forecast electric vehicles 2030\"",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_22",
+      "tool": "orchestrator",
+      "description": "\"neodymium demand growth electric motors wind turbines\"",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_23",
+      "tool": "orchestrator",
+      "description": "Expected Output:** EV sales projections through 2030-2035, kg of REEs per EV motor, competing demand sectors (wind, consumer electronics)",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_24",
+      "tool": "orchestrator",
+      "description": "Tool:** code_agent",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_25",
+      "tool": "orchestrator",
+      "description": "Inputs:**",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_26",
+      "tool": "excel_handler",
+      "description": "Data from Steps 1 and 4 (current production capacity, projected demand)",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_27",
+      "tool": "excel_handler",
+      "description": "Historical price data for Nd, Pr, Dy, Tb",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_28",
+      "tool": "orchestrator",
+      "description": "Expected Output:**",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_29",
+      "tool": "orchestrator",
+      "description": "Time-series visualization of supply vs. demand (2024-2035)",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_30",
+      "tool": "orchestrator",
+      "description": "Identification of deficit years and magnitude",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_31",
+      "tool": "orchestrator",
+      "description": "Price volatility analysis and correlation with supply disruptions",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_32",
+      "tool": "web_search",
+      "description": "Tool:** web_search",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_33",
+      "tool": "orchestrator",
+      "description": "Inputs:**",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_34",
+      "tool": "orchestrator",
+      "description": "\"Bayan Obo mine rare earth production percentage\"",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_35",
+      "tool": "orchestrator",
+      "description": "\"Mountain Pass rare earth mine capacity\"",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_36",
+      "tool": "orchestrator",
+      "description": "\"Lynas rare earth processing Malaysia Australia\"",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_37",
+      "tool": "orchestrator",
+      "description": "\"China rare earth export restrictions 2010 2023\"",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_38",
+      "tool": "orchestrator",
+      "description": "Expected Output:** List of critical single-point facilities, historical export restriction events, alternative production projects in development",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_39",
+      "tool": "web_search",
+      "description": "Tool:** web_search",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_40",
+      "tool": "orchestrator",
+      "description": "Inputs:**",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_41",
+      "tool": "orchestrator",
+      "description": "\"dysprosium terbium supply deficit\"",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_42",
+      "tool": "orchestrator",
+      "description": "\"heavy rare earth elements ion-adsorption deposits\"",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_43",
+      "tool": "web_search",
+      "description": "\"dysprosium-free permanent magnets research\"",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_44",
+      "tool": "orchestrator",
+      "description": "Expected Output:** Heavy vs. light REE supply constraints, geographic concentration of heavy REE deposits (Southern China, Myanmar), technical requirements for high-performance motors",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_45",
+      "tool": "web_search",
+      "description": "Tool:** web_search",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_46",
+      "tool": "orchestrator",
+      "description": "Inputs:**",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_47",
+      "tool": "orchestrator",
+      "description": "\"MP Materials rare earth production capacity expansion\"",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_48",
+      "tool": "orchestrator",
+      "description": "\"Australian rare earth projects Lynas Arafura\"",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_49",
+      "tool": "orchestrator",
+      "description": "\"DOE rare earth processing facility funding\"",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_50",
+      "tool": "orchestrator",
+      "description": "\"Vietnam rare earth reserves development\"",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_51",
+      "tool": "orchestrator",
+      "description": "Expected Output:** Pipeline of non-Chinese projects, timeline to production, capacity targets, processing capability gaps",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_52",
+      "tool": "web_search",
+      "description": "Tool:** web_search",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_53",
+      "tool": "orchestrator",
+      "description": "Inputs:**",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_54",
+      "tool": "orchestrator",
+      "description": "\"rare earth-free electric motor technologies\"",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_55",
+      "tool": "orchestrator",
+      "description": "\"ferrite magnets electric vehicles limitations\"",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_56",
+      "tool": "orchestrator",
+      "description": "\"switched reluctance motor EV applications\"",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_57",
+      "tool": "web_search",
+      "description": "\"NdFeB magnet dysprosium reduction research\"",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_58",
+      "tool": "pdf_rag",
+      "description": "Expected Output:** Technical feasibility of alternatives, performance trade-offs, commercial readiness levels, manufacturers pursuing magnet-free designs",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_59",
+      "tool": "web_search",
+      "description": "Tool:** web_search",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_60",
+      "tool": "orchestrator",
+      "description": "Inputs:**",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_61",
+      "tool": "orchestrator",
+      "description": "\"rare earth magnet recycling technology\"",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_62",
+      "tool": "orchestrator",
+      "description": "\"end-of-life EV motor recycling rates\"",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_63",
+      "tool": "orchestrator",
+      "description": "\"urban mining rare earth elements economics\"",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_64",
+      "tool": "orchestrator",
+      "description": "Expected Output:** Current recycling rates, technical/economic barriers, projected secondary supply by 2030-2040, policy initiatives",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_65",
+      "tool": "web_search",
+      "description": "Tool:** web_search",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_66",
+      "tool": "orchestrator",
+      "description": "Inputs:**",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_67",
+      "tool": "orchestrator",
+      "description": "\"US critical minerals strategy rare earths\"",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_68",
+      "tool": "orchestrator",
+      "description": "\"European Raw Materials Act rare earth elements\"",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_69",
+      "tool": "orchestrator",
+      "description": "\"Japan rare earth stockpiling policy\"",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_70",
+      "tool": "orchestrator",
+      "description": "\"Defense Production Act rare earth magnets\"",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_71",
+      "tool": "orchestrator",
+      "description": "Expected Output:** Government programs, stockpiling initiatives, domestic capacity incentives, international partnerships (Minerals Security Partnership)",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_72",
+      "tool": "web_search",
+      "description": "Tool:** web_search",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_73",
+      "tool": "orchestrator",
+      "description": "Inputs:**",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_74",
+      "tool": "orchestrator",
+      "description": "\"China rare earth export controls 2023 gallium germanium\"",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_75",
+      "tool": "orchestrator",
+      "description": "\"Myanmar rare earth supply disruption\"",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_76",
+      "tool": "orchestrator",
+      "description": "\"COVID-19 impact rare earth magnet supply\"",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_77",
+      "tool": "orchestrator",
+      "description": "Expected Output:** Historical disruption events, impact on prices and availability, industry response patterns",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_78",
+      "tool": "orchestrator",
+      "description": "Tool:** code_agent",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_79",
+      "tool": "excel_handler",
+      "description": "Inputs:** All data from previous steps",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_80",
+      "tool": "orchestrator",
+      "description": "Expected Output:**",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_81",
+      "tool": "orchestrator",
+      "description": "Risk categorization framework (likelihood \u00d7 impact)",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_82",
+      "tool": "orchestrator",
+      "description": "Visualization: Heat map of risks across supply chain stages",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_83",
+      "tool": "orchestrator",
+      "description": "Quantified risk scores for: geographic concentration, demand surge, geopolitical disruption, technical constraints, price volatility",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_84",
+      "tool": "orchestrator",
+      "description": "Tool:** code_agent",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_85",
+      "tool": "excel_handler",
+      "description": "Inputs:** Supply-demand data, alternative source timelines, policy scenarios",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_86",
+      "tool": "orchestrator",
+      "description": "Expected Output:**",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_87",
+      "tool": "simulation",
+      "description": "Scenario 1: Business as usual (continued Chinese dominance)",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_88",
+      "tool": "simulation",
+      "description": "Scenario 2: Moderate diversification (Western projects come online)",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_89",
+      "tool": "simulation",
+      "description": "Scenario 3: Supply disruption (export restrictions/conflict)",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_90",
+      "tool": "pdf_rag",
+      "description": "Scenario 4: Technology shift (widespread adoption of magnet-free motors)",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_91",
+      "tool": "simulation",
+      "description": "Quantified outcomes for each scenario (price impacts, supply security metrics)",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_92",
+      "tool": "web_search",
+      "description": "Tool:** web_search + synthesis",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_93",
+      "tool": "orchestrator",
+      "description": "Inputs:**",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_94",
+      "tool": "orchestrator",
+      "description": "\"rare earth supply chain resilience strategies\"",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_95",
+      "tool": "orchestrator",
+      "description": "\"strategic partnerships rare earth processing\"",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_96",
+      "tool": "orchestrator",
+      "description": "Expected Output:** Evaluation matrix of mitigation options:",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_97",
+      "tool": "orchestrator",
+      "description": "Domestic capacity building (timeline, cost, feasibility)",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_98",
+      "tool": "orchestrator",
+      "description": "Diversification of suppliers (risk reduction potential)",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_99",
+      "tool": "orchestrator",
+      "description": "Stockpiling (coverage duration, cost)",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_100",
+      "tool": "orchestrator",
+      "description": "Technology substitution (R&D investment needed)",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_101",
+      "tool": "orchestrator",
+      "description": "Recycling infrastructure (ROI timeline)",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_102",
+      "tool": "orchestrator",
+      "description": "Tool:** code_agent",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_103",
+      "tool": "excel_handler",
+      "description": "Inputs:** All synthesized data",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_104",
+      "tool": "orchestrator",
+      "description": "Expected Output:**",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_105",
+      "tool": "orchestrator",
+      "description": "Supply chain flow diagram with concentration metrics",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_106",
+      "tool": "orchestrator",
+      "description": "Timeline chart: Current state \u2192 2030 projections",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_107",
+      "tool": "orchestrator",
+      "description": "Risk ranking chart (tornado diagram)",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_108",
+      "tool": "orchestrator",
+      "description": "Geographic map of production/processing facilities",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_109",
+      "tool": "orchestrator",
+      "description": "Supply-demand gap projection chart",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_110",
+      "tool": "orchestrator",
+      "description": "Tool:** doc_generator",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_111",
+      "tool": "web_search",
+      "description": "Inputs:** All findings, visualizations, and analysis from Steps 1-16",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_112",
+      "tool": "pdf_rag",
+      "description": "Expected Output:** Structured PDF report containing:",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_113",
+      "tool": "web_search",
+      "description": "Executive summary with key risk findings",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_114",
+      "tool": "orchestrator",
+      "description": "Supply chain mapping section",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_115",
+      "tool": "orchestrator",
+      "description": "Detailed risk analysis by category",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_116",
+      "tool": "simulation",
+      "description": "Scenario modeling results",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_117",
+      "tool": "orchestrator",
+      "description": "Mitigation strategy recommendations",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_118",
+      "tool": "excel_handler",
+      "description": "Data appendices and methodology notes",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_119",
+      "tool": "orchestrator",
+      "description": "Step 18 (Optional): Deep Dive on Specific Facility/Company**",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_120",
+      "tool": "web_search",
+      "description": "Tool:** web_search",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_121",
+      "tool": "orchestrator",
+      "description": "Use if:** Need detailed information on specific chokepoint facilities",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_122",
+      "tool": "orchestrator",
+      "description": "Inputs:** Company/facility-specific queries",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_123",
+      "tool": "orchestrator",
+      "description": "Expected Output:** Capacity, ownership, expansion plans, vulnerability factors",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_124",
+      "tool": "orchestrator",
+      "description": "Step 19 (Optional): Regulatory/Trade Flow Analysis**",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_125",
+      "tool": "web_search",
+      "description": "Tool:** web_search",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_126",
+      "tool": "orchestrator",
+      "description": "Use if:** Need detailed trade policy analysis",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_127",
+      "tool": "excel_handler",
+      "description": "Inputs:** \"HS code 2805.30 rare earth trade data\", \"Section 232 investigation rare earths\"",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_128",
+      "tool": "orchestrator",
+      "description": "Expected Output:** Import dependency metrics, tariff structures, trade agreement implications",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    }
+  ],
+  "estimated_tools": [
+    "excel_handler",
+    "simulation",
+    "pdf_rag",
+    "orchestrator",
+    "web_search"
+  ]
+}
