@@ -1,0 +1,286 @@
+"""
+MICA Agent State Definitions
+
+Defines the state schema used by the LangGraph orchestration system.
+The state flows through the workflow and tracks all information needed
+for the multi-agent analysis process.
+"""
+
+from dataclasses import dataclass, field
+from datetime import datetime
+from enum import Enum
+from typing import Any, Dict, List, Optional, TypedDict
+
+from langchain_core.messages import BaseMessage
+
+
+class WorkflowStatus(str, Enum):
+    """Status of the overall workflow."""
+
+    INITIAL = "initial"
+    RESEARCHING = "researching"
+    PLAN_PROPOSED = "plan_proposed"
+    AWAITING_APPROVAL = "awaiting_approval"
+    EXECUTING = "executing"
+    COMPLETED = "completed"
+    AWAITING_FEEDBACK = "awaiting_feedback"
+    FAILED = "failed"
+    CANCELLED = "cancelled"
+
+
+class PlanStep(TypedDict):
+    """A single step in the analysis plan."""
+
+    step_id: str
+    tool: str
+    description: str
+    inputs: Dict[str, Any]
+    status: str  # pending, running, completed, failed
+    output: Optional[Any]
+    error: Optional[str]
+
+
+class AgentState(TypedDict):
+    """
+    Main state for the MICA orchestration workflow.
+
+    This state is passed through all nodes in the LangGraph workflow
+    and tracks the full context of an analysis session.
+    """
+
+    # Session information
+    session_id: str
+    created_at: str
+    user_id: Optional[str]
+
+    # Query and context
+    query: str
+    clarifications: List[str]
+
+    # Messages for LLM context
+    messages: List[BaseMessage]
+
+    # Workflow status
+    status: WorkflowStatus
+    current_step: Optional[str]
+
+    # Preliminary research results
+    preliminary_research: Dict[str, Any]
+
+    # Proposed analysis plan
+    plan: List[PlanStep]
+    plan_reasoning: str
+
+    # User approval
+    approved: Optional[bool]
+    approval_feedback: Optional[str]
+
+    # Execution results
+    tool_results: Dict[str, Any]
+    intermediate_outputs: List[Dict[str, Any]]
+
+    # Final output
+    final_summary: Optional[str]
+    final_report_path: Optional[str]
+    artifacts: List[Dict[str, Any]]
+
+    # Error handling
+    errors: List[Dict[str, str]]
+
+    # Metadata
+    metadata: Dict[str, Any]
+
+
+def create_initial_state(
+    session_id: str,
+    query: str,
+    user_id: Optional[str] = None,
+) -> AgentState:
+    """
+    Create a fresh initial state for a new workflow.
+
+    Args:
+        session_id: Unique session identifier
+        query: User's initial query
+        user_id: Optional user identifier
+
+    Returns:
+        Initialized AgentState
+    """
+    return AgentState(
+        # Session
+        session_id=session_id,
+        created_at=datetime.utcnow().isoformat(),
+        user_id=user_id,
+        # Query
+        query=query,
+        clarifications=[],
+        # Messages
+        messages=[],
+        # Status
+        status=WorkflowStatus.INITIAL,
+        current_step=None,
+        # Research
+        preliminary_research={},
+        # Plan
+        plan=[],
+        plan_reasoning="",
+        # Approval
+        approved=None,
+        approval_feedback=None,
+        # Results
+        tool_results={},
+        intermediate_outputs=[],
+        # Output
+        final_summary=None,
+        final_report_path=None,
+        artifacts=[],
+        # Errors
+        errors=[],
+        # Metadata
+        metadata={},
+    )
+
+
+def add_error(state: AgentState, error: str, context: Optional[str] = None) -> AgentState:
+    """Add an error to the state."""
+    error_entry = {
+        "error": error,
+        "context": context,
+        "timestamp": datetime.utcnow().isoformat(),
+    }
+    state["errors"].append(error_entry)
+    return state
+
+
+def add_artifact(
+    state: AgentState,
+    name: str,
+    artifact_type: str,
+    path: Optional[str] = None,
+    data: Optional[Any] = None,
+) -> AgentState:
+    """Add an artifact to the state."""
+    artifact = {
+        "name": name,
+        "type": artifact_type,
+        "path": path,
+        "data": data,
+        "created_at": datetime.utcnow().isoformat(),
+    }
+    state["artifacts"].append(artifact)
+    return state
+
+
+def update_plan_step(
+    state: AgentState,
+    step_id: str,
+    status: str,
+    output: Optional[Any] = None,
+    error: Optional[str] = None,
+) -> AgentState:
+    """Update the status of a plan step."""
+    for step in state["plan"]:
+        if step["step_id"] == step_id:
+            step["status"] = status
+            if output is not None:
+                step["output"] = output
+            if error is not None:
+                step["error"] = error
+            break
+    return state
+
+
+@dataclass
+class ToolCall:
+    """Represents a tool call to be executed."""
+
+    tool_name: str
+    inputs: Dict[str, Any]
+    step_id: Optional[str] = None
+
+    def to_dict(self) -> dict:
+        return {
+            "tool_name": self.tool_name,
+            "inputs": self.inputs,
+            "step_id": self.step_id,
+        }
+
+
+@dataclass
+class AnalysisPlan:
+    """
+    Structured analysis plan generated by the orchestrator.
+
+    Contains the reasoning and steps for analyzing the user's query.
+    """
+
+    reasoning: str
+    steps: List[PlanStep]
+    estimated_tools: List[str]
+    requires_simulation: bool = False
+    requires_web_search: bool = False
+    requires_document_analysis: bool = False
+
+    def to_state_format(self) -> tuple[List[PlanStep], str]:
+        """Convert to format used in AgentState."""
+        return self.steps, self.reasoning
+
+    @classmethod
+    def from_llm_response(cls, response: str, step_counter: int = 0) -> "AnalysisPlan":
+        """
+        Parse an analysis plan from LLM response.
+
+        This is a simplified parser. Production implementations should
+        use structured output parsing (e.g., with Pydantic models).
+        """
+        # Default plan structure
+        steps = []
+        reasoning = response
+
+        # Try to extract structured steps
+        lines = response.split("\n")
+        current_step_num = step_counter
+
+        for line in lines:
+            line = line.strip()
+            if line.startswith(("1.", "2.", "3.", "4.", "5.", "-", "*")):
+                # This looks like a step
+                step_text = line.lstrip("0123456789.-* ")
+
+                # Determine tool from keywords
+                tool = "orchestrator"
+                if any(w in step_text.lower() for w in ["search", "find", "look up"]):
+                    tool = "web_search"
+                elif any(w in step_text.lower() for w in ["pdf", "document", "read"]):
+                    tool = "pdf_rag"
+                elif any(w in step_text.lower() for w in ["excel", "spreadsheet", "data"]):
+                    tool = "excel_handler"
+                elif any(w in step_text.lower() for w in ["analyze", "calculate", "compute"]):
+                    tool = "code_agent"
+                elif any(w in step_text.lower() for w in ["simulate", "model", "scenario"]):
+                    tool = "simulation"
+                elif any(w in step_text.lower() for w in ["report", "document", "generate"]):
+                    tool = "doc_generator"
+
+                steps.append(PlanStep(
+                    step_id=f"step_{current_step_num}",
+                    tool=tool,
+                    description=step_text,
+                    inputs={},
+                    status="pending",
+                    output=None,
+                    error=None,
+                ))
+                current_step_num += 1
+
+        estimated_tools = list(set(s["tool"] for s in steps))
+
+        return cls(
+            reasoning=reasoning,
+            steps=steps,
+            estimated_tools=estimated_tools,
+            requires_simulation="simulation" in estimated_tools,
+            requires_web_search="web_search" in estimated_tools,
+            requires_document_analysis="pdf_rag" in estimated_tools,
+        )

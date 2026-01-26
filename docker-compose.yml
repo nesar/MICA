@@ -1,0 +1,100 @@
+version: '3.8'
+
+# MICA - Materials Intelligence Co-Analyst
+# Docker Compose configuration for local development
+
+services:
+  # MICA Backend API
+  mica-backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: mica-backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend/sessions:/app/sessions
+      - ./backend/chroma_db:/app/chroma_db
+      - mica-data:/data
+    environment:
+      # LLM Configuration
+      - MICA_LLM_PROVIDER=${MICA_LLM_PROVIDER:-argo}
+      - MICA_DEFAULT_MODEL=${MICA_DEFAULT_MODEL:-claudesonnet45}
+      - ARGO_USERNAME=${ARGO_USERNAME:-}
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY:-}
+      # Server Configuration
+      - MICA_HOST=0.0.0.0
+      - MICA_PORT=8000
+      - MICA_SESSION_DIR=/app/sessions
+      - MICA_CHROMA_DIR=/app/chroma_db
+      # Search Configuration
+      - MICA_SEARCH_PROVIDER=${MICA_SEARCH_PROVIDER:-duckduckgo}
+      - TAVILY_API_KEY=${TAVILY_API_KEY:-}
+      - SERPAPI_API_KEY=${SERPAPI_API_KEY:-}
+      # Logging
+      - MICA_LOG_LEVEL=${MICA_LOG_LEVEL:-INFO}
+      - MICA_AGENT_LOGGING=true
+      # CORS
+      - MICA_CORS_ORIGINS=http://localhost:3000,http://localhost:8080
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+    networks:
+      - mica-network
+
+  # Open WebUI
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:main
+    container_name: mica-webui
+    ports:
+      - "3000:8080"
+    volumes:
+      - open-webui-data:/app/backend/data
+      - ./ui/pipes:/app/backend/pipelines/mica:ro
+    environment:
+      # Open WebUI Configuration
+      - WEBUI_AUTH=false  # Set to true in production
+      - ENABLE_SIGNUP=true
+      - ENABLE_ADMIN_EXPORT=true
+      # MICA Integration
+      - MICA_BACKEND_URL=http://mica-backend:8000
+      - MICA_API_KEY=${MICA_API_KEY:-}
+      # Pipelines
+      - ENABLE_PIPELINES=true
+    depends_on:
+      mica-backend:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - mica-network
+
+  # ChromaDB for vector storage (optional - can use embedded)
+  # Uncomment if you want a separate ChromaDB service
+  # chroma:
+  #   image: chromadb/chroma:latest
+  #   container_name: mica-chroma
+  #   ports:
+  #     - "8001:8000"
+  #   volumes:
+  #     - chroma-data:/chroma/chroma
+  #   environment:
+  #     - IS_PERSISTENT=TRUE
+  #   restart: unless-stopped
+  #   networks:
+  #     - mica-network
+
+volumes:
+  mica-data:
+    driver: local
+  open-webui-data:
+    driver: local
+  # chroma-data:
+  #   driver: local
+
+networks:
+  mica-network:
+    driver: bridge

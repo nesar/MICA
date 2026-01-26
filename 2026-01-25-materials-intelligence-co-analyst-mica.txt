@@ -1,0 +1,1425 @@
+
+╭─── Claude Code v2.0.70 ──────────────────────────────────────────────────────╮
+│                                                    │ Tips for getting        │
+│                Welcome back Nessie!                │ started                 │
+│                                                    │ Run /init to create a … │
+│                    * ▗ ▗   ▖ ▖ *                   │ ─────────────────────── │
+│                   *             *                  │ Recent activity         │
+│                    *   ▘▘ ▝▝   *                   │ No recent activity      │
+│                                                    │                         │
+│   Opus 4.5 · Claude Max · nayaknesar@gmail.com's   │                         │
+│   Organization                                     │                         │
+│              ~/Projects/CM/codes/MICA              │                         │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+  Welcome to Opus 4.5
+
+> Materials Intelligence Co-Analyst (MICA)
+
+
+Summary:
+This project will develop the Materials Intelligence Co-Analyst (MICA) 
+framework, an AI-powered co-analyst to
+accelerate and transform how we conduct decision science for critical 
+material (CM) supply chains. This
+intelligent foundation model will serve as a representative agent of CM 
+knowledge ecosystem to
+empower analysts and decision-makers to explore research pathways, identify 
+cost-competitive sourcing strategies,
+heighten intuition on market dynamics and impacts on supply vulnerability, 
+and prioritize investments in domestic
+supply chain capabilities at a speed and depth that far exceed current 
+methods. Various offices within the
+Department of Energy (DOE) have leaned heavily on the our team for CM supply
+ chain analyses for informing
+investment strategies, directing technology priorities, and crafting 
+industrial policy. MICA will enhance the ability of 
+analysts to rapidly respond to requests by providing a dynamic learning 
+system that can heighten expert
+intuition, automate synthesis across diverse sources, and deliver insights 
+that are both scientifically grounded.
+
+
+Plan:
+
+
+Opportunity: DOE and its partners are facing a new class of strategic 
+challenge: how to make fast,
+informed decisions about complex, interdependent material supply chains that
+ underpin clean energy, advanced
+manufacturing, and national security. Over the past several years, we have 
+become a trusted analytical partner
+to various DOE offices, including the Advanced Materials and Manufacturing 
+Technologies Office (AMMTO),
+Industrial Technologies Office (ITO), Office of Manufacturing and Energy 
+Supply Chains (MESC), Office of Policy (OP),
+and Office of International Affairs (IA), among others. Our analysts are 
+frequently called upon to deliver urgent
+insight on CM market characteristics, trade flows, investment 
+prioritization, infrastructure planning, permitting
+barriers, and the risks of foreign dependence. These requests are 
+increasingly urgent, require integration of
+disparate data and models, and demand deep domain intuition to deliver 
+actionable results.
+Because the reasoning behind the team’s response is often just as important 
+as the data itself (or lack thereof), data
+access alone is insufficient to provide the insight required. The current 
+workflow involves delivering insights manually
+via combining structured databases, output from techno-economic and 
+simulation models, unstructured knowledge
+(e.g., permitting documents, industry reports, DOE assessments), and expert 
+judgment. While powerful, the current
+process is slow, fragile, and unable to scale with the tempo and complexity 
+required by decision-makers. This project
+is a transformative science opportunity: to build an AI-powered Materials 
+Intelligence Co-Analyst (MICA) that can
+engage with the full landscape of supply chain data, modeling tools, 
+literature, and analyst expertise. MICA will serve
+not simply as a query engine, but as a reasoning agent—able to learn from 
+DOE’s evolving priorities, explore and
+interpret structured and unstructured inputs, and assist analysts in 
+navigating complex, cross-cutting material
+strategy questions under time pressure.
+
+
+MICA does not replace human insight—it is a force multiplier. Human analysts
+ bring contextual awareness,
+institutional memory, and interpretive judgment that AI cannot replicate. 
+What MICA offers is speed, breadth, and
+integrative capacity: the ability to surface relevant patterns, assimilate 
+scenarios from simulations, and explain
+analytical outcomes across a wider solution space than a human could explore
+ alone. To ground this vision in an
+immediate and tractable problem, this project will focus on a first 
+deployment along the rare earth–to–magnet value
+chain—an area of acute national concern. This use case will demonstrate how 
+MICA can synthesize physical,
+economic, and strategic insight to support decision-making around domestic 
+infrastructure buildout, cost drivers,
+vulnerability reduction, and resiliency planning. MICA will also be built 
+for extensibility. Beyond supply chains, this
+system could support exploration of economic and institutional 
+mechanisms—such as strategic reserve policies and market coordination 
+instruments—that are essential for de-risking minor metal investment but 
+currently lack analytical infrastructure. MICA’s architecture will also 
+support expansion to long-horizon challenges: comparing
+trade-offs across multiple critical materials, anticipating the impact of 
+technological substitutions, identifying
+permitting barriers, and guiding design for circularity. This project lays 
+the intellectual and technical groundwork for
+that broader capability.
+
+Description
+
+MICA will be developed as a foundation model–powered Co-Analyst that learns 
+from, reasons across, and interacts
+with structured data, technical literature, and executable modeling tools 
+relevant to CM supply chains. MICA will
+operate as a modular system composed of domain-specialized agents capable of
+ supporting analysts in synthesizing
+evidence, assimilating modeling scenarios, and interpreting tradeoffs under 
+time and resource constraints. The work
+will proceed through four integrated thrusts:
+
+1. Data and Knowledge Aggregation: We will develop scalable pipelines to 
+ingest and structure diverse data sources
+essential for CM analysis such as public and institutional datasets, DOE 
+analyses and filings, internal lab reports,
+permitting documents, scenario modeling results, and technical publications.
+ The system will harmonize
+heterogeneous data into structured knowledge graphs and retrievable context 
+windows that can be accessed by
+MICA. In parallel, we will begin to define a formal schema that links data 
+types to relevant decision contexts (e.g.,
+siting, investment risk, capacity buildout), laying the foundation for 
+automated scenario generation.
+
+2. Agent Architecture and RAG Orchestration: We will implement MICA as a 
+modular multi-agent AI system with
+Our internal ARGO service as the backend, with each agent accessing a 
+unified Retrieval-Augmented
+Generation (RAG) database built from the dataset generated using the first 
+thrust. RAG agents first transform
+indexed documents into embeddings and perform semantic retrieval to ground 
+every analysis in up-to-date,
+authoritative context. Explanation agents synthesize retrieved facts and 
+simulation outputs into concise,
+provenance-tracked narratives, leveraging ARGO’s secure, authenticated 
+endpoints and audit logs to ensure full
+traceability and DOE compliance throughout the reasoning pipeline. [SEE THE 
+SPECIFIC INSTRUCTIONS BELOW]
+
+3. Model Integration and Actionable Reasoning: MICA will answer complex 
+queries—such as mapping chokepoints
+in the U.S. rare-earth-to-magnet value chain, evaluating targeted investment
+ strategies, and assessing the impact of
+permitting, logistics, and geopolitical disruptions—by chaining RAG 
+retrieval with simulations from Argonne’s Global
+Critical Materials (GCMat) and Reverse Logistics Optimization (RELOG) models
+ under user-specified policy levers.
+Retrieval agents gather relevant technical data and literature, scenario 
+agents launch model runs to produce
+dashboards of cost-per-unit, capacity build-out, supply-risk exposure, and 
+resiliency metrics, and explanation agents
+generate actionable insights while reducing AI hallucinations through 
+grounded facts. If successful, this task will lay
+the groundwork for eventually being able to address questions related to 
+various market and policy intervention
+scenarios. An embedded Audit Agent maintains a shared memory graph of every 
+retrieval, model invocation, and
+assumption, granting analysts full explainability and iterative refinement 
+of the analyses.
+
+
+
+Magnet Supply Chain Exemplar Case: The first deployment of MICA will focus 
+on the rare earth–to–magnet value
+chain, a high-priority domain for DOE to demonstrate the system’s ability to
+ map current domestic capabilities,
+identify capacity and technology gaps, assess permitting timelines, and 
+simulate interventions such as facility
+deployment or import restriction impacts. This application will serve as 
+both a proving ground and an architecture
+stress test: how well can MICA synthesize modeling results, contextualize 
+them with policy literature, and surface
+insights not easily found through manual analysis? <this is only an 
+exemplar. The agentic system will be developed 
+With several questions like this in mind. The scope of the agentic systems 
+should not be limited to this question only. 
+
+
+###########################################################
+
+SPECIFIC INSTRUCTIONS TO BUILD THE AGENTIC SYSTEM: 
+
+All the development will be done in /Users/nesar/Projects/CM/codes/MICA
+
+
+
+Written with langraph
+Codes should be modular, minimal and very clean. No monolithic codes. Have 
+multiple sub-directories as needed. It should be readable and editable by 
+humans. Absolutely no hardcoding numbers. 
+UI is important. Use Open Web UI as the interface (use pipes if needed to 
+make it work with the agentic framework. 
+Separate the UI codes from the backend agentic codes. Keep the dependencies 
+as cleanly separated as possible. 
+Logging every detail is important. This is not a system where a question is 
+asked and the query + response is not logged. Every question should create a
+ new folder in the backend, where all the analysis, agentic interaction 
+logs, codes, plots, search results etc are cleanly documented. 
+
+Sub-agents: Subagents should work via MCP. The specific instruction (or 
+prompts) to each sub-agent should be at the top of the files after the 
+imports. 
+
+MCP tools/subagents:
+1. Web-browsing. Particularly focussed on searching federal govt documents 
+in public domain.  
+2. Excel reading and writing 
+3. Local PDF reading, parsing text — like a RAG subagent 
+4. Simulation agent (placeholder for now)
+5. Code agent — for simple statistical analysis and plotting.  
+6. Documentation agent — to create PDFs with all the information (as a 
+report)
+7. Orchestration agent — Primary agent to deal with all the information, 
+delegation and orchestration. Also should handle Human in the loop (I.e., 
+maybe ask a few questions to the user after the query and then start the 
+analysis. After the 1st round of analysis is done, the user respond to ask 
+for clarification etc. 
+
+
+Backend LLM for this agentic system will have 2 options. (See the python 
+files in /Users/nesar/Projects/CM/useful_utils/)
+1. Argo (internal lab AI system), I will provide the exemplar codes for this
+ in /Users/nesar/Projects/CM/useful_utils/argo.py)
+3. Google Gemini models (free option). User will have to provide API key. 
+
+⏺ This is a substantial project that requires careful planning. Let me first explore what already exists in the codebase and understand the LLM backend utilities you've provided, then develop a comprehensive implementation plan.
+
+⏺ Bash(ls -la /Users/nesar/Projects/CM/codes/MICA)
+  ⎿  total 4                                      
+     drwxr-xr-x  4 nesar staff 128 Jan 25 21:51 .
+     drwxr-xr-x  4 nesar staff 128 Jan 25 21:47 ..
+     … +2 lines (ctrl+o to expand)
+
+⏺ Bash(ls -la /Users/nesar/Projects/CM/useful_utils/)
+  ⎿  total 40                                      
+     drwxr-xr-x 6 nesar staff   192 Jan 25 21:49 .
+     drwxr-xr-x 6 nesar staff   192 Jan 25 21:47 ..
+     … +4 lines (ctrl+o to expand)
+
+⏺ Read(~/Projects/CM/useful_utils/argo.py)
+  ⎿  Read 322 lines
+
+⏺ Read(~/Projects/CM/useful_utils/google_models.py)
+  ⎿  Read 44 lines
+
+⏺ Read(~/Projects/CM/useful_utils/model_factory.py)
+  ⎿  Read 154 lines
+
+⏺ Read(README.md)
+  ⎿  Read 2 lines
+
+⏺ I now have a good understanding of the existing LLM backends and the project requirements. This is a substantial multi-agent system that requires careful architectural planning. Let me enter plan mode to design the implementation approach before building.
+                                                                   
+⏺ Entered plan mode
+  Claude is now exploring and designing an implementation approach.
+
+⏺ I'm now in plan mode. I've reviewed the existing codebase and utilities. Before designing the architecture, I have some clarifying questions to ensure the implementation aligns with your needs.
+                                                                           
+⏺ User answered Claude's questions:
+  ⎿  · How do you want to run Open WebUI - as a Docker container 
+     (recommended) or local installation? → I want to have a docker 
+     contrainer version but I want to have this hosted on a webpage (not 
+     just a localhost). Assume that this tool would be used by a lot of 
+     users but not all of them may want to install things locally. 
+     · Which LLM should be the default for the orchestration agent? → Argo 
+     Claude Sonnet 4.5
+     · What level of human-in-the-loop interaction do you want? → 2 level --
+      I want the orchestration agent to come up with the plan (after a quick
+      web-search and priminary understanding. The user would approve, reject
+      or provide additional info. All the sub-agent runs are automatic after
+      that. User will review the final output and optionally add new query 
+     or request clarification etc. 
+
+
+⏺ Excellent, those answers are very helpful. Now let me design the complete architecture. I'll create a comprehensive plan based on your requirements.
+
+⏺ Updated plan
+  ⎿  /plan to preview
+
+⏺ I've drafted the initial plan. Let me ask one more clarifying question about deployment.
+                                                                           
+⏺ User answered Claude's questions:
+  ⎿  · Do you have a specific domain/server for hosting, or should I set up 
+     for local development first with deployment instructions for later? → 
+     Local first + deploy docs
+
+
+⏺ I'll update the plan to focus on local development first with deployment documentation.
+
+⏺ Updated plan
+  ⎿  /plan to preview
+
+⏺ Reading Plan(~/.claude/plans/giggly-knitting-papert.md)
+  ⎿  Read 283 lines
+
+⏺ The plan is comprehensive. Here's a summary of what will be built:
+
+  MICA Architecture:
+  - Backend: FastAPI + LangGraph multi-agent system
+  - Frontend: Open WebUI with custom pipe
+  - LLM: Argo Claude Sonnet 4.5 (default) with Gemini fallback
+  - Deployment: Docker Compose for local dev, with cloud deployment docs
+
+  Key Features:
+  1. Two-phase HITL: Orchestrator proposes plan → user approves → agents execute → user reviews
+  2. 6 MCP Tools: Web search, PDF/RAG, Excel, Code agent, Simulation (placeholder), Doc generator
+  3. Comprehensive Logging: Each query creates a session folder with all artifacts
+  4. Modular Design: Clean separation of UI, API, agents, and tools
+
+  8 Implementation Steps progressing from infrastructure to full stack integration.
+                                                                           
+⏺ User approved Claude's plan
+  ⎿  Plan saved to: ~/.claude/plans/giggly-knitting-papert.md · /plan to 
+     edit
+     MICA (Materials Intelligence Co-Analyst) Implementation Plan
+
+     Overview
+
+     Build a multi-agent AI system for critical materials supply chain 
+     analysis using LangGraph, MCP tools, and Open WebUI. The system will be
+      containerized and web-hosted for multi-user access.
+
+     Architecture Summary
+
+     ┌─────────────────────────────────────────────────────────────────────┐
+     │                         Open WebUI (Docker)                         │
+     │                    Hosted at: mica.yourdomain.com                   │
+     └───────────────────────────────┬─────────────────────────────────────┘
+                                     │ HTTP/WebSocket
+                                     ▼
+     ┌─────────────────────────────────────────────────────────────────────┐
+     │                      MICA Backend (FastAPI)                         │
+     │  ┌──────────────────────────────────────────────────────────────┐  │
+     │  │              Orchestration Agent (LangGraph)                 │  │
+     │  │  - Receives query → preliminary research → proposes plan     │  │
+     │  │  - Waits for user approval                                   │  │
+     │  │  - Delegates to sub-agents after approval                    │  │
+     │  │  - Compiles final report for user review                     │  │
+     │  └──────────────────────────────────────────────────────────────┘  │
+     │                                                                     │
+     │  ┌─────────────────────── MCP Tools ──────────────────────────┐    │
+     │  │ ┌─────────────┐ ┌─────────────┐ ┌─────────────┐           │    │
+     │  │ │ Web Search  │ │ PDF/RAG     │ │ Excel R/W   │           │    │
+     │  │ │ (Federal)   │ │ Agent       │ │ Agent       │           │    │
+     │  │ └─────────────┘ └─────────────┘ └─────────────┘           │    │
+     │  │ ┌─────────────┐ ┌─────────────┐ ┌─────────────┐           │    │
+     │  │ │ Code Agent  │ │ Simulation  │ │ Doc Gen     │           │    │
+     │  │ │ (Analysis)  │ │ (Placeholder│ │ (PDF Report)│           │    │
+     │  │ └─────────────┘ └─────────────┘ └─────────────┘           │    │
+     │  └────────────────────────────────────────────────────────────┘    │
+     │                                                                     │
+     │  ┌──────────────────── Logging System ────────────────────────┐    │
+     │  │  /sessions/{session_id}/                                   │    │
+     │  │    ├── query.json          # Original query                │    │
+     │  │    ├── plan.json           # Proposed plan                 │    │
+     │  │    ├── agent_logs/         # Each agent's execution logs   │    │
+     │  │    ├── search_results/     # Web search results            │    │
+     │  │    ├── code_outputs/       # Code agent outputs/plots      │    │
+     │  │    └── final_report.pdf    # Generated report              │    │
+     │  └────────────────────────────────────────────────────────────┘    │
+     └─────────────────────────────────────────────────────────────────────┘
+
+     Directory Structure
+
+     /Users/nesar/Projects/CM/codes/MICA/
+     ├── README.md
+     ├── docker-compose.yml              # Main deployment config
+     ├── .env.example                    # Environment variables template
+     │
+     ├── backend/                        # FastAPI + LangGraph backend
+     │   ├── Dockerfile
+     │   ├── pyproject.toml
+     │   ├── requirements.txt
+     │   │
+     │   ├── mica/                       # Main package
+     │   │   ├── __init__.py
+     │   │   ├── config.py               # Configuration management
+     │   │   ├── api/                    # FastAPI routes
+     │   │   │   ├── __init__.py
+     │   │   │   ├── main.py             # FastAPI app entry
+     │   │   │   ├── routes.py           # API endpoints
+     │   │   │   └── websocket.py        # WebSocket for streaming
+     │   │   │
+     │   │   ├── llm/                    # LLM providers
+     │   │   │   ├── __init__.py
+     │   │   │   ├── base.py             # Base LLM interface
+     │   │   │   ├── argo.py             # Argo provider (from useful_utils)
+     │   │   │   └── gemini.py           # Google Gemini provider
+     │   │   │
+     │   │   ├── agents/                 # LangGraph agents
+     │   │   │   ├── __init__.py
+     │   │   │   ├── orchestrator.py     # Main orchestration agent
+     │   │   │   ├── graph.py            # LangGraph state machine
+     │   │   │   └── state.py            # Shared state definitions
+     │   │   │
+     │   │   ├── mcp_tools/              # MCP-based tools/sub-agents
+     │   │   │   ├── __init__.py
+     │   │   │   ├── base.py             # Base MCP tool class
+     │   │   │   ├── web_search.py       # Federal document search
+     │   │   │   ├── pdf_rag.py          # PDF parsing + RAG
+     │   │   │   ├── excel_handler.py    # Excel read/write
+     │   │   │   ├── code_agent.py       # Statistical analysis/plotting
+     │   │   │   ├── simulation.py       # Placeholder for GCMat/RELOG
+     │   │   │   └── doc_generator.py    # PDF report generation
+     │   │   │
+     │   │   └── logging/                # Session logging
+     │   │       ├── __init__.py
+     │   │       └── session_logger.py   # Creates session folders + logs
+     │   │
+     │   └── sessions/                   # Session data storage (volume 
+     mount)
+     │
+     ├── ui/                             # Open WebUI configuration
+     │   ├── Dockerfile
+     │   └── pipes/                      # Open WebUI pipes for MICA
+     │       └── mica_pipe.py            # Pipe to connect to backend
+     │
+     └── docs/                           # Documentation
+         └── deployment.md
+
+     Implementation Phases
+
+     Phase 1: Core Infrastructure
+
+     Files to create:
+     - backend/mica/config.py - Configuration with env vars
+     - backend/mica/llm/base.py - Base LLM interface
+     - backend/mica/llm/argo.py - Adapt from useful_utils
+     - backend/mica/llm/gemini.py - Adapt from useful_utils
+     - backend/mica/logging/session_logger.py - Session folder management
+
+     Phase 2: MCP Tools
+
+     Files to create (each with agent instructions at top):
+     - backend/mica/mcp_tools/base.py - Base MCP tool class
+     - backend/mica/mcp_tools/web_search.py - Federal document search
+     - backend/mica/mcp_tools/pdf_rag.py - PDF parsing + ChromaDB RAG
+     - backend/mica/mcp_tools/excel_handler.py - Excel operations
+     - backend/mica/mcp_tools/code_agent.py - Python code execution
+     - backend/mica/mcp_tools/simulation.py - Placeholder
+     - backend/mica/mcp_tools/doc_generator.py - PDF generation
+
+     Phase 3: LangGraph Orchestration
+
+     Files to create:
+     - backend/mica/agents/state.py - State definitions
+     - backend/mica/agents/graph.py - LangGraph workflow
+     - backend/mica/agents/orchestrator.py - Main orchestration logic
+
+     Phase 4: API Layer
+
+     Files to create:
+     - backend/mica/api/main.py - FastAPI app
+     - backend/mica/api/routes.py - REST endpoints
+     - backend/mica/api/websocket.py - Streaming responses
+
+     Phase 5: Open WebUI Integration
+
+     Files to create:
+     - ui/pipes/mica_pipe.py - Pipe connecting to backend
+     - docker-compose.yml - Full stack deployment
+     - .env.example - Environment template
+
+     Key Design Decisions
+
+     1. Two-Phase HITL Workflow
+
+     # State machine states:
+     INITIAL → RESEARCHING → PLAN_PROPOSED → AWAITING_APPROVAL →
+     EXECUTING → COMPLETED → AWAITING_FEEDBACK
+
+     2. LLM Configuration
+
+     - Default: argo-claudesonnet45 (requires VPN + ARGO_USERNAME)
+     - Fallback: gemini-flash (requires GOOGLE_API_KEY)
+     - Configurable per-session via environment/API
+
+     3. MCP Tool Pattern
+
+     Each tool file starts with:
+     """
+     MCP Tool: [Name]
+     Description: [What it does]
+     Inputs: [Expected inputs]
+     Outputs: [What it returns]
+     """
+     AGENT_INSTRUCTIONS = """
+     You are a [role] agent. Your task is to...
+     """
+
+     4. Session Logging
+
+     Every query creates:
+     /sessions/{uuid}/
+     ├── metadata.json      # timestamp, user, model
+     ├── query.txt          # original query
+     ├── plan.json          # proposed plan
+     ├── approval.json      # user decision
+     ├── agent_logs/        # per-agent logs
+     │   ├── web_search.log
+     │   ├── pdf_rag.log
+     │   └── ...
+     ├── artifacts/         # generated files
+     │   ├── plots/
+     │   ├── data/
+     │   └── code/
+     └── report.pdf         # final output
+
+     5. Deployment Strategy
+
+     - Phase 1: Local development with docker-compose up
+     - Phase 2: Deployment docs for cloud hosting (nginx, SSL, domain)
+     - All config via environment variables for easy transition
+
+     Implementation Order (Step-by-Step)
+
+     Step 1: Project Setup
+
+     1. Create directory structure
+     2. Set up pyproject.toml and requirements.txt
+     3. Create config.py with environment management
+     4. Create .env.example
+
+     Step 2: LLM Layer
+
+     1. Create base.py LLM interface
+     2. Adapt argo.py from useful_utils for LangGraph
+     3. Adapt gemini.py from useful_utils for LangGraph
+
+     Step 3: Logging Infrastructure
+
+     1. Create session_logger.py
+     2. Implement folder creation per query
+     3. Add structured logging utilities
+
+     Step 4: MCP Tools (One by One)
+
+     1. base.py - Base MCP tool class
+     2. web_search.py - Federal document search (using Tavily/SerpAPI)
+     3. pdf_rag.py - PDF parsing with ChromaDB
+     4. excel_handler.py - Excel read/write operations
+     5. code_agent.py - Python code execution sandbox
+     6. simulation.py - Placeholder for GCMat/RELOG
+     7. doc_generator.py - PDF report generation
+
+     Step 5: LangGraph Orchestration
+
+     1. state.py - Define AgentState with all fields
+     2. graph.py - Build the state machine workflow
+     3. orchestrator.py - Main coordination logic with HITL
+
+     Step 6: FastAPI Backend
+
+     1. main.py - App initialization
+     2. routes.py - REST endpoints (/query, /approve, /status)
+     3. websocket.py - Streaming responses
+
+     Step 7: Open WebUI Integration
+
+     1. Create mica_pipe.py for Open WebUI
+     2. Build Docker images
+     3. Create docker-compose.yml for full stack
+
+     Step 8: Documentation
+
+     1. README.md with setup instructions
+     2. docs/deployment.md for cloud hosting
+
+     Critical Files to Modify
+
+     None - this is a new project build.
+
+     Dependencies
+
+     Backend (Python)
+
+     - langgraph >= 0.2
+     - langchain >= 0.3
+     - fastapi
+     - uvicorn
+     - chromadb (for RAG)
+     - pypdf2 / pdfplumber
+     - openpyxl / xlsxwriter
+     - matplotlib / plotly
+     - requests
+     - tiktoken
+     - python-multipart
+
+     UI
+
+     - Open WebUI (Docker image)
+     - Custom pipe for MICA integration
+
+     Environment Variables
+
+     # LLM Configuration
+     MICA_DEFAULT_LLM=argo-claudesonnet45
+     ARGO_USERNAME=your_username
+     GOOGLE_API_KEY=your_key
+
+     # Server Configuration
+     MICA_HOST=0.0.0.0
+     MICA_PORT=8000
+     MICA_SESSION_DIR=/data/sessions
+
+     # Open WebUI
+     OPENWEBUI_URL=http://localhost:3000
+
+
+
+
+
+
+
+
+
+
+
+⏺ Excellent! The plan is approved. Let me create the todo list and start implementing MICA.
+
+⏺ Bash(mkdir -p /Users/nesar/Projects/CM/codes/MICA/backend/mica/{api,llm,agents
+      ,mcp_tools,logging} /Users/nesar/Projects/CM/codes/MICA/backend/sessions
+      /Users/nesar/P…)
+  ⎿  (No content)
+
+⏺ Write(backend/pyproject.toml)
+  ⎿  Wrote 81 lines to backend/pyproject.toml                              
+     [build-system]
+     requires = ["setuptools>=61.0", "wheel"]
+     build-backend = "setuptools.build_meta"
+     [project]
+     name = "mica"
+     version = "0.1.0"
+     description = "Materials Intelligence Co-Analyst - AI-powered supply 
+     chain analysis"
+     readme = "README.md"
+     requires-python = ">=3.10"
+     … +71 lines (ctrl+o to expand)
+
+⏺ Write(backend/requirements.txt)
+  ⎿  Wrote 46 lines to backend/requirements.txt     
+     # MICA Backend Dependencies
+     # Install with: pip install -r requirements.txt
+     # Core LangGraph and LangChain
+     langgraph>=0.2.0
+     langchain>=0.3.0
+     langchain-core>=0.3.0
+     langchain-community>=0.3.0
+     # Web Framework
+     … +36 lines (ctrl+o to expand)
+
+⏺ Write(.env.example)
+  ⎿  Wrote 82 lines to .env.example                                        
+     # MICA Environment Configuration
+     # Copy this file to .env and fill in your values
+     # ====================================================================
+     =========
+     # LLM Configuration
+     # ====================================================================
+     =========
+     # Default LLM provider: "argo" or "gemini"
+     MICA_LLM_PROVIDER=argo
+     … +72 lines (ctrl+o to expand)
+
+⏺ Write(backend/mica/__init__.py)
+  ⎿  Wrote 9 lines to backend/mica/__init__.py                            
+     """
+     MICA - Materials Intelligence Co-Analyst
+     An AI-powered multi-agent system for critical materials supply chain 
+     analysis.
+     """
+     __version__ = "0.1.0"
+     __author__ = "MICA Team"
+
+⏺ Write(backend/mica/config.py)
+  ⎿  Wrote 263 lines to backend/mica/config.py                             
+     """
+     MICA Configuration Management
+     Centralized configuration using environment variables with Pydantic 
+     settings.
+     All configuration values are loaded from environment variables or .env 
+     file.
+     """
+     import os
+     from pathlib import Path
+     from typing import Literal, Optional
+
+     … +253 lines (ctrl+o to expand)
+
+⏺ Write(backend/mica/api/__init__.py)
+  ⎿  Wrote 2 lines to backend/mica/api/__init__.py
+     """MICA API module."""
+
+⏺ Write(backend/mica/llm/__init__.py)
+  ⎿  Wrote 7 lines to backend/mica/llm/__init__.py                         
+     """MICA LLM providers module."""
+     from .base import BaseLLM, LLMResponse
+     from .factory import create_llm, get_available_models
+     __all__ = ["BaseLLM", "LLMResponse", "create_llm",
+     "get_available_models"]
+
+⏺ Write(backend/mica/agents/__init__.py)
+  ⎿  Wrote 2 lines to backend/mica/agents/__init__.py
+     """MICA LangGraph agents module."""
+
+⏺ Write(backend/mica/mcp_tools/__init__.py)
+  ⎿  Wrote 2 lines to backend/mica/mcp_tools/__init__.py
+     """MICA MCP Tools module."""
+
+⏺ Write(backend/mica/logging/__init__.py)
+  ⎿  Wrote 6 lines to backend/mica/logging/__init__.py            
+     """MICA Logging module."""
+     from .session_logger import SessionLogger, get_session_logger
+     __all__ = ["SessionLogger", "get_session_logger"]
+
+⏺ Now let me implement the LLM layer.
+
+⏺ Write(backend/mica/llm/base.py)
+  ⎿  Wrote 184 lines to backend/mica/llm/base.py                           
+     """
+     Base LLM Interface for MICA
+     Provides a unified interface for different LLM providers that works 
+     with LangGraph.
+     """
+     from abc import ABC, abstractmethod
+     from dataclasses import dataclass, field
+     from typing import Any, Optional
+     … +174 lines (ctrl+o to expand)
+
+⏺ Write(backend/mica/llm/argo.py)
+  ⎿  Wrote 315 lines to backend/mica/llm/argo.py                   
+     """
+     Argo LLM Provider for MICA
+     Provides access to LLMs via the Argonne Argo API.
+     Adapted from useful_utils/argo.py for LangGraph compatibility.
+     """
+     import asyncio
+     from typing import Optional
+     … +305 lines (ctrl+o to expand)
+
+⏺ Write(backend/mica/llm/gemini.py)
+  ⎿  Wrote 277 lines to backend/mica/llm/gemini.py                       
+     """
+     Google Gemini LLM Provider for MICA
+     Provides access to Google's Gemini models via the Generative AI API.
+     """
+     from typing import Optional
+     import httpx
+     import requests
+     … +267 lines (ctrl+o to expand)
+
+⏺ Write(backend/mica/llm/factory.py)
+  ⎿  Wrote 139 lines to backend/mica/llm/factory.py                      
+     """
+     LLM Factory for MICA
+     Provides a unified interface to create LLM instances from different 
+     providers.
+     """
+     from typing import Optional
+     from ..config import config
+     from .argo import ArgoLLM, get_available_argo_models
+     … +129 lines (ctrl+o to expand)
+
+⏺ Write(backend/mica/logging/session_logger.py)
+  ⎿  Wrote 485 lines to backend/mica/logging/session_logger.py           
+     """
+     Session Logger for MICA
+     Creates and manages session folders for comprehensive logging of all
+     agent interactions, queries, artifacts, and outputs.
+     Every query creates a session folder with the following structure:
+     /sessions/{uuid}/
+     ├── metadata.json      # timestamp, user, model
+     ├── query.txt          # original query
+     … +475 lines (ctrl+o to expand)
+
+⏺ Now let me create the MCP tools. Each will have agent instructions at the top.
+
+⏺ Write(backend/mica/mcp_tools/base.py)
+  ⎿  Wrote 263 lines to backend/mica/mcp_tools/base.py                     
+     """
+     MCP Tool: Base Tool Class
+     Description: Base class for all MCP-compatible tools in MICA
+     Inputs: Varies by tool implementation
+     Outputs: Standardized ToolResult
+     This module provides the foundation for building MCP (Model Context 
+     Protocol)
+     compatible tools that can be used by the LangGraph orchestration 
+     system.
+     """
+     … +253 lines (ctrl+o to expand)
+
+⏺ Write(backend/mica/mcp_tools/web_search.py)
+  ⎿  Wrote 321 lines to backend/mica/mcp_tools/web_search.py               
+     """
+     MCP Tool: Web Search
+     Description: Searches the web for information, with focus on federal 
+     government documents
+     Inputs: query (str), num_results (int), site_filter (list[str])
+     Outputs: List of search results with titles, URLs, and snippets
+     AGENT_INSTRUCTIONS:
+     You are a web search agent specialized in finding information from 
+     authoritative sources,
+     particularly federal government documents and official publications. 
+     Your task is to:
+     … +311 lines (ctrl+o to expand)
+
+⏺ Write(backend/mica/mcp_tools/pdf_rag.py)
+  ⎿  Wrote 403 lines to backend/mica/mcp_tools/pdf_rag.py                  
+     """
+     MCP Tool: PDF RAG (Retrieval-Augmented Generation)
+     Description: Parses PDF documents and performs semantic search for 
+     relevant information
+     Inputs: pdf_path (str) or query (str) with collection_name
+     Outputs: Extracted text or relevant passages with sources
+     AGENT_INSTRUCTIONS:
+     You are a document analysis agent specialized in extracting and 
+     retrieving information
+     from PDF documents. Your task is to:
+     … +393 lines (ctrl+o to expand)
+
+⏺ Write(backend/mica/mcp_tools/excel_handler.py)
+  ⎿  Wrote 383 lines to backend/mica/mcp_tools/excel_handler.py            
+     """
+     MCP Tool: Excel Handler
+     Description: Reads and writes Excel files (.xlsx, .xls)
+     Inputs: file_path (str), operation (str: read/write), data (dict for 
+     write)
+     Outputs: DataFrame-like data structure or write confirmation
+     AGENT_INSTRUCTIONS:
+     You are a data processing agent specialized in handling Excel files. 
+     Your task is to:
+     1. Read Excel files and extract data with proper type handling
+     … +373 lines (ctrl+o to expand)
+
+⏺ Write(backend/mica/mcp_tools/code_agent.py)
+  ⎿  Wrote 444 lines to backend/mica/mcp_tools/code_agent.py               
+     """
+     MCP Tool: Code Agent
+     Description: Executes Python code for statistical analysis and 
+     visualization
+     Inputs: code (str), context (dict with data), output_type (str)
+     Outputs: Execution results, generated plots, computed values
+     AGENT_INSTRUCTIONS:
+     You are a data analysis and visualization agent specialized in Python 
+     programming.
+     Your task is to:
+     … +434 lines (ctrl+o to expand)
+
+⏺ Write(backend/mica/mcp_tools/simulation.py)
+  ⎿  Wrote 366 lines to backend/mica/mcp_tools/simulation.py               
+     """
+     MCP Tool: Simulation Agent (Placeholder)
+     Description: Interface to supply chain simulation models (GCMat, 
+     RELOG)
+     Inputs: model_name (str), scenario (dict), parameters (dict)
+     Outputs: Simulation results including cost, capacity, and risk metrics
+     AGENT_INSTRUCTIONS:
+     You are a simulation agent that interfaces with supply chain 
+     optimization models.
+     Your task is to:
+     … +356 lines (ctrl+o to expand)
+
+⏺ Write(backend/mica/mcp_tools/doc_generator.py)
+  ⎿  Wrote 446 lines to backend/mica/mcp_tools/doc_generator.py            
+     """
+     MCP Tool: Document Generator
+     Description: Generates PDF reports from analysis results
+     Inputs: content (dict), template (str), output_path (str)
+     Outputs: Generated PDF report
+     AGENT_INSTRUCTIONS:
+     You are a document generation agent specialized in creating 
+     professional reports.
+     Your task is to:
+     … +436 lines (ctrl+o to expand)
+
+⏺ Update(backend/mica/mcp_tools/__init__.py)
+  ⎿  Added 35 lines                                                    
+        1    """MICA MCP Tools module."""
+        2 +  
+        3 +  from .base import MCPTool, ToolResult, ToolStatus, 
+          + tool_registry, register_tool
+        4 +  from .web_search import WebSearchTool, 
+          + FederalDocumentSearchTool
+        5 +  from .pdf_rag import PDFRAGTool, PDFParserTool
+        6 +  from .excel_handler import ExcelHandlerTool, 
+          + ExcelAnalysisTool
+        7 +  from .code_agent import CodeAgentTool, StatisticsAgentTool
+        8 +  from .simulation import SimulationTool, 
+          + ScenarioComparisonTool
+        9 +  from .doc_generator import DocumentGeneratorTool, 
+          + ReportTemplateTool
+       10 +  
+       11 +  __all__ = [
+       12 +      # Base
+       13 +      "MCPTool",
+       14 +      "ToolResult",
+       15 +      "ToolStatus",
+       16 +      "tool_registry",
+       17 +      "register_tool",
+       18 +      # Web Search
+       19 +      "WebSearchTool",
+       20 +      "FederalDocumentSearchTool",
+       21 +      # PDF/RAG
+       22 +      "PDFRAGTool",
+       23 +      "PDFParserTool",
+       24 +      # Excel
+       25 +      "ExcelHandlerTool",
+       26 +      "ExcelAnalysisTool",
+       27 +      # Code
+       28 +      "CodeAgentTool",
+       29 +      "StatisticsAgentTool",
+       30 +      # Simulation
+       31 +      "SimulationTool",
+       32 +      "ScenarioComparisonTool",
+       33 +      # Documentation
+       34 +      "DocumentGeneratorTool",
+       35 +      "ReportTemplateTool",
+       36 +  ]
+
+⏺ Now let me build the LangGraph orchestration layer.
+
+⏺ Write(backend/mica/agents/state.py)
+  ⎿  Wrote 287 lines to backend/mica/agents/state.py                       
+     """
+     MICA Agent State Definitions
+     Defines the state schema used by the LangGraph orchestration system.
+     The state flows through the workflow and tracks all information needed
+     for the multi-agent analysis process.
+     """
+     from dataclasses import dataclass, field
+     from datetime import datetime
+     … +277 lines (ctrl+o to expand)
+
+⏺ Write(backend/mica/agents/graph.py)
+  ⎿  Wrote 305 lines to backend/mica/agents/graph.py                       
+     """
+     MICA LangGraph Workflow Definition
+     Defines the state machine and workflow for the MICA orchestration 
+     system.
+     The workflow follows a human-in-the-loop pattern:
+     1. Receive query → Preliminary research
+     2. Propose plan → Wait for user approval
+     3. Execute plan (agents run automatically)
+     4. Present results → Wait for feedback
+     … +295 lines (ctrl+o to expand)
+
+⏺ Write(backend/mica/agents/orchestrator.py)
+  ⎿  Wrote 546 lines to backend/mica/agents/orchestrator.py                
+     """
+     MICA Orchestration Agent
+     The main orchestration logic for the MICA system. This module contains
+     the core functions that power each node in the LangGraph workflow.
+     The orchestrator:
+     1. Conducts preliminary research to understand the query
+     2. Generates an analysis plan with specific steps
+     3. Executes the plan by invoking appropriate tools
+     … +536 lines (ctrl+o to expand)
+
+⏺ Update(backend/mica/agents/__init__.py)
+  ⎿  Added 49 lines                             
+        1    """MICA LangGraph agents module."""
+        2 +  
+        3 +  from .state import (
+        4 +      AgentState,
+        5 +      WorkflowStatus,
+        6 +      PlanStep,
+        7 +      AnalysisPlan,
+        8 +      create_initial_state,
+        9 +      add_error,
+       10 +      add_artifact,
+       11 +      update_plan_step,
+       12 +  )
+       13 +  from .graph import (
+       14 +      create_workflow,
+       15 +      compile_workflow,
+       16 +      get_workflow,
+       17 +      reset_workflow,
+       18 +  )
+       19 +  from .orchestrator import (
+       20 +      conduct_preliminary_research,
+       21 +      generate_plan,
+       22 +      execute_plan,
+       23 +      generate_final_summary,
+       24 +      handle_feedback,
+       25 +      get_plan_summary,
+       26 +  )
+       27 +  
+       28 +  __all__ = [
+       29 +      # State
+       30 +      "AgentState",
+       31 +      "WorkflowStatus",
+       32 +      "PlanStep",
+       33 +      "AnalysisPlan",
+       34 +      "create_initial_state",
+       35 +      "add_error",
+       36 +      "add_artifact",
+       37 +      "update_plan_step",
+       38 +      # Graph
+       39 +      "create_workflow",
+       40 +      "compile_workflow",
+       41 +      "get_workflow",
+       42 +      "reset_workflow",
+       43 +      # Orchestrator
+       44 +      "conduct_preliminary_research",
+       45 +      "generate_plan",
+       46 +      "execute_plan",
+       47 +      "generate_final_summary",
+       48 +      "handle_feedback",
+       49 +      "get_plan_summary",
+       50 +  ]
+
+⏺ Write(backend/mica/api/main.py)
+  ⎿  Wrote 152 lines to backend/mica/api/main.py      
+     """
+     MICA FastAPI Application
+     Main entry point for the MICA backend API server.
+     """
+     import logging
+     import sys
+     from contextlib import asynccontextmanager
+     from typing import Optional
+     … +142 lines (ctrl+o to expand)
+
+⏺ Write(backend/mica/api/routes.py)
+  ⎿  Wrote 379 lines to backend/mica/api/routes.py
+     """
+     MICA API Routes
+     REST API endpoints for the MICA system.
+     """
+     import logging
+     import uuid
+     from datetime import datetime
+     from typing import Any, Dict, List, Optional
+     … +369 lines (ctrl+o to expand)
+
+⏺ Write(backend/mica/api/websocket.py)
+  ⎿  Wrote 308 lines to backend/mica/api/websocket.py              
+     """
+     MICA WebSocket Handler
+     Provides real-time streaming of workflow progress and results.
+     """
+     import asyncio
+     import json
+     import logging
+     from datetime import datetime
+     … +298 lines (ctrl+o to expand)
+
+⏺ Update(backend/mica/api/__init__.py)
+  ⎿  Added 6 lines                                           
+       1    """MICA API module."""
+       2 +  
+       3 +  from .main import app, create_app, run
+       4 +  from .routes import router
+       5 +  from .websocket import websocket_router, manager
+       6 +  
+       7 +  __all__ = ["app", "create_app", "run", "router", 
+         + "websocket_router", "manager"]
+
+⏺ Write(ui/pipes/mica_pipe.py)
+  ⎿  Wrote 377 lines to ui/pipes/mica_pipe.py                              
+     """
+     MICA Pipe for Open WebUI
+     This pipe connects Open WebUI to the MICA backend API, enabling users
+     to interact with the MICA analysis system through the Open WebUI 
+     interface.
+     Installation:
+     1. In Open WebUI, go to Admin Settings > Pipelines
+     2. Add a new pipeline and paste this code
+     3. Configure the MICA_BACKEND_URL environment variable
+     … +367 lines (ctrl+o to expand)
+
+⏺ Write(docker-compose.yml)
+  ⎿  Wrote 101 lines to docker-compose.yml               
+     version: '3.8'
+     # MICA - Materials Intelligence Co-Analyst
+     # Docker Compose configuration for local development
+     services:
+       # MICA Backend API
+       mica-backend:
+         build:
+           context: ./backend
+     … +91 lines (ctrl+o to expand)
+
+⏺ Write(backend/Dockerfile)
+  ⎿  Wrote 67 lines to backend/Dockerfile                              
+     # MICA Backend Dockerfile
+     # Multi-stage build for optimized image size
+     # Build stage
+     FROM python:3.11-slim as builder
+     WORKDIR /app
+     # Install build dependencies
+     RUN apt-get update && apt-get install -y --no-install-recommends \
+     … +57 lines (ctrl+o to expand)
+
+⏺ Write(ui/Dockerfile)
+  ⎿  Wrote 12 lines to ui/Dockerfile                           
+     # Open WebUI with MICA Pipe
+     # This Dockerfile extends Open WebUI with MICA integration
+     FROM ghcr.io/open-webui/open-webui:main
+     # Copy MICA pipe
+     COPY pipes/ /app/backend/pipelines/mica/
+     # Set environment variables for MICA integration
+     ENV MICA_BACKEND_URL=http://mica-backend:8000
+     … +2 lines (ctrl+o to expand)
+
+⏺ Read(README.md)
+  ⎿  Read 2 lines
+
+⏺ Write(README.md)
+  ⎿  Added 220 lines, removed 1 line                                     
+         1 -  MICA agentic framework.
+         1 +  # MICA - Materials Intelligence Co-Analyst
+         2 +  
+         3 +  An AI-powered multi-agent system for critical materials 
+           + supply chain analysis, developed for the Department of 
+           + Energy.
+         4 +  
+         5 +  ## Overview
+         6 +  
+         7 +  MICA is a LangGraph-based agentic framework that serves as 
+           + an intelligent co-analyst for exploring research pathways, 
+           + identifying cost-competitive sourcing strategies, analyzing 
+           + market dynamics, and prioritizing investments in domestic 
+           + supply chain capabilities.
+         8 +  
+         9 +  ### Key Features
+        10 +  
+        11 +  - **Multi-Agent Architecture**: Orchestration agent with 
+           + specialized sub-agents for web search, document analysis, 
+           + data processing, and report generation
+        12 +  - **Human-in-the-Loop (HITL)**: Two-phase approval workflow
+           +  - user approves plan before execution, reviews results 
+           + before completion
+        13 +  - **Comprehensive Logging**: Every query creates a session 
+           + folder with complete audit trail
+        14 +  - **Multiple LLM Backends**: Supports Argo (internal lab) 
+           + and Google Gemini models
+        15 +  - **Open WebUI Integration**: User-friendly chat interface 
+           + via Open WebUI pipes
+        16 +  
+        17 +  ## Architecture
+        18 +  
+        19 +  ```
+        20 +  ┌──────────────────────────────────────────────────────────
+           + ───────────┐
+        21 +  │                         Open WebUI (Docker)              
+           +            │
+        22 +  └───────────────────────────────┬──────────────────────────
+           + ───────────┘
+        23 +                                  │ HTTP/WebSocket
+        24 +                                  ▼
+        25 +  ┌──────────────────────────────────────────────────────────
+           + ───────────┐
+        26 +  │                      MICA Backend (FastAPI)              
+           +            │
+        27 +  │  ┌───────────────────────────────────────────────────────
+           + ───────┐  │
+        28 +  │  │              Orchestration Agent (LangGraph)          
+           +        │  │
+        29 +  │  │  - Receives query → preliminary research → proposes 
+           + plan     │  │
+        30 +  │  │  - Waits for user approval                            
+           +        │  │
+        31 +  │  │  - Delegates to sub-agents after approval             
+           +        │  │
+        32 +  │  │  - Compiles final report for user review              
+           +        │  │
+        33 +  │  └───────────────────────────────────────────────────────
+           + ───────┘  │
+        34 +  │                                                          
+           +            │
+        35 +  │  ┌─────────────────────── MCP Tools 
+           + ──────────────────────────┐    │
+        36 +  │  │  Web Search │ PDF/RAG │ Excel │ Code │ Simulation │ 
+           + Report │    │
+        37 +  │  └───────────────────────────────────────────────────────
+           + ─────┘    │
+        38 +  │                                                          
+           +            │
+        39 +  │  ┌──────────────────── Logging System 
+           + ────────────────────────┐    │
+        40 +  │  │  /sessions/{session_id}/ - Complete audit trail       
+           +      │    │
+        41 +  │  └───────────────────────────────────────────────────────
+           + ─────┘    │
+        42 +  └──────────────────────────────────────────────────────────
+           + ───────────┘
+        43 +  ```
+        44 +  
+        45 +  ## Quick Start
+        46 +  
+        47 +  ### Prerequisites
+        48 +  
+        49 +  - Docker and Docker Compose
+        50 +  - Python 3.10+ (for local development)
+        51 +  - One of:
+        52 +    - Argo access (VPN + ARGO_USERNAME)
+        53 +    - Google API key (GOOGLE_API_KEY)
+        54 +  
+        55 +  ### Using Docker (Recommended)
+        56 +  
+        57 +  1. **Clone and configure:**
+        58 +     ```bash
+        59 +     cd /path/to/MICA
+        60 +     cp .env.example .env
+        61 +     # Edit .env with your credentials
+        62 +     ```
+        63 +  
+        64 +  2. **Start services:**
+        65 +     ```bash
+        66 +     docker-compose up -d
+        67 +     ```
+        68 +  
+        69 +  3. **Access the UI:**
+        70 +     - Open WebUI: http://localhost:3000
+        71 +     - API Docs: http://localhost:8000/docs
+        72 +  
+        73 +  ### Local Development
+        74 +  
+        75 +  1. **Install dependencies:**
+        76 +     ```bash
+        77 +     cd backend
+        78 +     pip install -r requirements.txt
+        79 +     ```
+        80 +  
+        81 +  2. **Configure environment:**
+        82 +     ```bash
+        83 +     export MICA_LLM_PROVIDER=argo  # or gemini
+        84 +     export ARGO_USERNAME=your_username  # if using Argo
+        85 +     export GOOGLE_API_KEY=your_key  # if using Gemini
+        86 +     ```
+        87 +  
+        88 +  3. **Run the backend:**
+        89 +     ```bash
+        90 +     python -m mica.api.main
+        91 +     ```
+        92 +  
+        93 +  ## Configuration
+        94 +  
+        95 +  ### Environment Variables
+        96 +  
+        97 +  | Variable | Description | Default |
+        98 +  |----------|-------------|---------|
+        99 +  | `MICA_LLM_PROVIDER` | LLM provider (argo/gemini) | `argo`
+           +  |
+       100 +  | `MICA_DEFAULT_MODEL` | Default model ID | 
+           + `claudesonnet45` |
+       101 +  | `ARGO_USERNAME` | Argo API username | - |
+       102 +  | `GOOGLE_API_KEY` | Google API key | - |
+       103 +  | `MICA_SESSION_DIR` | Session storage path | `./sessions` 
+           + |
+       104 +  | `MICA_LOG_LEVEL` | Log level | `INFO` |
+       105 +  
+       106 +  See `.env.example` for complete configuration options.
+       107 +  
+       108 +  ## Usage
+       109 +  
+       110 +  ### Via Open WebUI
+       111 +  
+       112 +  1. Navigate to http://localhost:3000
+       113 +  2. Select "MICA" from the model dropdown
+       114 +  3. Enter your analysis query
+       115 +  4. Review and approve the proposed plan
+       116 +  5. Wait for execution and review results
+       117 +  
+       118 +  ### Via API
+       119 +  
+       120 +  ```python
+       121 +  import httpx
+       122 +  
+       123 +  # Submit a query
+       124 +  response = httpx.post("http://localhost:8000/api/v1/query",
+           +  json={
+       125 +      "query": "What are the supply chain risks for rare 
+           + earth magnets?",
+       126 +      "user_id": "analyst1"
+       127 +  })
+       128 +  session_id = response.json()["session_id"]
+       129 +  
+       130 +  # Check status and get plan
+       131 +  status = httpx.get(f"http://localhost:8000/api/v1/session/{
+           + session_id}")
+       132 +  plan = httpx.get(f"http://localhost:8000/api/v1/session/{se
+           + ssion_id}/plan")
+       133 +  
+       134 +  # Approve the plan
+       135 +  httpx.post(f"http://localhost:8000/api/v1/session/{session_
+           + id}/approve", json={
+       136 +      "session_id": session_id,
+       137 +      "approved": True
+       138 +  })
+       139 +  
+       140 +  # Get results
+       141 +  results = httpx.get(f"http://localhost:8000/api/v1/session/
+           + {session_id}")
+       142 +  ```
+       143 +  
+       144 +  ## MCP Tools
+       145 +  
+       146 +  MICA includes the following MCP-compatible tools:
+       147 +  
+       148 +  | Tool | Description |
+       149 +  |------|-------------|
+       150 +  | `web_search` | Web search with federal document focus |
+       151 +  | `pdf_rag` | PDF parsing and semantic search (RAG) |
+       152 +  | `excel_handler` | Excel file read/write operations |
+       153 +  | `code_agent` | Python code execution for analysis |
+       154 +  | `simulation` | Supply chain simulation (placeholder) |
+       155 +  | `doc_generator` | PDF report generation |
+       156 +  
+       157 +  ## Project Structure
+       158 +  
+       159 +  ```
+       160 +  MICA/
+       161 +  ├── backend/
+       162 +  │   ├── mica/
+       163 +  │   │   ├── api/          # FastAPI routes and WebSocket
+       164 +  │   │   ├── agents/       # LangGraph orchestration
+       165 +  │   │   ├── llm/          # LLM providers (Argo, Gemini)
+       166 +  │   │   ├── mcp_tools/    # MCP-compatible tools
+       167 +  │   │   └── logging/      # Session logging
+       168 +  │   ├── sessions/         # Session data storage
+       169 +  │   ├── Dockerfile
+       170 +  │   └── requirements.txt
+       171 +  ├── ui/
+       172 +  │   ├── pipes/            # Open WebUI pipe
+       173 +  │   └── Dockerfile
+       174 +  ├── docs/
+       175 +  │   └── deployment.md
+       176 +  ├── docker-compose.yml
+       177 +  └── .env.example
+       178 +  ```
+       179 +  
+       180 +  ## Workflow States
+       181 +  
+       182 +  ```
+       183 +  INITIAL → RESEARCHING → PLAN_PROPOSED → AWAITING_APPROVAL →
+       184 +  EXECUTING → COMPLETED → AWAITING_FEEDBACK
+       185 +  ```
+       186 +  
+       187 +  - **AWAITING_APPROVAL**: User must approve/reject the plan
+       188 +  - **AWAITING_FEEDBACK**: User can provide feedback or 
+           + follow-up queries
+       189 +  
+       190 +  ## Development
+       191 +  
+       192 +  ### Running Tests
+       193 +  
+       194 +  ```bash
+       195 +  cd backend
+       196 +  pip install -e ".[dev]"
+       197 +  pytest
+       198 +  ```
+       199 +  
+       200 +  ### Code Style
+       201 +  
+       202 +  ```bash
+       203 +  black mica/
+       204 +  ruff check mica/
+       205 +  mypy mica/
+       206 +  ```
+       207 +  
+       208 +  ## License
+       209 +  
+       210 +  MIT License - See LICENSE file for details.
+       211 +  
+       212 +  ## Contributing
+       213 +  
+       214 +  1. Fork the repository
+       215 +  2. Create a feature branch
+       216 +  3. Submit a pull request
+       217 +  
+       218 +  ## Acknowledgments
+       219 +  
+       220 +  Developed by the MICA Team for the Department of Energy.
+
+⏺ Write(docs/deployment.md)
+  ⎿  Wrote 403 lines to docs/deployment.md                                 
+     # MICA Deployment Guide
+     This guide covers deployment options for MICA, from local development
+     to production cloud hosting.
+     ## Table of Contents
+     1. [Local Development](#local-development)
+     2. [Docker Deployment](#docker-deployment)
+     3. [Cloud Deployment](#cloud-deployment)
+     4. [Production Considerations](#production-considerations)
+     … +393 lines (ctrl+o to expand)
+  ⎿  Limit reached · resets 2am (America/Chicago) · /upgrade to Max or turn on 
+     /extra-usage
+     /upgrade or /extra-usage to finish what you're working on.
+
+> /rate-limit-options 
+  ⎿  Login successful
+
+> continue 
+  ⎿ API Error: 400 {"type":"error","error":{"type":"invalid_request_error","mess
+    age":"messages.38.content.4: unexpected `tool_use_id` found in `tool_result`
+     blocks: toolu_01VKCYxa6XG2xFGM4FfLHsiY. Each `tool_result` block must have 
+    a corresponding `tool_use` block in the previous 
+    message."},"request_id":"req_011CXVPU9wo4hsgELncKEZm4"}
+
+> /login 
+  ⎿  Login successful
+
+> continue 
+  ⎿ API Error: 400 {"type":"error","error":{"type":"invalid_request_error","mess
+    age":"messages.38.content.4: unexpected `tool_use_id` found in `tool_result`
+     blocks: toolu_01VKCYxa6XG2xFGM4FfLHsiY. Each `tool_result` block must have 
+    a corresponding `tool_use` block in the previous 
+    message."},"request_id":"req_011CXVPxHmcywQuz2CrDhNUj"}
+
+
+
