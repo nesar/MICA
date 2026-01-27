@@ -344,7 +344,7 @@ class Pipe:
 
         report_path = results_data.get("report_path")
         if report_path:
-            lines.append(f"\n📄 **Report generated:** {report_path}")
+            lines.append(f"\n**Report generated:** {report_path}")
 
         errors = results_data.get("errors", [])
         if errors:

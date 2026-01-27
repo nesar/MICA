@@ -200,7 +200,7 @@ async def process_message_stream(request: ChatRequest) -> AsyncGenerator[str, No
                                     f"{MICA_BACKEND_URL}/api/v1/session/{session_id}/approve",
                                     json={"session_id": session_id, "approved": True}
                                 )
-                                yield "✅ **Plan approved!** Executing analysis...\n\n"
+                                yield "**Plan approved.** Executing analysis...\n\n"
 
                                 # Poll for execution results
                                 for i in range(60):  # 10 minutes max
@@ -214,19 +214,19 @@ async def process_message_stream(request: ChatRequest) -> AsyncGenerator[str, No
                                         summary = exec_data.get("final_summary", "Analysis complete.")
                                         if chat_id in sessions:
                                             del sessions[chat_id]
-                                        yield f"\n\n## 📊 Results\n\n{summary}"
+                                        yield f"\n\n## Results\n\n{summary}"
                                         return
 
                                     elif exec_status == "failed":
                                         errors = exec_data.get("errors", [])
-                                        yield f"\n\n❌ Execution failed: {errors[0].get('error') if errors else 'Unknown error'}"
+                                        yield f"\n\nExecution failed: {errors[0].get('error') if errors else 'Unknown error'}"
                                         return
 
                                     if i % 3 == 0 and i > 0:
                                         current_step = exec_data.get("current_step", "working")
-                                        yield f"⏳ Still executing... (step: {current_step})\n"
+                                        yield f"Still executing... (step: {current_step})\n"
 
-                                yield "\n⚠️ Execution is taking longer than expected. Check back later."
+                                yield "\nExecution is taking longer than expected. Check back later."
                                 return
                             elif any(w in lower_msg for w in ["no", "reject", "cancel"]):
                                 await client.post(
@@ -235,7 +235,7 @@ async def process_message_stream(request: ChatRequest) -> AsyncGenerator[str, No
                                 )
                                 if chat_id in sessions:
                                     del sessions[chat_id]
-                                yield "❌ Plan rejected. Feel free to ask a new question."
+                                yield "Plan rejected. Feel free to ask a new question."
                                 return
                 except:
                     pass
@@ -245,7 +245,7 @@ async def process_message_stream(request: ChatRequest) -> AsyncGenerator[str, No
             creds_data = creds_res.json()
 
             if creds_data.get("requires_setup"):
-                yield "⚠️ **Credentials Required**\n\n"
+                yield "**Credentials Required**\n\n"
                 yield "Before using MICA, please set up your LLM credentials:\n\n"
                 yield "1. Open http://localhost:8000/docs\n"
                 yield "2. Use `POST /api/v1/credentials` with:\n"
@@ -254,7 +254,7 @@ async def process_message_stream(request: ChatRequest) -> AsyncGenerator[str, No
                 return
 
             # Submit new query
-            yield "🔍 **Submitting query to MICA...**\n\n"
+            yield "**Submitting query to MICA...**\n\n"
 
             query_res = await client.post(
                 f"{MICA_BACKEND_URL}/api/v1/query",
@@ -264,8 +264,8 @@ async def process_message_stream(request: ChatRequest) -> AsyncGenerator[str, No
             session_id = query_data.get("session_id")
             sessions[chat_id] = session_id
 
-            yield f"📋 Session: `{session_id}`\n\n"
-            yield "⏳ Conducting preliminary research and generating analysis plan...\n\n"
+            yield f"Session: `{session_id}`\n\n"
+            yield "Conducting preliminary research and generating analysis plan...\n\n"
 
             # Poll for plan
             for i in range(30):  # 5 minutes max
@@ -278,7 +278,7 @@ async def process_message_stream(request: ChatRequest) -> AsyncGenerator[str, No
                 if status in ["plan_proposed", "awaiting_approval"]:
                     plan = status_data.get("plan", [])
 
-                    yield "## 📊 Analysis Plan Generated\n\n"
+                    yield "## Analysis Plan Generated\n\n"
 
                     for j, step in enumerate(plan):
                         yield f"**Step {j+1}:** {step.get('description', 'N/A')}\n"
@@ -290,7 +290,7 @@ async def process_message_stream(request: ChatRequest) -> AsyncGenerator[str, No
 
                 elif status == "failed":
                     errors = status_data.get("errors", [])
-                    yield f"❌ Analysis failed: {errors[0].get('error') if errors else 'Unknown error'}"
+                    yield f"Analysis failed: {errors[0].get('error') if errors else 'Unknown error'}"
                     return
 
                 elif status in ["completed", "awaiting_feedback"]:
@@ -301,14 +301,14 @@ async def process_message_stream(request: ChatRequest) -> AsyncGenerator[str, No
                     return
 
                 if i % 3 == 0 and i > 0:
-                    yield f"⏳ Still working... (status: {status})\n"
+                    yield f"Still working... (status: {status})\n"
 
-            yield "⚠️ Analysis is taking longer than expected. Check back later."
+            yield "Analysis is taking longer than expected. Check back later."
 
         except httpx.ConnectError:
-            yield f"❌ Cannot connect to MICA backend at {MICA_BACKEND_URL}"
+            yield f"Cannot connect to MICA backend at {MICA_BACKEND_URL}"
         except Exception as e:
-            yield f"❌ Error: {str(e)}"
+            yield f"Error: {str(e)}"
 
 
 async def process_message(request: ChatRequest) -> str:

@@ -678,11 +678,11 @@ def get_plan_summary(state: AgentState) -> str:
 
     for i, step in enumerate(state["plan"], 1):
         status_icon = {
-            "pending": "⏳",
-            "running": "🔄",
-            "completed": "✅",
-            "failed": "❌",
-        }.get(step["status"], "❓")
+            "pending": "[ ]",
+            "running": "[~]",
+            "completed": "[x]",
+            "failed": "[!]",
+        }.get(step["status"], "[?]")
 
         lines.append(f"{i}. {status_icon} [{step['tool']}] {step['description']}")
 
