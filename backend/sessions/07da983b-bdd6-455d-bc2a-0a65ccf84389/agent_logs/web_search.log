@@ -1,5 +1,0 @@
-[2026-01-27T02:32:08.252876] INFO: Agent web_search started
-[2026-01-27T02:32:08.252956] INFO: Executed step step_1
-[2026-01-27T02:32:08.253029] DEBUG: Output: {"status": "success", "data": [], "message": "Found 0 results", "metadata": {"query": "\u2713 DOE and federal tools are cataloged with access information", "provider": "duckduckgo", "num_results": 0}, "error": "<bound method ToolResult.error of <class 'mica.mcp_tools.base.ToolResult'>>", "execution_time": 2.622241}
-[2026-01-27T02:32:08.253036] INFO: Agent web_search completed
-[2026-01-27T02:32:08.253066] INFO: Duration: 0.00s

@@ -1,0 +1,65 @@
+# Environment and secrets
+.env
+*.env.local
+
+# Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+*.pyo
+
+# Python virtual environments
+venv/
+.venv/
+env/
+ENV/
+
+# IDE and editors
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Session data (keep locally, not in git)
+backend/sessions/
+sessions/
+
+# Database files
+backend/chroma_db/
+chroma_db/
+*.sqlite3
+
+# Build artifacts
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Logs
+*.log
+
+# Test and coverage
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# Keep these files tracked
+!.env.example
+!**/requirements.txt
+!environment.yml

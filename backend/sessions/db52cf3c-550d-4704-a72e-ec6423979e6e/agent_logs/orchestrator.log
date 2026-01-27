@@ -1,5 +1,0 @@
-[2026-01-27T00:00:49.271994] INFO: Agent orchestrator started
-[2026-01-27T00:00:49.272067] INFO: Preliminary research completed
-[2026-01-27T00:00:49.272127] DEBUG: Output: {"summary": "# Preliminary Research Summary: Critical Materials in Greenland\n\n## Query Understanding\n\nThe user is asking for:\n1. **Top 3 critical materials** found in Greenland\n2. **Exclusion criteria**: Materials NOT available in mainland US or Alaska\n3. **Historical context**: Last 5 years (2019-2024)\n\n## Key Aspects to Address\n\n### 1. **Greenland's Critical Material Resources**\nGreenland is known for significant deposits of:\n- **Rare Earth Elements (REEs)** - particularly at Kvan
-[2026-01-27T00:00:49.272135] INFO: Agent orchestrator completed
-[2026-01-27T00:00:49.272165] INFO: Duration: 0.00s

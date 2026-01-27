@@ -1,5 +1,0 @@
-[2026-01-27T05:51:47.584831] INFO: Agent doc_generator started
-[2026-01-27T05:51:47.584849] INFO: Executed step step_11
-[2026-01-27T05:51:47.584872] DEBUG: Output: {"status": "error", "data": null, "message": "sections are required", "metadata": {}, "error": "sections are required", "execution_time": 0.0}
-[2026-01-27T05:51:47.584891] INFO: Agent doc_generator completed
-[2026-01-27T05:51:47.584908] INFO: Duration: 0.00s

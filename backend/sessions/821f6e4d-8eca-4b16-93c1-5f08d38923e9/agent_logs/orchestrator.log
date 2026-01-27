@@ -1,5 +1,0 @@
-[2026-01-26T07:43:48.445545] INFO: Agent orchestrator started
-[2026-01-26T07:43:48.445639] INFO: Preliminary research completed
-[2026-01-26T07:43:48.445700] DEBUG: Output: {"summary": "# Initial Assessment\n\n## Understanding of Query\n\nThis query is **outside my domain of expertise**. The user is asking about options trading (financial derivatives), which is not related to critical materials supply chain analysis.\n\n## Key Observations\n\n1. **Topic Mismatch**: The query concerns financial instruments and stock market trading strategies, not materials intelligence or supply chain analysis.\n\n2. **My Specialization**: I am MICA, designed specifically for:\n   -
-[2026-01-26T07:43:48.445705] INFO: Agent orchestrator completed
-[2026-01-26T07:43:48.445739] INFO: Duration: 0.00s

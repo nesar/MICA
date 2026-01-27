@@ -1,6 +1,0 @@
-{
-  "query": "show me all the tools available with this agent",
-  "provider": "duckduckgo",
-  "num_results": 0,
-  "results": []
-}

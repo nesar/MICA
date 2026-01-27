@@ -1,5 +1,0 @@
-[2026-01-26T07:59:57.906418] INFO: Agent orchestrator started
-[2026-01-26T07:59:57.907014] INFO: Preliminary research completed
-[2026-01-26T07:59:57.907269] DEBUG: Output: {"summary": "## \ud83c\udfaf Query Analysis\n\n**User Request Type:** Meta-request for chat title generation\n\n**Understanding:**\nThe user is NOT asking for materials analysis. Instead, they want me to:\n- Create a 3-5 word title summarizing the chat history\n- Include an emoji\n- Use the language from the chat (English)\n- Avoid quotation marks or special formatting\n- Respond ONLY with the title text\n\n**Chat History Context:**\nThe conversation is about identifying Greenland's top 3 critic
-[2026-01-26T07:59:57.907285] INFO: Agent orchestrator completed
-[2026-01-26T07:59:57.907409] INFO: Duration: 0.00s

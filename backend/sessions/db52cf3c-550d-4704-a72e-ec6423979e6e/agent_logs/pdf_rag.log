@@ -1,5 +1,0 @@
-[2026-01-27T00:02:10.980375] INFO: Agent pdf_rag started
-[2026-01-27T00:02:10.980416] INFO: Executed step step_11
-[2026-01-27T00:02:10.980464] DEBUG: Output: {"status": "error", "data": null, "message": "Either pdf_path or query is required", "metadata": {}, "error": "Either pdf_path or query is required", "execution_time": 0.0}
-[2026-01-27T00:02:10.980473] INFO: Agent pdf_rag completed
-[2026-01-27T00:02:10.980501] INFO: Duration: 0.00s

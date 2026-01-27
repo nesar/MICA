@@ -1,6 +1,0 @@
-{
-  "query": "Analyze the current state of US domestic rare earth element production capacity. What percentage of US demand is met domestically vs imported? Include data from USGS and DOE reports. `\n`` Expected Workflow :\nWeb search for USGS Mineral Commodity Summaries\nDOE critical materials reports\nTrade data analysis\nProduction capacity assessment\nImport dependency calculations\nFinal report with statistics\nKey Topics to Cover:\nMountain Pass mine (California)\nMP Materials production data\nHeavy vs light REE separation capacity\nChina import dependency (\\~80%)\nDOE supply chain initiatives",
-  "provider": "duckduckgo",
-  "num_results": 0,
-  "results": []
-}
