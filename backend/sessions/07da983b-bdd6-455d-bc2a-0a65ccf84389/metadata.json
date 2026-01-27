@@ -1,0 +1,15 @@
+{
+  "session_id": "07da983b-bdd6-455d-bc2a-0a65ccf84389",
+  "created_at": "2026-01-27T02:16:30.545158",
+  "status": "completed",
+  "query": "What tools are available?",
+  "user_id": "test",
+  "model": null,
+  "updated_at": "2026-01-27T02:38:42.993144",
+  "approved": true,
+  "approval_feedback": null,
+  "report_generated_at": "2026-01-27T02:38:42.992615",
+  "report_path": "sessions/07da983b-bdd6-455d-bc2a-0a65ccf84389/report_20260126_203842.pdf",
+  "completed_at": "2026-01-27T02:38:42.993142",
+  "summary": "# MICA Capabilities: Comprehensive Summary\n\n## Executive Summary\n\nMICA (Materials Intelligence Co-Analyst) is an AI-powered analytical system designed to support Department of Energy critical materials supply chain analysis. The system provides three core capabilities:\n\n1. **Analytical Frameworks**: Ten specialized frameworks covering supply chain criticality assessment, vulnerability analysis, market dynamics, technology evaluation, and policy prioritization\n2. **Information Tools**: Web search"
+}

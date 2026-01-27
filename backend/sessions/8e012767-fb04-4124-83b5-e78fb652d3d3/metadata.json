@@ -1,0 +1,15 @@
+{
+  "session_id": "8e012767-fb04-4124-83b5-e78fb652d3d3",
+  "created_at": "2026-01-27T02:06:09.102654",
+  "status": "completed",
+  "query": "show me all the tools available with this agent",
+  "user_id": "webui_user",
+  "model": null,
+  "updated_at": "2026-01-27T02:21:52.109044",
+  "approved": true,
+  "approval_feedback": null,
+  "report_generated_at": "2026-01-27T02:21:52.108843",
+  "report_path": "sessions/8e012767-fb04-4124-83b5-e78fb652d3d3/report_20260126_202152.pdf",
+  "completed_at": "2026-01-27T02:21:52.109043",
+  "summary": "# MICA Agent Capabilities: Comprehensive Analysis Summary\n\n## Executive Summary\n\nBased on the analysis results, here are the key findings about MICA's available tools:\n\n1. **Six Primary Analytical Tools**: MICA operates through 6 specialized analytical tools designed to work in concert for comprehensive critical materials intelligence, including the Multi-Source Intelligence Aggregator (MSIA) and Supply Chain Mapper & Analyzer (SCMA).\n\n2. **Extensive Data Access**: MICA can access and synthesize"
+}

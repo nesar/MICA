@@ -1,0 +1,37 @@
+{
+  "query": "What are the current US rare earth production statistics?",
+  "provider": "duckduckgo",
+  "num_results": 5,
+  "results": [
+    {
+      "title": "USA Rare Earth shares jump on report of $1.6bn US government investment",
+      "url": "https://www.msn.com/en-us/money/markets/usa-rare-earth-shares-jump-on-report-of-1-6bn-us-government-investment/ar-AA1V01ZA",
+      "snippet": "Shares in USA Rare Earth (NASDAQ:USAR) surged about 50% after reports said the Trump administration is preparing to invest $1.6 billion in the Oklahoma-based rare earths producer, in what would be the largest federal commitment yet to the U.",
+      "source": "www.msn.com"
+    },
+    {
+      "title": "US government is buying USA Rare Earth stock: here's why you must 'sell'",
+      "url": "https://www.msn.com/en-us/money/top-stocks/us-government-is-buying-usa-rare-earth-stock-here-s-why-you-must-sell/ar-AA1V2K5F",
+      "snippet": "USA Rare Earth (NASDAQ: USAR) soared nearly 30% this morning after the US Department of Commerce confirmed plans of investing about $1.6 billion in the critical minerals startup. However, while that number sure is impressive on the surface,",
+      "source": "www.msn.com"
+    },
+    {
+      "title": "Pentagon Invests in Domestic Rare Earth Mineral Production",
+      "url": "https://www.afcea.org/signal-media/pentagon-invests-domestic-rare-earth-mineral-production",
+      "snippet": "The Pentagon announced Thursday that it has awarded $29.9 million to ElementUS Minerals LLC (ElementUSA) to develop a demonstration facility in Gramercy, Louisiana, to separate and purify gallium and scandium from existing industrial waste, which supports ...",
+      "source": "www.afcea.org"
+    },
+    {
+      "title": "Trump administration invests in another US rare earth miner to loosen China's grip on supply",
+      "url": "https://www.courant.com/2026/01/26/trump-administration-rare-earth-miner/",
+      "snippet": "China processes more than 90% of the world's critical minerals and has used its dominance in the market to gain leverage in the trade war with Washington.",
+      "source": "www.courant.com"
+    },
+    {
+      "title": "Skadden, White & Case, Latham See Mining Work Surge as US-China Rare Earths Race Heats Up",
+      "url": "https://www.law.com/international-edition/2025/11/06/skadden-white--case-latham-see-mining-work-surge-as-uschina-rare-earths-race-heats-up/",
+      "snippet": "Lawyers say the momentum will continue as governments push for long-term critical mineral supply, despite rising political, regulatory and environmental risks. The race between the U.S., China and other global powers to secure rare earth minerals ...",
+      "source": "www.law.com"
+    }
+  ]
+}

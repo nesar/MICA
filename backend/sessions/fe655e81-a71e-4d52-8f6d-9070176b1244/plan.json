@@ -1,0 +1,204 @@
+{
+  "reasoning": "# Detailed Analysis Plan\n\n## Step 1: Verify US Critical Minerals List (2019-2024)\n**Tool:** web_search  \n**Inputs:** \"USGS critical minerals list 2019 2020 2021 2022 2023 2024\", \"DOE critical materials strategy\"  \n**Expected Output:** Official list of critical minerals as defined by US government, any updates during the period, specific definitions of what makes a material \"critical\"\n\n## Step 2: Identify Greenland's Major Mineral Deposits and Resources\n**Tool:** web_search  \n**Inputs:** \"Greenland mineral resources critical minerals\", \"Kvanefjeld rare earth elements\", \"Greenland graphite deposits\", \"Greenland uranium niobium tantalum\", \"Greenland Mineral Resources Agency 2019-2024\"  \n**Expected Output:** Comprehensive inventory of Greenland's critical mineral deposits, resource estimates, grade quality, and project status\n\n## Step 3: Determine US Mainland Production Status for Each Critical Material\n**Tool:** web_search  \n**Inputs:** \"US domestic production graphite 2019-2024\", \"US rare earth elements production Mountain Pass\", \"US uranium production 2019-2024\", \"US niobium tantalum production\", \"USGS mineral commodity summaries 2019-2024\"  \n**Expected Output:** Production volumes, import dependency percentages, domestic mining operations status for each candidate material\n\n## Step 4: Cross-Reference to Identify Top 3 Materials\n**Tool:** code_agent  \n**Inputs:** Data from Steps 1-3 (critical minerals lists, Greenland resources, US production data)  \n**Expected Output:** Ranked list identifying which critical materials are: (a) present in significant quantities in Greenland, (b) not produced or minimally produced in mainland US, (c) have highest strategic importance\n\n## Step 5: Research 2019 Historical Context and Trump Administration Interest\n**Tool:** web_search  \n**Inputs:** \"Trump Greenland purchase 2019\", \"US Greenland critical minerals 2019\", \"Greenland mining policy 2019\"  \n**Expected Output:** Timeline of events in 2019, geopolitical context, initial mineral resource assessments that drove interest\n\n## Step 6: Track 2020-2021 Greenland Political Developments\n**Tool:** web_search  \n**Inputs:** \"Greenland election 2021 uranium ban\", \"Inuit Ataqatigiit mining policy\", \"Kvanefjeld project 2020 2021\", \"Greenland zero-tolerance uranium policy\"  \n**Expected Output:** Election results, policy changes, impact on specific mining projects, environmental and political considerations\n\n## Step 7: Document 2022-2023 Policy Reversals and New Developments\n**Tool:** web_search  \n**Inputs:** \"Greenland uranium ban reversal 2023\", \"Greenland mining licenses 2022 2023\", \"US Greenland mineral cooperation agreement\", \"Greenland rare earth projects 2022 2023\"  \n**Expected Output:** Policy shifts, new exploration licenses granted, international partnerships formed, project advancement status\n\n## Step 8: Capture 2024 Current Status and Recent Developments\n**Tool:** web_search  \n**Inputs:** \"Greenland critical minerals 2024\", \"Greenland mining projects 2024\", \"US Greenland relations 2024\", \"Trump Greenland 2024\"  \n**Expected Output:** Most recent developments, current project status, ongoing policy discussions, geopolitical tensions\n\n## Step 9: Deep Dive on Material #1 (Likely Graphite)\n**Tool:** web_search  \n**Inputs:** \"Greenland graphite Amitsoq project 2019-2024\", \"US graphite imports dependency\", \"natural graphite vs synthetic graphite US production\"  \n**Expected Output:** Detailed history of graphite exploration/development in Greenland, US import sources, strategic importance for batteries/EVs\n\n## Step 10: Deep Dive on Material #2 (Likely Heavy REEs)\n**Tool:** web_search  \n**Inputs:** \"Greenland heavy rare earth elements dysprosium terbium\", \"Kvanefjeld Kringlerne REE composition\", \"US rare earth production heavy vs light REEs Mountain Pass\"  \n**Expected Output:** Specific REE composition in Greenland deposits, comparison to US production capabilities, HREE vs LREE distinction\n\n## Step 11: Deep Dive on Material #3 (Likely Niobium or Fluorspar)\n**Tool:** web_search  \n**Inputs:** \"Greenland niobium deposits\", \"Greenland fluorspar\", \"US niobium production import dependency\", \"US fluorspar production\"  \n**Expected Output:** Resource estimates, US dependency levels, strategic applications, development timeline\n\n## Step 12: Compile Chronological Timeline\n**Tool:** code_agent  \n**Inputs:** All historical data from Steps 5-8  \n**Expected Output:** Structured timeline visualization showing key events 2019-2024 for each of the three materials\n\n## Step 13: Synthesize Final Answer\n**Tool:** Internal analysis (no tool needed)  \n**Inputs:** All outputs from Steps 1-12  \n**Expected Output:** Structured response identifying the top 3 critical materials with clear justification, followed by chronological history 2019-2024 for each material\n\n## Step 14: Create Supporting Visualizations (if needed)\n**Tool:** code_agent  \n**Inputs:** Production data, import dependency percentages, timeline events  \n**Expected Output:** Charts showing US import dependency, timeline graphics, resource comparison tables\n\n---\n\n**Execution Priority:** Steps 1-4 are foundational and must be completed first. Steps 5-8 can be executed in parallel. Steps 9-11 depend on identification from Step 4. Steps 12-14 are synthesis steps.",
+  "steps": [
+    {
+      "step_id": "step_0",
+      "tool": "web_search",
+      "description": "Verify US Critical Minerals List (2019-2024)",
+      "inputs": {
+        "queries": [
+          "USGS critical minerals list 2019 2020 2021 2022 2023 2024",
+          "DOE critical materials strategy",
+          "critical"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_1",
+      "tool": "web_search",
+      "description": "Identify Greenland's Major Mineral Deposits and Resources",
+      "inputs": {
+        "queries": [
+          "Greenland mineral resources critical minerals",
+          "Kvanefjeld rare earth elements",
+          "Greenland graphite deposits",
+          "Greenland uranium niobium tantalum",
+          "Greenland Mineral Resources Agency 2019-2024"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_2",
+      "tool": "web_search",
+      "description": "Determine US Mainland Production Status for Each Critical Material",
+      "inputs": {
+        "queries": [
+          "US domestic production graphite 2019-2024",
+          "US rare earth elements production Mountain Pass",
+          "US uranium production 2019-2024",
+          "US niobium tantalum production",
+          "USGS mineral commodity summaries 2019-2024"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_3",
+      "tool": "code_agent",
+      "description": "Cross-Reference to Identify Top 3 Materials",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_4",
+      "tool": "web_search",
+      "description": "Research 2019 Historical Context and Trump Administration Interest",
+      "inputs": {
+        "queries": [
+          "Trump Greenland purchase 2019",
+          "US Greenland critical minerals 2019",
+          "Greenland mining policy 2019"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_5",
+      "tool": "web_search",
+      "description": "Track 2020-2021 Greenland Political Developments",
+      "inputs": {
+        "queries": [
+          "Greenland election 2021 uranium ban",
+          "Inuit Ataqatigiit mining policy",
+          "Kvanefjeld project 2020 2021",
+          "Greenland zero-tolerance uranium policy"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_6",
+      "tool": "web_search",
+      "description": "Document 2022-2023 Policy Reversals and New Developments",
+      "inputs": {
+        "queries": [
+          "Greenland uranium ban reversal 2023",
+          "Greenland mining licenses 2022 2023",
+          "US Greenland mineral cooperation agreement",
+          "Greenland rare earth projects 2022 2023"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_7",
+      "tool": "web_search",
+      "description": "Capture 2024 Current Status and Recent Developments",
+      "inputs": {
+        "queries": [
+          "Greenland critical minerals 2024",
+          "Greenland mining projects 2024",
+          "US Greenland relations 2024",
+          "Trump Greenland 2024"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_8",
+      "tool": "web_search",
+      "description": "Deep Dive on Material #1 (Likely Graphite)",
+      "inputs": {
+        "queries": [
+          "Greenland graphite Amitsoq project 2019-2024",
+          "US graphite imports dependency",
+          "natural graphite vs synthetic graphite US production"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_9",
+      "tool": "web_search",
+      "description": "Deep Dive on Material #2 (Likely Heavy REEs)",
+      "inputs": {
+        "queries": [
+          "Greenland heavy rare earth elements dysprosium terbium",
+          "Kvanefjeld Kringlerne REE composition",
+          "US rare earth production heavy vs light REEs Mountain Pass"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_10",
+      "tool": "web_search",
+      "description": "Deep Dive on Material #3 (Likely Niobium or Fluorspar)",
+      "inputs": {
+        "queries": [
+          "Greenland niobium deposits",
+          "Greenland fluorspar",
+          "US niobium production import dependency",
+          "US fluorspar production"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_11",
+      "tool": "code_agent",
+      "description": "Compile Chronological Timeline",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_12",
+      "tool": "orchestrator",
+      "description": "Synthesize Final Answer",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_13",
+      "tool": "code_agent",
+      "description": "Create Supporting Visualizations (if needed)",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    }
+  ],
+  "estimated_tools": [
+    "orchestrator",
+    "code_agent",
+    "web_search"
+  ]
+}

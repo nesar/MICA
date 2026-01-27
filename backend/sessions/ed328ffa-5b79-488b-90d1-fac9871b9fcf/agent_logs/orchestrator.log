@@ -1,0 +1,5 @@
+[2026-01-27T03:32:39.832740] INFO: Agent orchestrator started
+[2026-01-27T03:32:39.832757] INFO: Simple query - direct response generated
+[2026-01-27T03:32:39.832791] DEBUG: Output: {"response": "# MICA Available Tools\n\nMICA has access to the following analytical tools:\n\n## 1. Web Search (`web_search`)\nSearches the web with focus on federal government documents (DOE, USGS, EPA, etc.)\n- Use for: Finding official reports, statistics, policy documents\n- Data sources: energy.gov, usgs.gov, commerce.gov, epa.gov\n\n## 2. PDF/Document Analysis (`pdf_rag`)\nExtracts and analyzes information from PDF documents using RAG\n- Use for: Analyzing uploaded reports, extracting spec
+[2026-01-27T03:32:39.832797] INFO: Agent orchestrator completed
+[2026-01-27T03:32:39.832812] INFO: Duration: 0.00s

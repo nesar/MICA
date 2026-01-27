@@ -107,6 +107,11 @@ async def run_workflow_until_interrupt(session_id: str, state_update: dict = Non
     state = _sessions[session_id]
     workflow = get_workflow()
 
+    # Preserve important state that shouldn't be overwritten by workflow events
+    preserved_keys = {}
+    if state_update:
+        preserved_keys = state_update.copy()
+
     try:
         # Run workflow with config
         config_dict = {"configurable": {"thread_id": session_id}}
@@ -117,7 +122,15 @@ async def run_workflow_until_interrupt(session_id: str, state_update: dict = Non
             logger.info(f"[{session_id}] Resuming workflow with update: {state_update}")
 
             # Update the checkpointed state before resuming
-            workflow.update_state(config_dict, state_update)
+            try:
+                workflow.update_state(config_dict, state_update)
+                logger.info(f"[{session_id}] Checkpoint state updated")
+            except Exception as e:
+                logger.warning(f"[{session_id}] Failed to update checkpoint: {e}")
+
+            # Also ensure our local state has the update
+            state.update(state_update)
+            _sessions[session_id] = state
 
             # Resume with None (continue from checkpoint)
             workflow_input = None
@@ -132,10 +145,27 @@ async def run_workflow_until_interrupt(session_id: str, state_update: dict = Non
                 # LangGraph events are {node_name: updated_state}
                 for node_name, updated_state in event.items():
                     if isinstance(updated_state, dict):
-                        # Merge the updated state
+                        # Merge the updated state, but preserve important keys
                         state.update(updated_state)
+                        # Re-apply preserved keys (like approved) that shouldn't be overwritten
+                        if preserved_keys:
+                            state.update(preserved_keys)
                         _sessions[session_id] = state
-                        logger.info(f"[{session_id}] Node '{node_name}' completed, status: {state.get('status')}")
+                        logger.info(f"[{session_id}] Node '{node_name}' completed, status: {state.get('status')}, approved: {state.get('approved')}")
+
+        # Get the final state from the workflow checkpoint to ensure sync
+        try:
+            final_state_snapshot = workflow.get_state(config_dict)
+            if final_state_snapshot and final_state_snapshot.values:
+                final_workflow_state = final_state_snapshot.values
+                # Update our state with the final workflow state
+                state.update(final_workflow_state)
+                # Re-apply preserved keys
+                if preserved_keys:
+                    state.update(preserved_keys)
+                logger.info(f"[{session_id}] Synced final state from checkpoint: status={state.get('status')}")
+        except Exception as e:
+            logger.warning(f"[{session_id}] Could not get final state from checkpoint: {e}")
 
         # Always update the final state
         _sessions[session_id] = state

@@ -28,10 +28,16 @@ from .orchestrator import (
 logger = logging.getLogger(__name__)
 
 
-def should_continue_after_research(state: AgentState) -> Literal["propose_plan", "error"]:
+def should_continue_after_research(state: AgentState) -> Literal["propose_plan", "complete", "error"]:
     """Determine next step after preliminary research."""
     if state["errors"]:
         return "error"
+
+    # Check if this was a simple query that was answered directly
+    is_simple = state.get("preliminary_research", {}).get("simple_query", False)
+    if is_simple:
+        return "complete"
+
     return "propose_plan"
 
 
@@ -127,7 +133,12 @@ def summarize_node(state: AgentState) -> AgentState:
     """Node: Generate final summary and report."""
     logger.info(f"[{state['session_id']}] Generating final summary")
     state["current_step"] = "summarizing"
-    return generate_final_summary(state)
+    state = generate_final_summary(state)
+    # Pre-set status for the interrupt before await_feedback
+    # This ensures the status is correct even if workflow pauses before await_feedback_node runs
+    state["status"] = WorkflowStatus.AWAITING_FEEDBACK
+    state["current_step"] = "awaiting_feedback"
+    return state
 
 
 def await_feedback_node(state: AgentState) -> AgentState:
@@ -202,6 +213,7 @@ def create_workflow() -> StateGraph:
         should_continue_after_research,
         {
             "propose_plan": "propose_plan",
+            "complete": "complete",  # Simple queries skip planning
             "error": "error",
         },
     )

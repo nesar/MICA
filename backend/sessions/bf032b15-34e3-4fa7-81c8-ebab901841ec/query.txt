@@ -1,0 +1,14 @@
+Analyze the current state of US domestic rare earth element production capacity. What percentage of US demand is met domestically vs imported? Include data from USGS and DOE reports. `
+`` Expected Workflow :
+Web search for USGS Mineral Commodity Summaries
+DOE critical materials reports
+Trade data analysis
+Production capacity assessment
+Import dependency calculations
+Final report with statistics
+Key Topics to Cover:
+Mountain Pass mine (California)
+MP Materials production data
+Heavy vs light REE separation capacity
+China import dependency (\~80%)
+DOE supply chain initiatives

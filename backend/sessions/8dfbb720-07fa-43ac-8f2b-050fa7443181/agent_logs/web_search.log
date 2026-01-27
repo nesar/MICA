@@ -1,0 +1,5 @@
+[2026-01-27T05:59:07.894839] INFO: Agent web_search started
+[2026-01-27T05:59:07.894947] INFO: Executed step step_11
+[2026-01-27T05:59:07.895071] DEBUG: Output: {"status": "success", "data": [], "message": "Found 0 results", "metadata": {"query": "Congressional Research Service rare earth production United States GAO rare earth supply chain report 2024", "provider": "duckduckgo", "num_results": 0}, "error": "<bound method ToolResult.error of <class 'mica.mcp_tools.base.ToolResult'>>", "execution_time": 8.135577}
+[2026-01-27T05:59:07.895140] INFO: Agent web_search completed
+[2026-01-27T05:59:07.895221] INFO: Duration: 0.00s

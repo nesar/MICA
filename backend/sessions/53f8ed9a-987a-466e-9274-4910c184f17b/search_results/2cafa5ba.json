@@ -1,0 +1,13 @@
+{
+  "query": "Data Source Categories",
+  "provider": "duckduckgo",
+  "num_results": 1,
+  "results": [
+    {
+      "title": "The difference between a data library and a product data standard",
+      "url": "https://www.supplyht.com/articles/107015-the-difference-between-a-data-library-and-a-product-data-standard",
+      "snippet": "Data sources, even high-quality ones, do not inherently guarantee consistency. Two sources may provide data for the same category but define attributes differently, apply different units of measure, or populate fields in inconsistent ways.",
+      "source": "www.supplyht.com"
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "query": "Analyze the current state of US domestic rare earth element production capacity. What percentage of US demand is met domestically vs imported? Include data from USGS and DOE reports. `\n`` Expected Workflow :\nWeb search for USGS Mineral Commodity Summaries\nDOE critical materials reports\nTrade data analysis\nProduction capacity assessment\nImport dependency calculations\nFinal report with statistics\nKey Topics to Cover:\nMountain Pass mine (California)\nMP Materials production data\nHeavy vs light REE separation capacity\nChina import dependency (\\~80%)\nDOE supply chain initiatives",
+  "provider": "duckduckgo",
+  "num_results": 5,
+  "results": [
+    {
+      "title": "Programming service",
+      "url": "https://nxtforum.org/services/programming-service/index.html",
+      "snippet": "Dec 9, 2014 \u00b7 NxtFreak Jr. Member Karma: +3/-1 Offline Posts: 25 NXT-3PAG-3ZSH-S4W7-CGBPU Programming service \u00ab on: December 04, 2014, 01:23:19 pm \u00bb",
+      "source": "nxtforum.org"
+    },
+    {
+      "title": "BUs - nxtforum.org",
+      "url": "https://nxtforum.org/bus/index.html",
+      "snippet": "BUs News: Latest Stable Nxt Client: Nxt 1.12.2 Home Recent Posts Login Register Nxt Forum > Nxt Discussion > Nxt Projects > DeBuNe > BUs Child Boards",
+      "source": "nxtforum.org"
+    },
+    {
+      "title": "NRS v1.6.2 - nxtforum.org",
+      "url": "https://nxtforum.org/nrs-releases/nrs-v1-6-2/300/index.html",
+      "snippet": "Nov 24, 2015 \u00b7 NRS v1.6.2 What is in your log before that error? Are you trying to upgrade from a version older than 1.5 perhaps? Not sure why it wants to pop off to block 444999, this is the 1.5 hard fork block. May be simplest to download the blockchain again. Logged GPG key fingerprint: 263A 9EB0 29CF C77A 3D06 FD13 811D 6940 E1E4 240C NXT-X4LF-9A4G-WN9Z-2R322",
+      "source": "nxtforum.org"
+    },
+    {
+      "title": "HEAT Ledger - 3.0 crypto sliced blockchain, instant trading, 1000+ tps ...",
+      "url": "https://nxtforum.org/alternate-cryptocurrencies/heat-ledger-3-0-crypto-sliced-blockchain-instant-trading-1000-tps-nxt-p2p/index.html",
+      "snippet": "Jan 27, 2017 \u00b7 HEAT Ledger - 3.0 crypto sliced blockchain, instant trading, 1000+ tps, NXT p2p Please see through our proposed features. They're real, and they're no doubt very advanced and unique. Where community projects like NXT take years to move ahead properly and non-profit initiatives such as FIMK get stuck on rough waters getting no real attention, we're now on HEAT - fintech startup - playing the ...",
+      "source": "nxtforum.org"
+    },
+    {
+      "title": "Nxt Blockchain Bonus",
+      "url": "https://nxtforum.org/nxt-helpdesk/nxt-blockchain-bonus/index.html",
+      "snippet": "Feb 8, 2018 \u00b7 Nxt Forum > Helpdesk > Nxt Helpdesk > Nxt Blockchain Bonus \u2605 \u00ab previous next \u00bb Pages: [1] Print AuthorTopic: Nxt Blockchain Bonus \u2605 (Read 1338 times)",
+      "source": "nxtforum.org"
+    }
+  ]
+}

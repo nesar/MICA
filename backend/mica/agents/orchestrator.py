@@ -128,6 +128,95 @@ def get_llm():
         raise
 
 
+def is_simple_query(query: str) -> bool:
+    """
+    Detect if a query is simple and can be answered directly without full planning.
+
+    Simple queries include:
+    - Questions about MICA's capabilities/tools
+    - Basic definitions or explanations
+    - Simple factual questions that don't require multi-step analysis
+    """
+    query_lower = query.lower().strip()
+
+    # Queries about MICA itself
+    mica_queries = [
+        "what tools", "available tools", "list tools", "show tools",
+        "what can you do", "your capabilities", "how do you work",
+        "what are you", "who are you", "help", "what is mica",
+    ]
+    if any(pattern in query_lower for pattern in mica_queries):
+        return True
+
+    # Simple definition questions
+    if query_lower.startswith(("what is ", "define ", "explain ")) and len(query.split()) < 10:
+        return True
+
+    # Very short queries (likely simple)
+    if len(query.split()) < 5 and "?" in query:
+        return True
+
+    return False
+
+
+def answer_simple_query(query: str, llm) -> str:
+    """
+    Generate a direct answer for simple queries without multi-step planning.
+    """
+    # Special handling for tool queries
+    query_lower = query.lower()
+    if any(w in query_lower for w in ["tool", "capabilities", "can you do"]):
+        return """# MICA Available Tools
+
+MICA has access to the following analytical tools:
+
+## 1. Web Search (`web_search`)
+Searches the web with focus on federal government documents (DOE, USGS, EPA, etc.)
+- Use for: Finding official reports, statistics, policy documents
+- Data sources: energy.gov, usgs.gov, commerce.gov, epa.gov
+
+## 2. PDF/Document Analysis (`pdf_rag`)
+Extracts and analyzes information from PDF documents using RAG
+- Use for: Analyzing uploaded reports, extracting specific data from documents
+
+## 3. Excel Handler (`excel_handler`)
+Reads and processes Excel/CSV data files
+- Use for: Analyzing spreadsheet data, trade statistics, production numbers
+
+## 4. Code Agent (`code_agent`)
+Executes Python code for data analysis and visualization
+- Use for: Statistical analysis, creating charts, data processing
+
+## 5. Document Generator (`doc_generator`)
+Creates formatted PDF reports
+- Use for: Generating final analysis reports with visualizations
+
+## 6. Simulation (`simulation`) [Limited]
+Placeholder for supply chain simulation models
+- Future: GCMat, RELOG integration
+
+---
+For complex supply chain analysis, MICA will create a detailed plan and ask for your approval before executing."""
+
+    # For other simple queries, use LLM directly
+    from langchain_core.messages import SystemMessage, HumanMessage
+
+    prompt = f"""Answer this question directly and concisely. This is a simple informational query.
+
+Question: {query}
+
+Provide a clear, helpful answer. If this relates to critical materials or supply chains,
+include relevant context. Keep the response focused and under 500 words."""
+
+    messages = [
+        SystemMessage(content=ORCHESTRATOR_SYSTEM_PROMPT),
+        HumanMessage(content=prompt),
+    ]
+
+    response = llm.invoke(messages)
+    return response.content
+
+
 def get_session_logger(state: AgentState) -> Optional[SessionLogger]:
     """Get or create a session logger for the state."""
     session_id = state["session_id"]
@@ -149,17 +238,52 @@ def conduct_preliminary_research(state: AgentState) -> AgentState:
     Conduct preliminary research to understand the query.
 
     This step:
-    1. Parses the user's query
-    2. Performs initial web searches for context
-    3. Identifies relevant data sources
-    4. Summarizes initial findings
+    1. Checks if query is simple (can be answered directly)
+    2. For complex queries: performs research and prepares for planning
+    3. For simple queries: generates direct answer and marks for fast-track
     """
     logger.info(f"[{state['session_id']}] Conducting preliminary research")
 
     session = get_session_logger(state)
+    query = state["query"]
 
     try:
         llm = get_llm()
+
+        # Check if this is a simple query that doesn't need full planning
+        if is_simple_query(query):
+            logger.info(f"[{state['session_id']}] Simple query detected - fast-track response")
+
+            # Generate direct answer
+            direct_answer = answer_simple_query(query, llm)
+
+            # Mark as simple query in metadata
+            state["metadata"]["simple_query"] = True
+            state["final_summary"] = direct_answer
+
+            # Set preliminary research
+            state["preliminary_research"] = {
+                "summary": direct_answer,
+                "web_search_results": [],
+                "timestamp": datetime.utcnow().isoformat(),
+                "simple_query": True,
+            }
+
+            # Update messages
+            state["messages"].append(HumanMessage(content=query))
+            state["messages"].append(AIMessage(content=direct_answer))
+
+            # Log
+            if session:
+                with session.agent_logger("orchestrator") as agent_log:
+                    agent_log.log("Simple query - direct response generated")
+                    agent_log.log_output({"response": direct_answer[:500]})
+
+            logger.info(f"[{state['session_id']}] Simple query answered directly")
+            return state
+
+        # Complex query - proceed with full research
+        logger.info(f"[{state['session_id']}] Complex query - proceeding with full research")
 
         # Build context from any previous interactions
         context = ""
@@ -168,7 +292,7 @@ def conduct_preliminary_research(state: AgentState) -> AgentState:
 
         # Generate research prompt
         prompt = RESEARCH_PROMPT.format(
-            query=state["query"],
+            query=query,
             context=context or "No previous context.",
         )
 
@@ -181,12 +305,11 @@ def conduct_preliminary_research(state: AgentState) -> AgentState:
         response = llm.invoke(messages)
         research_summary = response.content
 
-        # Optionally do a quick web search
+        # Do a quick web search for context
         web_search = WebSearchTool(session_logger=session)
         search_result = web_search.execute({
-            "query": state["query"],
+            "query": query,
             "num_results": 5,
-            "federal_only": True,
         })
 
         # Compile preliminary research
@@ -194,10 +317,11 @@ def conduct_preliminary_research(state: AgentState) -> AgentState:
             "summary": research_summary,
             "web_search_results": search_result.data if search_result.data else [],
             "timestamp": datetime.utcnow().isoformat(),
+            "simple_query": False,
         }
 
         # Update messages
-        state["messages"].append(HumanMessage(content=state["query"]))
+        state["messages"].append(HumanMessage(content=query))
         state["messages"].append(AIMessage(content=research_summary))
 
         # Log research
@@ -327,6 +451,12 @@ def execute_plan(state: AgentState) -> AgentState:
                         "output": result.data,
                     })
                     state = update_plan_step(state, step_id, "completed", output=result.data)
+                elif result.error and "is required" in str(result.error):
+                    # Tool requires specific inputs we don't have - fall back to LLM
+                    logger.info(f"[{state['session_id']}] Tool {tool_name} missing inputs, falling back to LLM")
+                    llm_result = _execute_with_llm(state, step, session)
+                    # Mark as completed with LLM result
+                    state = update_plan_step(state, step_id, "completed", output=llm_result)
                 else:
                     state = update_plan_step(
                         state, step_id, "failed", error=result.error or result.message

@@ -1,0 +1,219 @@
+{
+  "reasoning": "# Detailed Analysis Plan\n\n## Step 1: Identify Official US Critical Minerals Lists\n**Tool:** web_search  \n**Inputs:** \n- \"US critical minerals list 2019-2024\"\n- \"USGS critical minerals Executive Order 13817\"\n- \"Department of Energy critical materials strategy 2023\"\n\n**Expected Output:** \n- Official US government critical minerals lists (2018, 2021, 2022 updates)\n- Definitions and criteria for \"critical\" designation\n- Any updates or changes during 2019-2024 period\n\n## Step 2: Research Greenland's Critical Mineral Resources\n**Tool:** web_search  \n**Inputs:**\n- \"Greenland rare earth elements deposits 2019-2024\"\n- \"Greenland graphite mining projects\"\n- \"Kvanefjeld rare earth project Greenland\"\n- \"Greenland mineral resource assessment USGS\"\n- \"Sarfartoq carbonatite Greenland\"\n\n**Expected Output:**\n- Inventory of major mineral deposits in Greenland\n- Resource estimates and grades\n- Active and proposed mining projects\n- Geological surveys and assessments\n\n## Step 3: Assess US Domestic Production and Reserves\n**Tool:** web_search  \n**Inputs:**\n- \"US rare earth elements production 2019-2024\"\n- \"US graphite production domestic\"\n- \"Mountain Pass rare earth mine production\"\n- \"Alaska critical minerals production\"\n- \"USGS mineral commodity summaries 2019-2024\"\n\n**Expected Output:**\n- Current US production levels for each critical mineral\n- Domestic reserve estimates\n- Import dependency ratios\n- Alaska-specific production data\n\n## Step 4: Comparative Analysis - Greenland vs US Resources\n**Tool:** code_agent  \n**Inputs:**\n- Data from Steps 2 and 3\n- Production volumes, reserve estimates, import dependency\n\n**Expected Output:**\n- Comparison table showing which materials have:\n  - Zero/minimal US production\n  - Significant Greenland deposits\n  - High US import dependency\n- Ranking of materials by scarcity in US vs availability in Greenland\n\n## Step 5: Research 2019 Historical Context\n**Tool:** web_search  \n**Inputs:**\n- \"Greenland minerals 2019 Trump administration\"\n- \"Greenland rare earth exploration 2019\"\n- \"US-Greenland relations 2019\"\n- \"Energy Resource Governance Initiative 2019\"\n\n**Expected Output:**\n- Major developments in 2019\n- Policy initiatives\n- Exploration activities\n- Geopolitical context\n\n## Step 6: Research 2020-2021 Developments\n**Tool:** web_search  \n**Inputs:**\n- \"Greenland mining projects 2020 2021\"\n- \"Kvanefjeld uranium ban 2021\"\n- \"Greenland election 2021 mining\"\n- \"US critical minerals COVID-19 supply chain\"\n- \"Greenland Minerals Limited 2020 2021\"\n\n**Expected Output:**\n- Impact of COVID-19 on supply chains\n- Political changes in Greenland (2021 election)\n- Project approvals/rejections\n- US policy responses\n\n## Step 7: Research 2022-2023 Developments\n**Tool:** web_search  \n**Inputs:**\n- \"Greenland rare earth projects 2022 2023\"\n- \"US Inflation Reduction Act critical minerals\"\n- \"Greenland graphite exploration 2022 2023\"\n- \"China rare earth dominance 2022 2023\"\n- \"Defense Production Act critical minerals\"\n\n**Expected Output:**\n- Legislative changes (IRA, DPA invocations)\n- New exploration activities\n- Geopolitical tensions impact\n- Project advancement status\n\n## Step 8: Research 2024 Current Status\n**Tool:** web_search  \n**Inputs:**\n- \"Greenland mining projects 2024\"\n- \"US critical minerals partnerships 2024\"\n- \"Greenland rare earth development 2024\"\n- \"critical minerals processing capacity 2024\"\n\n**Expected Output:**\n- Current project status\n- Recent policy developments\n- Market conditions\n- Future outlook\n\n## Step 9: Deep Dive - Material #1 (Heavy Rare Earth Elements)\n**Tool:** web_search  \n**Inputs:**\n- \"dysprosium terbium US production 2019-2024\"\n- \"heavy rare earths Greenland deposits\"\n- \"US heavy rare earth import sources\"\n- \"heavy rare earth processing capacity United States\"\n\n**Expected Output:**\n- Specific HREE production data\n- Greenland HREE deposit characteristics\n- Supply chain details\n- Timeline of developments 2019-2024\n\n## Step 10: Deep Dive - Material #2 (High-Purity Graphite)\n**Tool:** web_search  \n**Inputs:**\n- \"natural graphite US production 2019-2024\"\n- \"Greenland graphite projects Graphite One\"\n- \"battery-grade graphite supply chain\"\n- \"spherical graphite production capacity\"\n\n**Expected Output:**\n- Graphite production and import data\n- Greenland graphite project details\n- Quality/grade specifications\n- Timeline of developments 2019-2024\n\n## Step 11: Deep Dive - Material #3 (To be determined from Step 4)\n**Tool:** web_search  \n**Inputs:** (Will be determined based on comparative analysis results)\n- Likely candidates: fluorspar, cryolite, or specific platinum group metals\n\n**Expected Output:**\n- Production and reserve data\n- Greenland-specific deposits\n- Supply chain analysis\n- Timeline of developments 2019-2024\n\n## Step 12: Analyze Geopolitical Context\n**Tool:** web_search  \n**Inputs:**\n- \"US-China rare earth competition 2019-2024\"\n- \"Arctic strategy critical minerals\"\n- \"Greenland sovereignty minerals\"\n- \"US-Denmark-Greenland trilateral cooperation\"\n\n**Expected Output:**\n- Geopolitical drivers for interest in Greenland\n- Strategic competition dynamics\n- International agreements and partnerships\n- Security considerations\n\n## Step 13: Compile Chronological Timeline\n**Tool:** code_agent  \n**Inputs:**\n- All historical data from Steps 5-8\n- Key events, policy changes, project milestones\n\n**Expected Output:**\n- Year-by-year timeline (2019-2024)\n- Major events for each of the 3 critical materials\n- Visual timeline graphic\n\n## Step 14: Create Data Visualizations\n**Tool:** code_agent  \n**Inputs:**\n- Production data (US vs imports)\n- Reserve estimates (Greenland vs US)\n- Import dependency ratios\n- Price trends 2019-2024\n\n**Expected Output:**\n- Bar charts comparing US production/reserves\n- Line graphs showing import dependency over time\n- Maps showing deposit locations\n- Supply chain flow diagrams\n\n## Step 15: Synthesize Final Analysis\n**Tool:** doc_generator  \n**Inputs:**\n- All research findings from Steps 1-14\n- Data visualizations\n- Timeline\n- Comparative analysis\n\n**Expected Output:**\n- Comprehensive report identifying top 3 critical materials\n- Detailed history for each material (2019-2024)\n- Supporting evidence and data\n- Key findings and conclusions\n\n## Contingency Steps\n\n**Step 16 (if needed): Access Government Reports**\n**Tool:** pdf_rag  \n**Inputs:**\n- USGS Mineral Commodity Summaries PDFs (2019-2024)\n- DOE Critical Materials Strategy documents\n- Government assessment reports\n\n**Expected Output:**\n- Official production statistics\n- Reserve estimates\n- Import/export data\n\n**Step 17 (if needed): Additional Excel Data Analysis**\n**Tool:** excel_handler  \n**Inputs:**\n- Trade data spreadsheets\n- Production statistics\n- Reserve estimates\n\n**Expected Output:**\n- Detailed quantitative analysis\n- Trend calculations\n- Statistical comparisons",
+  "steps": [
+    {
+      "step_id": "step_0",
+      "tool": "web_search",
+      "description": "Identify Official US Critical Minerals Lists",
+      "inputs": {
+        "queries": [
+          "US critical minerals list 2019-2024",
+          "USGS critical minerals Executive Order 13817",
+          "Department of Energy critical materials strategy 2023",
+          "critical"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_1",
+      "tool": "web_search",
+      "description": "Research Greenland's Critical Mineral Resources",
+      "inputs": {
+        "queries": [
+          "Greenland rare earth elements deposits 2019-2024",
+          "Greenland graphite mining projects",
+          "Kvanefjeld rare earth project Greenland",
+          "Greenland mineral resource assessment USGS",
+          "Sarfartoq carbonatite Greenland"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_2",
+      "tool": "web_search",
+      "description": "Assess US Domestic Production and Reserves",
+      "inputs": {
+        "queries": [
+          "US rare earth elements production 2019-2024",
+          "US graphite production domestic",
+          "Mountain Pass rare earth mine production",
+          "Alaska critical minerals production",
+          "USGS mineral commodity summaries 2019-2024"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_3",
+      "tool": "code_agent",
+      "description": "Comparative Analysis - Greenland vs US Resources",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_4",
+      "tool": "web_search",
+      "description": "Research 2019 Historical Context",
+      "inputs": {
+        "queries": [
+          "Greenland minerals 2019 Trump administration",
+          "Greenland rare earth exploration 2019",
+          "US-Greenland relations 2019",
+          "Energy Resource Governance Initiative 2019"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_5",
+      "tool": "web_search",
+      "description": "Research 2020-2021 Developments",
+      "inputs": {
+        "queries": [
+          "Greenland mining projects 2020 2021",
+          "Kvanefjeld uranium ban 2021",
+          "Greenland election 2021 mining",
+          "US critical minerals COVID-19 supply chain",
+          "Greenland Minerals Limited 2020 2021"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_6",
+      "tool": "web_search",
+      "description": "Research 2022-2023 Developments",
+      "inputs": {
+        "queries": [
+          "Greenland rare earth projects 2022 2023",
+          "US Inflation Reduction Act critical minerals",
+          "Greenland graphite exploration 2022 2023",
+          "China rare earth dominance 2022 2023",
+          "Defense Production Act critical minerals"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_7",
+      "tool": "web_search",
+      "description": "Research 2024 Current Status",
+      "inputs": {
+        "queries": [
+          "Greenland mining projects 2024",
+          "US critical minerals partnerships 2024",
+          "Greenland rare earth development 2024",
+          "critical minerals processing capacity 2024"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_8",
+      "tool": "web_search",
+      "description": "Deep Dive - Material #1 (Heavy Rare Earth Elements)",
+      "inputs": {
+        "queries": [
+          "dysprosium terbium US production 2019-2024",
+          "heavy rare earths Greenland deposits",
+          "US heavy rare earth import sources",
+          "heavy rare earth processing capacity United States"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_9",
+      "tool": "web_search",
+      "description": "Deep Dive - Material #2 (High-Purity Graphite)",
+      "inputs": {
+        "queries": [
+          "natural graphite US production 2019-2024",
+          "Greenland graphite projects Graphite One",
+          "battery-grade graphite supply chain",
+          "spherical graphite production capacity"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_10",
+      "tool": "web_search",
+      "description": "Deep Dive - Material #3 (To be determined from Step 4)",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_11",
+      "tool": "web_search",
+      "description": "Analyze Geopolitical Context",
+      "inputs": {
+        "queries": [
+          "US-China rare earth competition 2019-2024",
+          "Arctic strategy critical minerals",
+          "Greenland sovereignty minerals",
+          "US-Denmark-Greenland trilateral cooperation"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_12",
+      "tool": "code_agent",
+      "description": "Compile Chronological Timeline",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_13",
+      "tool": "code_agent",
+      "description": "Create Data Visualizations",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_14",
+      "tool": "doc_generator",
+      "description": "Synthesize Final Analysis",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    }
+  ],
+  "estimated_tools": [
+    "doc_generator",
+    "code_agent",
+    "web_search"
+  ]
+}

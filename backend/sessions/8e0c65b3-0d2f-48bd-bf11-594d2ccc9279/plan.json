@@ -1,0 +1,164 @@
+{
+  "reasoning": "# Detailed Analysis Plan: U.S. Import Dependency on China for Rare Earth Elements\n\n## Step 1: Gather Current USGS Data on REE Import Dependency\n**Tool:** web_search\n**Inputs:** \n- Search terms: \"USGS rare earth elements mineral commodity summaries 2024\"\n- Search terms: \"USGS rare earth import reliance China 2023\"\n**Expected Output:** \n- Current import reliance percentage (2023-2024)\n- Total U.S. consumption volumes\n- Country-specific import sources and percentages\n- Domestic production figures\n\n## Step 2: Obtain Historical USGS Data for Trend Analysis\n**Tool:** web_search\n**Inputs:**\n- Search terms: \"USGS rare earth mineral commodity summaries 2019 2020 2021 2022\"\n- Search terms: \"USGS rare earth import sources historical data\"\n**Expected Output:**\n- 5-year trend data (2019-2024) on import dependency\n- Changes in supplier countries over time\n- Domestic production trajectory\n- Consumption trends\n\n## Step 3: Retrieve Trade Statistics from Census/USITC\n**Tool:** web_search\n**Inputs:**\n- Search terms: \"U.S. rare earth imports from China HTS code statistics 2023\"\n- Search terms: \"USITC rare earth elements trade data China\"\n- Search terms: \"Census Bureau rare earth compound imports value volume\"\n**Expected Output:**\n- Import values (USD) by material category\n- Import volumes (metric tons) by material type\n- HTS code breakdowns (ores, compounds, metals, magnets)\n- Monthly/quarterly trends if available\n\n## Step 4: Gather Data on Material Form Categories\n**Tool:** web_search\n**Inputs:**\n- Search terms: \"rare earth ore concentrate imports China U.S.\"\n- Search terms: \"rare earth oxides metals imports processing China\"\n- Search terms: \"rare earth permanent magnets imports China statistics\"\n**Expected Output:**\n- Breakdown of imports by processing stage:\n  - Raw ores and concentrates\n  - Separated oxides\n  - Metals and alloys\n  - Finished magnets and components\n\n## Step 5: Research DOE Critical Materials Assessments\n**Tool:** web_search\n**Inputs:**\n- Search terms: \"DOE critical materials assessment rare earth supply chain 2023\"\n- Search terms: \"Executive Order 14017 rare earth supply chain review\"\n- Search terms: \"DOE rare earth criticality assessment China dependency\"\n**Expected Output:**\n- Official government assessments of supply chain vulnerability\n- Criticality ratings by specific REE element\n- Processing vs. mining dependency distinctions\n- Strategic reserve information\n\n## Step 6: Investigate Domestic Production Capacity Changes\n**Tool:** web_search\n**Inputs:**\n- Search terms: \"Mountain Pass MP Materials production capacity 2023 2024\"\n- Search terms: \"U.S. rare earth processing facilities domestic capacity\"\n- Search terms: \"Lynas USA processing plant rare earth separation\"\n**Expected Output:**\n- Current U.S. mining capacity (metric tons/year)\n- Processing capacity status (operational vs. planned)\n- Timeline for domestic processing expansion\n- Impact on import dependency projections\n\n## Step 7: Analyze Light vs. Heavy REE Dependencies\n**Tool:** web_search\n**Inputs:**\n- Search terms: \"heavy rare earth elements import dependency China dysprosium terbium\"\n- Search terms: \"light rare earth neodymium praseodymium import sources\"\n- Search terms: \"rare earth element specific import reliance USGS\"\n**Expected Output:**\n- Differentiated dependency by REE category\n- Specific elements with highest China dependency\n- Alternative sources for different REE types\n\n## Step 8: Examine Alternative Supplier Development\n**Tool:** web_search\n**Inputs:**\n- Search terms: \"U.S. rare earth imports Australia Lynas 2023\"\n- Search terms: \"rare earth import diversification Estonia Vietnam Myanmar\"\n- Search terms: \"rare earth supply chain resilience partnerships\"\n**Expected Output:**\n- Current alternative supplier percentages\n- Emerging sources and partnership initiatives\n- Capacity of non-China suppliers\n\n## Step 9: Compile Data into Structured Dataset\n**Tool:** code_agent\n**Inputs:**\n- All quantitative data gathered from Steps 1-8\n- Time series data (2019-2024)\n- Category breakdowns (material types, REE types)\n**Expected Output:**\n- Consolidated CSV/Excel file with:\n  - Annual import dependency percentages\n  - Import values and volumes by source country\n  - Material category breakdowns\n  - Element-specific dependencies\n\n## Step 10: Create Visualizations\n**Tool:** code_agent\n**Inputs:**\n- Consolidated dataset from Step 9\n**Expected Output:**\n- Time series chart: U.S. import dependency on China (2019-2024)\n- Pie chart: Current import sources by country (2023-2024)\n- Stacked bar chart: Import dependency by material type\n- Comparison chart: Light vs. Heavy REE dependencies\n- Trend projection chart if sufficient data available\n\n## Step 11: Calculate Key Metrics and Statistics\n**Tool:** code_agent\n**Inputs:**\n- Consolidated dataset from Step 9\n**Expected Output:**\n- Overall import dependency percentage (most recent)\n- China-specific dependency percentage\n- Year-over-year change rates\n- Dependency by material processing stage\n- Weighted criticality scores if applicable\n\n## Step 12: Synthesize Findings into Comprehensive Summary\n**Tool:** doc_generator\n**Inputs:**\n- All data, charts, and statistics from previous steps\n- Context on policy implications\n- Mitigation efforts and future outlook\n**Expected Output:**\n- Executive summary with key findings\n- Detailed breakdown by material category\n- Historical trend analysis\n- Strategic implications section\n- Visual presentation of all charts\n- Data tables with sources cited\n\n---\n\n## Execution Priority\n\n**Critical Path Steps (Execute First):**\n1. Steps 1-2: USGS current and historical data (authoritative baseline)\n2. Step 3: Trade statistics (quantitative validation)\n3. Step 4: Material form breakdown (essential context)\n\n**Secondary Steps (Execute Next):**\n4. Steps 5-8: Contextual and supplementary information\n\n**Final Steps (Synthesis):**\n5. Steps 9-12: Data compilation, analysis, and reporting\n\n**Estimated Time:** 45-60 minutes for comprehensive analysis",
+  "steps": [
+    {
+      "step_id": "step_0",
+      "tool": "web_search",
+      "description": "Gather Current USGS Data on REE Import Dependency",
+      "inputs": {
+        "queries": [
+          "USGS rare earth elements mineral commodity summaries 2024",
+          "USGS rare earth import reliance China 2023"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_1",
+      "tool": "web_search",
+      "description": "Obtain Historical USGS Data for Trend Analysis",
+      "inputs": {
+        "queries": [
+          "USGS rare earth mineral commodity summaries 2019 2020 2021 2022",
+          "USGS rare earth import sources historical data"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_2",
+      "tool": "web_search",
+      "description": "Retrieve Trade Statistics from Census/USITC",
+      "inputs": {
+        "queries": [
+          "U.S. rare earth imports from China HTS code statistics 2023",
+          "USITC rare earth elements trade data China",
+          "Census Bureau rare earth compound imports value volume"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_3",
+      "tool": "web_search",
+      "description": "Gather Data on Material Form Categories",
+      "inputs": {
+        "queries": [
+          "rare earth ore concentrate imports China U.S.",
+          "rare earth oxides metals imports processing China",
+          "rare earth permanent magnets imports China statistics"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_4",
+      "tool": "web_search",
+      "description": "Research DOE Critical Materials Assessments",
+      "inputs": {
+        "queries": [
+          "DOE critical materials assessment rare earth supply chain 2023",
+          "Executive Order 14017 rare earth supply chain review",
+          "DOE rare earth criticality assessment China dependency"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_5",
+      "tool": "web_search",
+      "description": "Investigate Domestic Production Capacity Changes",
+      "inputs": {
+        "queries": [
+          "Mountain Pass MP Materials production capacity 2023 2024",
+          "U.S. rare earth processing facilities domestic capacity",
+          "Lynas USA processing plant rare earth separation"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_6",
+      "tool": "web_search",
+      "description": "Analyze Light vs. Heavy REE Dependencies",
+      "inputs": {
+        "queries": [
+          "heavy rare earth elements import dependency China dysprosium terbium",
+          "light rare earth neodymium praseodymium import sources",
+          "rare earth element specific import reliance USGS"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_7",
+      "tool": "web_search",
+      "description": "Examine Alternative Supplier Development",
+      "inputs": {
+        "queries": [
+          "U.S. rare earth imports Australia Lynas 2023",
+          "rare earth import diversification Estonia Vietnam Myanmar",
+          "rare earth supply chain resilience partnerships"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_8",
+      "tool": "code_agent",
+      "description": "Compile Data into Structured Dataset",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_9",
+      "tool": "code_agent",
+      "description": "Create Visualizations",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_10",
+      "tool": "code_agent",
+      "description": "Calculate Key Metrics and Statistics",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_11",
+      "tool": "doc_generator",
+      "description": "Synthesize Findings into Comprehensive Summary",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    }
+  ],
+  "estimated_tools": [
+    "code_agent",
+    "doc_generator",
+    "web_search"
+  ]
+}

@@ -1,0 +1,85 @@
+{
+  "reasoning": "# Detailed Analysis Plan: Tool Availability Documentation\n\n## Objective\nProvide a comprehensive inventory of MICA's analytical tools, capabilities, and data sources for critical materials supply chain analysis.\n\n## Step-by-Step Analysis Plan\n\n### Step 1: Document Core Analytical Tools\n**Tool/Analysis:** Direct documentation (no tool required - system knowledge)\n**Inputs:** System capabilities specification\n**Expected Output:** Categorized list of 6 primary tools with:\n- Tool name and purpose\n- Input requirements\n- Output formats\n- Use case examples\n\n### Step 2: Identify Data Source Categories\n**Tool/Analysis:** Direct documentation\n**Inputs:** Known data repositories and access points\n**Expected Output:** List of accessible data sources including:\n- Federal databases (USGS, DOE, DOD)\n- Trade statistics repositories\n- Industry reports and publications\n- Technical documentation archives\n\n### Step 3: Document Analytical Methodologies\n**Tool/Analysis:** Direct documentation\n**Inputs:** Available analytical frameworks\n**Expected Output:** Description of analysis types:\n- Supply chain mapping\n- Risk assessment frameworks\n- Trade flow analysis\n- Cost modeling approaches\n- Scenario planning capabilities\n\n### Step 4: Detail Simulation Capabilities\n**Tool/Analysis:** simulation (documentation mode)\n**Inputs:** GCMat and RELOG model specifications\n**Expected Output:** \n- Description of each simulation tool\n- Parameters that can be modeled\n- Types of scenarios supported\n- Output metrics available\n\n### Step 5: Describe Data Processing Capabilities\n**Tool/Analysis:** excel_handler, pdf_rag (capability documentation)\n**Inputs:** File format specifications\n**Expected Output:**\n- Supported file types\n- Data extraction methods\n- Analysis functions available\n- Integration capabilities\n\n### Step 6: Document Visualization and Reporting Tools\n**Tool/Analysis:** code_agent, doc_generator (capability documentation)\n**Inputs:** Output format specifications\n**Expected Output:**\n- Chart and graph types available\n- Statistical analysis functions\n- Report generation formats\n- Customization options\n\n### Step 7: Compile Integration Workflows\n**Tool/Analysis:** Direct documentation\n**Inputs:** Tool interaction patterns\n**Expected Output:** Examples of how tools work together:\n- Multi-tool analysis workflows\n- Data pipeline examples\n- End-to-end analysis scenarios\n\n### Step 8: Create Structured Tool Reference\n**Tool/Analysis:** doc_generator\n**Inputs:** All compiled information from Steps 1-7\n**Expected Output:** Organized reference document with:\n- Tool inventory table\n- Quick reference guide\n- Capability matrix\n- Example use cases for each tool\n\n## Deliverable Format\nA comprehensive, structured response organized as:\n1. **Primary Tools** (with descriptions)\n2. **Data Sources** (categorized by type)\n3. **Analytical Capabilities** (by function)\n4. **Integration Examples** (workflow demonstrations)\n5. **Quick Reference Guide** (tool selection matrix)\n\n**Estimated Completion:** Single response with all components integrated",
+  "steps": [
+    {
+      "step_id": "step_0",
+      "tool": "orchestrator",
+      "description": "Document Core Analytical Tools",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_1",
+      "tool": "web_search",
+      "description": "Identify Data Source Categories",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_2",
+      "tool": "simulation",
+      "description": "Document Analytical Methodologies",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_3",
+      "tool": "simulation",
+      "description": "Detail Simulation Capabilities",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_4",
+      "tool": "pdf_rag",
+      "description": "Describe Data Processing Capabilities",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_5",
+      "tool": "code_agent",
+      "description": "Document Visualization and Reporting Tools",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_6",
+      "tool": "simulation",
+      "description": "Compile Integration Workflows",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_7",
+      "tool": "doc_generator",
+      "description": "Create Structured Tool Reference",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    }
+  ],
+  "estimated_tools": [
+    "orchestrator",
+    "web_search",
+    "simulation",
+    "pdf_rag",
+    "doc_generator",
+    "code_agent"
+  ]
+}

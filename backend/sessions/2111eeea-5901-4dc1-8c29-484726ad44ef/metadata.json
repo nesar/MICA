@@ -1,0 +1,15 @@
+{
+  "session_id": "2111eeea-5901-4dc1-8c29-484726ad44ef",
+  "created_at": "2026-01-27T03:58:35.236308",
+  "status": "completed",
+  "query": "What are the top 3 critical materials in Greenland that are not available in mainland US or Alaska? Give me history from 2019-2024.",
+  "user_id": "webui_user",
+  "model": null,
+  "updated_at": "2026-01-27T04:00:36.818532",
+  "approved": true,
+  "approval_feedback": null,
+  "report_generated_at": "2026-01-27T04:00:36.818234",
+  "report_path": "sessions/2111eeea-5901-4dc1-8c29-484726ad44ef/report_20260126_220036.pdf",
+  "completed_at": "2026-01-27T04:00:36.818531",
+  "summary": "Error: Request failed - HTTPSConnectionPool(host='apps-dev.inside.anl.gov', port=443): Max retries exceeded with url: /argoapi/api/v1/resource/chat/ (Caused by NameResolutionError(\"HTTPSConnection(host='apps-dev.inside.anl.gov', port=443): Failed to resolve 'apps-dev.inside.anl.gov' ([Errno 8] nodename nor servname provided, or not known)\"))"
+}

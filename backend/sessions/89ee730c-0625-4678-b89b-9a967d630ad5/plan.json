@@ -1,0 +1,74 @@
+{
+  "reasoning": "# Detailed Analysis Plan: US Rare Earth Element Production Capacity\n\n## Step-by-Step Execution Plan\n\n### PHASE 1: Data Collection from Authoritative Sources\n\n**Step 1: Retrieve USGS Mineral Commodity Summaries - Rare Earths**\n- **Tool**: `web_search`\n- **Specific Inputs**: \n  - Search query: \"USGS Mineral Commodity Summaries 2024 rare earths\"\n  - Search query: \"USGS Mineral Commodity Summaries 2023 rare earths\"\n  - Target: Official USGS.gov publications\n- **Expected Output**: \n  - PDF links or web pages with production statistics (metric tons)\n  - Import/export data by country\n  - Consumption estimates\n  - Mine production capacity figures\n  - Historical trends (2020-2024)\n\n**Step 2: Extract Data from USGS Documents**\n- **Tool**: `pdf_rag` (if PDFs obtained) OR `web_search` (for web-based data)\n- **Specific Inputs**:\n  - USGS PDF documents from Step 1\n  - Query terms: \"domestic production\", \"imports\", \"exports\", \"consumption\", \"Mountain Pass\", \"reserves\"\n- **Expected Output**:\n  - Specific production figures in metric tons for 2022-2024\n  - Import volumes by source country\n  - Percentage of import reliance\n  - Reserve estimates\n\n**Step 3: Retrieve DOE Critical Materials Reports**\n- **Tool**: `web_search`\n- **Specific Inputs**:\n  - Search query: \"DOE critical materials strategy 2023 2024 rare earth elements\"\n  - Search query: \"Department of Energy rare earth supply chain assessment\"\n  - Search query: \"DOE critical minerals and materials report rare earths\"\n- **Expected Output**:\n  - DOE supply chain vulnerability assessments\n  - Critical materials lists with REE categorization\n  - Policy initiatives and funding programs\n  - Processing capacity gaps identified\n\n**Step 4: Gather MP Materials Production Data**\n- **Tool**: `web_search`\n- **Specific Inputs**:\n  - Search query: \"MP Materials Mountain Pass production capacity 2024\"\n  - Search query: \"MP Materials annual report 2023 rare earth oxide production\"\n  - Search query: \"MP Materials Stage II Stage III rare earth separation\"\n- **Expected Output**:\n  - Annual REO (Rare Earth Oxide) production capacity\n  - Actual production volumes\n  - Breakdown by rare earth element\n  - Timeline for separation facility completion\n  - Magnet manufacturing plans\n\n**Step 5: Collect Trade and Import Dependency Data**\n- **Tool**: `web_search`\n- **Specific Inputs**:\n  - Search query: \"US rare earth imports from China statistics 2023 2024\"\n  - Search query: \"USITC rare earth trade data United States\"\n  - Search query: \"US rare earth compound imports by country HTS code 2846\"\n- **Expected Output**:\n  - Import volumes by country (metric tons and USD value)\n  - China's percentage share of US imports\n  - Import categories (ores, compounds, metals, magnets)\n  - Trade trends over 3-5 years\n\n### PHASE 2: Data Analysis and Calculations\n\n**Step 6: Calculate Domestic Production vs. Demand Ratios**\n- **Tool**: `code_agent`\n- **Specific Inputs**:\n  - Domestic production figures (from Steps 1-2)\n  - Total consumption/apparent consumption figures (from Steps 1-2)\n  - Import volumes (from Step 5)\n  - Formula: (Domestic Production / Total Consumption) \u00d7 100\n- **Expected Output**:\n  - Percentage of US demand met domestically\n  - Import dependency percentage\n  - Self-sufficiency ratio\n  - Year-over-year trends (2020-2024)\n\n**Step 7: Analyze Heavy vs. Light REE Production Gaps**\n- **Tool**: `code_agent`\n- **Specific Inputs**:\n  - Light REE production data (La, Ce, Pr, Nd, Sm)\n  - Heavy REE production data (Eu, Gd, Tb, Dy, Ho, Er, Tm, Yb, Lu, Y)\n  - US demand by REE category\n  - Import data by REE type\n- **Expected Output**:\n  - Production capacity by REE category\n  - Gap analysis showing heavy REE dependency\n  - Visualization comparing light vs. heavy REE self-sufficiency\n  - Critical element identification (Nd, Pr, Dy, Tb for magnets)\n\n**Step 8: Process Capacity Assessment Across Supply Chain**\n- **Tool**: `code_agent`\n- **Specific Inputs**:\n  - Mining capacity (Mountain Pass + any other operations)\n  - Separation/refining capacity (current and planned)\n  - Metal production capacity\n  - Magnet manufacturing capacity\n  - Data from Steps 1-4\n- **Expected Output**:\n  - Supply chain bottleneck identification\n  - Capacity utilization rates at each stage\n  - Timeline for capacity additions\n  - Comparison chart: mining \u2192 separation \u2192 metal \u2192 magnet capacities\n\n**Step 9: Create Import Source Visualization**\n- **Tool**: `code_agent`\n- **Specific Inputs**:\n  - Import data by country (from Step 5)\n  - Time series data (2020-2024)\n- **Expected Output**:\n  - Pie chart showing import sources (China, Estonia, Japan, etc.)\n  - Time series chart showing China dependency trend\n  - Bar chart comparing import volumes by country\n  - Table with percentage breakdowns\n\n### PHASE 3: Policy and Strategic Context Analysis\n\n**Step 10: Compile DOE and Federal Initiatives**\n- **Tool**: `web_search`\n- **Specific Inputs**:\n  - Search query: \"Defense Production Act rare earth funding DOE\"\n  - Search query: \"DOE rare earth separation facility grants 2023 2024\"\n  - Search query: \"Bipartisan Infrastructure Law critical minerals rare earth\"\n  - Search query: \"Inflation Reduction Act rare earth domestic production\"\n- **Expected Output**:\n  - List of federal funding programs with amounts\n  - Specific projects funded (companies, locations, timelines)\n  - Policy goals and targets\n  - Investment totals in REE supply chain\n\n**Step 11: Identify Supply Chain Vulnerabilities**\n- **Tool**: `code_agent`\n- **Specific Inputs**:\n  - All data from previous steps\n  - Critical applications requiring REEs (defense, clean energy, electronics)\n- **Expected Output**:\n  - Risk assessment matrix\n  - Critical vulnerability points in supply chain\n  - Elements with highest strategic risk\n  - Comparison with DoD and DOE critical materials lists\n\n### PHASE 4: Synthesis and Report Generation\n\n**Step 12: Create Statistical Summary Tables**\n- **Tool**: `code_agent`\n- **Specific Inputs**:\n  - All quantitative data from Steps 1-11\n- **Expected Output**:\n  - Summary table: US REE production, imports, consumption (2020-2024)\n  - Table: Import dependency by source country\n  - Table: Production capacity by facility and stage\n  - Table: Heavy vs. light REE production and gaps\n  - Table: Federal investments in REE supply chain\n\n**Step 13: Generate Data Visualizations**\n- **Tool**: `code_agent`\n- **Specific Inputs**:\n  - Data from Step 12\n  - Visualization requirements: trends, comparisons, geographic distribution\n- **Expected Output**:\n  - Line chart: US REE production vs. consumption (2020-2024)\n  - Stacked bar chart: Import sources over time\n  - Flow diagram: REE supply chain with capacity at each stage\n  - Map: US REE production facilities and planned projects\n  - Comparison chart: US vs. China production capacity\n\n**Step 14: Compile Comprehensive Written Analysis**\n- **Tool**: Manual synthesis (text compilation)\n- **Specific Inputs**:\n  - All findings from Steps 1-13\n  - USGS and DOE report citations\n  - Statistical summaries and visualizations\n- **Expected Output**:\n  - Executive summary with key statistics\n  - Section 1: Current production capacity assessment\n  - Section 2: Domestic vs. import dependency analysis\n  - Section 3: Heavy vs. light REE gap analysis\n  - Section 4: Mountain Pass and MP Materials detailed profile\n  - Section 5: Supply chain vulnerabilities\n  - Section 6: Federal policy initiatives and investments\n  - Section 7: Conclusions and outlook\n  - References and data sources\n\n**Step 15: Generate Final Report Document**\n- **Tool**: `doc_generator`\n- **Specific Inputs**:\n  - Written analysis from Step 14\n  - All tables and visualizations from Steps 12-13\n  - Formatting requirements: professional report format with TOC\n- **Expected Output**:\n  - PDF report: \"US Rare Earth Element Production Capacity Analysis\"\n  - Includes: title page, executive summary, detailed analysis, data appendices\n  - Properly cited USGS and DOE sources\n  - Charts and tables integrated throughout\n\n---\n\n## Success Criteria\n\nThe analysis will be complete when:\n1. \u2705 Specific percentage of US demand met domestically is calculated with sources\n2. \u2705 Import dependency percentage is documented (verify ~80% China figure)\n3. \u2705 Mountain Pass production capacity and output are quantified\n4. \u2705 Heavy vs. light REE production gap is clearly demonstrated\n5. \u2705 DOE initiatives are catalogued with funding amounts\n6. \u2705 All statistics are cited to USGS, DOE, or other authoritative sources\n7. \u2705 Final report is generated in professional PDF format\n\n## Estimated Timeline\n- Phase 1 (Data Collection): Steps 1-5\n- Phase 2 (Analysis): Steps 6-9\n- Phase 3 (Context): Steps 10-11\n- Phase 4 (Synthesis): Steps 12-15\n\n**Ready to execute Step 1.**",
+  "steps": [
+    {
+      "step_id": "step_0",
+      "tool": "code_agent",
+      "description": "\u2705 Specific percentage of US demand met domestically is calculated with sources",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_1",
+      "tool": "orchestrator",
+      "description": "\u2705 Import dependency percentage is documented (verify ~80% China figure)",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_2",
+      "tool": "orchestrator",
+      "description": "\u2705 Mountain Pass production capacity and output are quantified",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_3",
+      "tool": "orchestrator",
+      "description": "\u2705 Heavy vs. light REE production gap is clearly demonstrated",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_4",
+      "tool": "orchestrator",
+      "description": "\u2705 DOE initiatives are catalogued with funding amounts",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_5",
+      "tool": "web_search",
+      "description": "\u2705 All statistics are cited to USGS, DOE, or other authoritative sources",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_6",
+      "tool": "pdf_rag",
+      "description": "\u2705 Final report is generated in professional PDF format",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    }
+  ],
+  "estimated_tools": [
+    "orchestrator",
+    "web_search",
+    "code_agent",
+    "pdf_rag"
+  ]
+}
