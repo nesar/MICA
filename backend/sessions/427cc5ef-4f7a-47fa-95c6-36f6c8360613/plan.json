@@ -1,0 +1,35 @@
+{
+  "reasoning": "# Analysis Plan: Out-of-Scope Query Response\n\n## Situation Assessment\nThis query requests web development code, which is **completely outside MICA's domain of critical materials supply chain analysis**. No analysis plan using my specialized tools is appropriate or necessary.\n\n## Response Plan\n\n### Step 1: Acknowledge Scope Limitation\n**Action:** Directly communicate to the user that this query is outside my specialized capabilities\n**Tool:** None (direct response)\n**Input:** User's web development query\n**Expected Output:** Clear explanation that MICA is specialized for critical materials supply chain analysis, not web development\n\n### Step 2: Redirect to Appropriate Resources\n**Action:** Provide helpful suggestions for where to find web development assistance\n**Tool:** None (direct response)\n**Input:** Understanding of appropriate web development resources\n**Expected Output:** List of 2-3 alternative resources:\n- General-purpose AI assistants\n- MDN Web Docs or W3Schools\n- Web development communities (Stack Overflow)\n\n### Step 3: Offer Alternative Assistance\n**Action:** Invite the user to ask questions within my domain of expertise\n**Tool:** None (direct response)\n**Input:** My core competencies in materials supply chain analysis\n**Expected Output:** Examples of questions I can help with:\n- Critical materials supply chain vulnerabilities\n- Rare earth element dependencies\n- Energy transition material requirements\n- Trade flow analysis for strategic minerals\n\n---\n\n## Why No Tools Are Required\n\n**None of my available tools are relevant:**\n- \u274c `web_search`: Not needed for web development code snippets\n- \u274c `pdf_rag`: No PDFs contain relevant information for this query\n- \u274c `excel_handler`: No data analysis required\n- \u274c `code_agent`: For statistical analysis, not web development\n- \u274c `simulation`: For supply chain modeling only\n- \u274c `doc_generator`: No report generation needed\n\n**Conclusion:** This requires a simple, direct response declining the request and redirecting the user appropriately.",
+  "steps": [
+    {
+      "step_id": "step_0",
+      "tool": "orchestrator",
+      "description": "Acknowledge Scope Limitation",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_1",
+      "tool": "orchestrator",
+      "description": "Redirect to Appropriate Resources",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_2",
+      "tool": "orchestrator",
+      "description": "Offer Alternative Assistance",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    }
+  ],
+  "estimated_tools": [
+    "orchestrator"
+  ]
+}

@@ -165,10 +165,7 @@ class WebSearchTool(MCPTool):
         site_filter: list[str],
     ) -> list[dict]:
         """
-        Search using DuckDuckGo HTML endpoint.
-
-        Note: This is a basic implementation. For production, consider using
-        the duckduckgo-search package or a proper API.
+        Search using DuckDuckGo via the duckduckgo-search package.
         """
         # Build query with site restrictions
         if site_filter:
@@ -177,32 +174,59 @@ class WebSearchTool(MCPTool):
         else:
             full_query = query
 
-        # Use DuckDuckGo's HTML endpoint
-        url = f"https://html.duckduckgo.com/html/"
-        params = {"q": full_query}
+        try:
+            # Try using the duckduckgo-search package (more reliable)
+            from duckduckgo_search import DDGS
+            import warnings
+            warnings.filterwarnings("ignore", category=RuntimeWarning)
+
+            results = []
+            with DDGS() as ddgs:
+                # Try text search first
+                search_results = list(ddgs.text(full_query, max_results=num_results))
+
+                # If text search returns nothing, try news search as fallback
+                if not search_results:
+                    logger.info(f"Text search empty, trying news search for: {query[:50]}")
+                    search_results = list(ddgs.news(full_query, max_results=num_results))
+
+                for item in search_results:
+                    result = {
+                        "title": item.get("title", ""),
+                        "url": item.get("href", item.get("link", item.get("url", ""))),
+                        "snippet": item.get("body", item.get("snippet", item.get("excerpt", ""))),
+                        "source": urlparse(item.get("href", item.get("link", item.get("url", "")))).netloc,
+                    }
+                    results.append(result)
+
+            logger.info(f"DuckDuckGo search returned {len(results)} results for: {query[:50]}")
+            return results
+
+        except ImportError:
+            logger.warning("duckduckgo-search package not installed, falling back to HTML scraping")
+            return self._search_duckduckgo_html(full_query, num_results)
+        except Exception as e:
+            logger.warning(f"DuckDuckGo search failed: {e}")
+            return []
+
+    def _search_duckduckgo_html(self, query: str, num_results: int) -> list[dict]:
+        """Fallback HTML scraping method for DuckDuckGo."""
+        url = "https://html.duckduckgo.com/html/"
+        params = {"q": query}
 
         try:
             response = requests.post(url, data=params, timeout=30)
             response.raise_for_status()
-
-            # Parse results from HTML (basic parsing)
-            results = self._parse_ddg_html(response.text, num_results)
-            return results
-
+            return self._parse_ddg_html(response.text, num_results)
         except Exception as e:
-            logger.warning(f"DuckDuckGo search failed: {e}")
-            # Return empty results on failure
+            logger.warning(f"DuckDuckGo HTML fallback failed: {e}")
             return []
 
     def _parse_ddg_html(self, html: str, max_results: int) -> list[dict]:
         """Parse DuckDuckGo HTML results."""
         results = []
-
-        # Basic HTML parsing without BeautifulSoup
-        # Look for result blocks
         import re
 
-        # Find result links and snippets
         link_pattern = r'class="result__a"[^>]*href="([^"]+)"[^>]*>([^<]+)</a>'
         snippet_pattern = r'class="result__snippet"[^>]*>([^<]+(?:<[^>]+>[^<]*</[^>]+>)*[^<]*)</a>'
 

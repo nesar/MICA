@@ -142,6 +142,18 @@ def get_first_user_query(messages: List[Message]) -> str:
     return ""
 
 
+def is_system_query(message: str) -> bool:
+    """Check if this is an Open WebUI system query (title/tag generation) that should be ignored."""
+    system_patterns = [
+        "### Task:",
+        "Generate 1-3 broad tags",
+        "Create a concise, 3-5 word title",
+        "as a title for the chat history",
+        "categorizing the main themes",
+    ]
+    return any(pattern.lower() in message.lower() for pattern in system_patterns)
+
+
 async def process_message_stream(request: ChatRequest) -> AsyncGenerator[str, None]:
     """Process the message and yield response chunks."""
 
@@ -151,6 +163,11 @@ async def process_message_stream(request: ChatRequest) -> AsyncGenerator[str, No
         return
 
     user_message = messages[-1].content.strip()
+
+    # Skip Open WebUI's automatic title/tag generation queries
+    if is_system_query(user_message):
+        yield "MICA Analysis System"
+        return
 
     # Generate a stable chat ID from the first user query (not changing each message)
     first_query = get_first_user_query(messages)
@@ -247,7 +264,7 @@ async def process_message_stream(request: ChatRequest) -> AsyncGenerator[str, No
             session_id = query_data.get("session_id")
             sessions[chat_id] = session_id
 
-            yield f"📋 Session: `{session_id[:8]}...`\n\n"
+            yield f"📋 Session: `{session_id}`\n\n"
             yield "⏳ Conducting preliminary research and generating analysis plan...\n\n"
 
             # Poll for plan

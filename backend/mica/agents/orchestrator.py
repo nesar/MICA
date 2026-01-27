@@ -391,9 +391,23 @@ def _enrich_inputs(
     state: AgentState,
 ) -> Dict[str, Any]:
     """Enrich tool inputs with context from previous steps."""
-    # Add query context if not present
-    if "query" not in inputs and step["tool"] == "web_search":
-        inputs["query"] = step.get("description", state["query"])
+    # For web_search, ensure we have a proper query
+    if step["tool"] == "web_search":
+        # Check if we have queries (plural) from plan parsing
+        if "queries" in inputs and inputs["queries"]:
+            # Use the first query from the list, or combine them
+            queries = inputs["queries"]
+            if isinstance(queries, list) and queries:
+                # Use first specific query, or combine top queries
+                inputs["query"] = queries[0] if len(queries) == 1 else " ".join(queries[:2])
+        elif "query" not in inputs:
+            # Fall back to step description, but make it more search-friendly
+            description = step.get("description", state["query"])
+            # Clean up the description to be a better search query
+            # Remove generic phrases that don't help search
+            description = description.replace("Research ", "").replace("Investigate ", "")
+            description = description.replace("Identify ", "").replace("Verify ", "")
+            inputs["query"] = description
 
     # Add data from previous steps if referenced
     # This is a simplified implementation

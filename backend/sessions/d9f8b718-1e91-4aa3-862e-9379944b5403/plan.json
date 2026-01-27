@@ -1,0 +1,45 @@
+{
+  "reasoning": "I appreciate the structured request, but I must respectfully decline to create an analysis plan for this query.\n\n**Why no analysis plan is appropriate:**\n\nThis request is asking me to generate a chat title for a web development question. This is:\n\n1. **Outside my scope:** I'm MICA, specialized in critical materials supply chain analysis for DOE, not a chat interface management system\n2. **Not an analytical task:** Creating chat titles is a metadata/UI function, not materials intelligence analysis\n3. **No tools applicable:** None of my available tools (web_search, pdf_rag, excel_handler, code_agent, simulation, doc_generator) are relevant to generating chat interface titles\n4. **Not DOE-mission related:** This doesn't involve critical materials, supply chains, energy infrastructure, or national security considerations\n\n**What would be appropriate for MICA:**\n\nIf the user wanted analysis on topics like:\n- Critical materials used in web server infrastructure\n- Supply chain vulnerabilities in semiconductor components for web hosting\n- Rare earth elements in data center equipment\n- Energy consumption of digital infrastructure\n\nThen I would create a detailed analysis plan using my specialized tools and expertise.\n\n**Recommendation:** \n\nThis appears to be a system-level request that should be handled by the chat platform's native title generation function, not routed through a specialized analytical agent like myself.",
+  "steps": [
+    {
+      "step_id": "step_0",
+      "tool": "orchestrator",
+      "description": "**Outside my scope:** I'm MICA, specialized in critical materials supply chain analysis for DOE, not a chat interface management system",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_1",
+      "tool": "orchestrator",
+      "description": "**Not an analytical task:** Creating chat titles is a metadata/UI function, not materials intelligence analysis",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_2",
+      "tool": "web_search",
+      "description": "**No tools applicable:** None of my available tools (web_search, pdf_rag, excel_handler, code_agent, simulation, doc_generator) are relevant to generating chat interface titles",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_3",
+      "tool": "orchestrator",
+      "description": "**Not DOE-mission related:** This doesn't involve critical materials, supply chains, energy infrastructure, or national security considerations",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    }
+  ],
+  "estimated_tools": [
+    "web_search",
+    "orchestrator"
+  ]
+}

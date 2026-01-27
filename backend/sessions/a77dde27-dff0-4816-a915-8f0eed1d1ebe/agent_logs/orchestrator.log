@@ -1,0 +1,5 @@
+[2026-01-26T07:59:21.879266] INFO: Agent orchestrator started
+[2026-01-26T07:59:21.879551] INFO: Preliminary research completed
+[2026-01-26T07:59:21.879741] DEBUG: Output: {"summary": "## Initial Analysis Summary\n\n### Query Understanding\n\nThe user is asking for:\n1. **Top 3 critical materials found in Greenland** that are NOT available in mainland US or Alaska\n2. **Historical context** covering the last 5 years (2019-2024)\n\n### Key Aspects to Address\n\n**1. Critical Materials Definition**\n- Need to reference the DOE Critical Materials List or USGS Critical Minerals List\n- Focus on materials with strategic importance for energy, defense, and technology ap
+[2026-01-26T07:59:21.879763] INFO: Agent orchestrator completed
+[2026-01-26T07:59:21.879883] INFO: Duration: 0.00s

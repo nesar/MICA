@@ -1,0 +1,271 @@
+{
+  "reasoning": "# Detailed Analysis Plan\n\n## Phase 1: Identify Critical Materials and Establish Baseline (Steps 1-5)\n\n### Step 1: Obtain Official US Critical Minerals List\n**Tool:** web_search\n**Inputs:** \n- \"USGS critical minerals list 2024\"\n- \"US Department of Interior Federal Register critical minerals final list\"\n- \"DOE critical materials assessment 2023\"\n**Expected Output:** \n- Official list of 50 critical minerals designated by USGS (2022 update)\n- Definitions and strategic importance classifications\n- Identification of materials on both DOE and USGS lists\n\n### Step 2: Determine Current US Domestic Production Status\n**Tool:** web_search\n**Inputs:**\n- \"USGS mineral commodity summaries 2024 rare earth elements\"\n- \"USGS mineral commodity summaries 2024 graphite production\"\n- \"USGS mineral commodity summaries 2024 fluorspar cryolite\"\n- \"US net import reliance statistics 2024\"\n- \"Alaska critical minerals production data 2024\"\n**Expected Output:**\n- Production volumes for mainland US and Alaska by material (2019-2024)\n- Net import reliance percentages (materials with 100% import dependency)\n- List of critical materials with zero domestic production\n\n### Step 3: Map Greenland's Major Critical Mineral Deposits\n**Tool:** web_search\n**Inputs:**\n- \"Greenland mineral resources database critical minerals\"\n- \"Kvanefjeld rare earth deposit resource estimate\"\n- \"Greenland graphite deposits Amitsoq Graphite\"\n- \"Greenland Mineral Resources Strategy 2023\"\n- \"Tanbreez rare earth project Greenland\"\n**Expected Output:**\n- Comprehensive list of Greenland deposits with tonnage estimates\n- Resource grades and comparative global rankings\n- Development status (exploration, feasibility, permitted, producing)\n\n### Step 4: Cross-Reference and Filter Materials\n**Tool:** code_agent\n**Inputs:**\n- US production data from Step 2\n- Greenland deposits data from Step 3\n- Critical minerals list from Step 1\n- Filtering criteria: (a) Zero or <5% US production, (b) Significant Greenland reserves, (c) On official critical list\n**Expected Output:**\n- Filtered dataset of 5-10 candidate materials\n- Comparison matrix showing US vs Greenland availability\n- Preliminary ranking by strategic importance and exclusivity\n\n### Step 5: Validate Top 3 Selection with Additional Research\n**Tool:** web_search\n**Inputs:**\n- \"US [Material X] import dependency China 2024\" (for each candidate)\n- \"Greenland [Material X] world-class deposits\" (for each candidate)\n- \"US supply chain vulnerability [Material X]\"\n**Expected Output:**\n- Supply chain risk assessment for each candidate\n- Confirmation of Greenland's global significance for each material\n- Final selection of Top 3 materials with quantitative justification\n\n---\n\n## Phase 2: Deep Dive on Top 3 Materials - Production & Reserves (Steps 6-8)\n\n### Step 6: Analyze Material #1 - Detailed Production and Reserve Data\n**Tool:** web_search\n**Inputs:**\n- \"[Material #1] USGS commodity summaries 2019 2020 2021 2022 2023 2024\"\n- \"Greenland [Material #1] reserve estimates NI 43-101\"\n- \"US [Material #1] processing capacity domestic\"\n- \"[Material #1] global supply chain China dominance\"\n**Expected Output:**\n- Year-by-year US production data (2019-2024)\n- Greenland reserve estimates with comparison to global reserves\n- Processing and refining capacity gaps in US\n- Import source breakdown by country\n\n### Step 7: Analyze Material #2 - Detailed Production and Reserve Data\n**Tool:** web_search\n**Inputs:**\n- Same search pattern as Step 6, substituting Material #2\n**Expected Output:**\n- Same data structure as Step 6 for Material #2\n\n### Step 8: Analyze Material #3 - Detailed Production and Reserve Data\n**Tool:** web_search\n**Inputs:**\n- Same search pattern as Step 6, substituting Material #3\n**Expected Output:**\n- Same data structure as Step 6 for Material #3\n\n---\n\n## Phase 3: Historical Timeline Research (2019-2024) - Material #1 (Steps 9-11)\n\n### Step 9: Material #1 - Greenland Project Development Timeline\n**Tool:** web_search\n**Inputs:**\n- \"Greenland [Material #1 project name] 2019 feasibility study\"\n- \"Greenland [Material #1 project name] 2020 environmental assessment\"\n- \"Greenland [Material #1 project name] 2021 permit application\"\n- \"Greenland [Material #1 project name] 2022 2023 2024 status\"\n- \"[Company name] Greenland [Material #1] investment\"\n**Expected Output:**\n- Chronological timeline of major project milestones (2019-2024)\n- Feasibility study results and resource updates\n- Permitting status and regulatory decisions\n- Investment amounts and investor identities\n- Environmental and social impact assessments\n\n### Step 10: Material #1 - Political and Regulatory Developments\n**Tool:** web_search\n**Inputs:**\n- \"Greenland election 2021 mining policy [Material #1]\"\n- \"Greenland uranium mining ban 2021 Kvanefjeld\" (if relevant to Material #1)\n- \"Greenland coalition government 2024 mining policy\"\n- \"Greenland [Material #1] export restrictions\"\n- \"Inuit Ataqatigiit mining policy Greenland\"\n**Expected Output:**\n- Political decisions affecting Material #1 projects (2019-2024)\n- Regulatory framework changes\n- Public opposition or support developments\n- Indigenous rights considerations\n\n### Step 11: Material #1 - US-Greenland Cooperation and Geopolitics\n**Tool:** web_search\n**Inputs:**\n- \"US Greenland memorandum of understanding critical minerals 2019\"\n- \"Trump Greenland purchase 2019 strategic minerals\"\n- \"US Greenland defense cooperation 2020 [Material #1]\"\n- \"China Greenland [Material #1] investment blocked\"\n- \"US DFC Greenland critical minerals investment\"\n**Expected Output:**\n- Bilateral agreements and cooperation initiatives\n- US strategic interest evolution (2019-2024)\n- Chinese and European competition dynamics\n- US government financing and support programs\n\n---\n\n## Phase 4: Historical Timeline Research (2019-2024) - Materials #2 and #3 (Steps 12-17)\n\n### Step 12: Material #2 - Greenland Project Development Timeline\n**Tool:** web_search\n**Inputs:** Same pattern as Step 9, substituting Material #2\n**Expected Output:** Same structure as Step 9 for Material #2\n\n### Step 13: Material #2 - Political and Regulatory Developments\n**Tool:** web_search\n**Inputs:** Same pattern as Step 10, substituting Material #2\n**Expected Output:** Same structure as Step 10 for Material #2\n\n### Step 14: Material #2 - US-Greenland Cooperation and Geopolitics\n**Tool:** web_search\n**Inputs:** Same pattern as Step 11, substituting Material #2\n**Expected Output:** Same structure as Step 11 for Material #2\n\n### Step 15: Material #3 - Greenland Project Development Timeline\n**Tool:** web_search\n**Inputs:** Same pattern as Step 9, substituting Material #3\n**Expected Output:** Same structure as Step 9 for Material #3\n\n### Step 16: Material #3 - Political and Regulatory Developments\n**Tool:** web_search\n**Inputs:** Same pattern as Step 10, substituting Material #3\n**Expected Output:** Same structure as Step 10 for Material #3\n\n### Step 17: Material #3 - US-Greenland Cooperation and Geopolitics\n**Tool:** web_search\n**Inputs:** Same pattern as Step 11, substituting Material #3\n**Expected Output:** Same structure as Step 11 for Material #3\n\n---\n\n## Phase 5: Market and Economic Analysis (2019-2024) (Steps 18-20)\n\n### Step 18: Price and Market Trends for All 3 Materials\n**Tool:** web_search\n**Inputs:**\n- \"[Material #1] price trends 2019 2020 2021 2022 2023 2024\"\n- \"[Material #2] market size global demand forecast\"\n- \"[Material #3] price volatility supply disruption\"\n- \"Critical minerals prices COVID-19 impact 2020\"\n- \"Clean energy transition [Materials] demand projection\"\n**Expected Output:**\n- Historical price data for each material (2019-2024)\n- Market size and growth rates\n- Demand drivers (EVs, renewable energy, defense)\n- Price volatility events and causes\n\n### Step 19: Supply Chain Disruption Events (2019-2024)\n**Tool:** web_search\n**Inputs:**\n- \"China rare earth export restrictions 2020 2021\"\n- \"COVID-19 critical minerals supply chain 2020\"\n- \"Russia Ukraine war critical minerals impact 2022\"\n- \"[Material names] supply shortage 2021 2022 2023\"\n**Expected Output:**\n- Timeline of major supply disruptions\n- Impact on US industries and procurement\n- Policy responses and stockpiling initiatives\n- Lessons learned for supply chain resilience\n\n### Step 20: Investment and Financing Trends\n**Tool:** web_search\n**Inputs:**\n- \"Greenland mining investment 2019 2020 2021 2022 2023 2024\"\n- \"Critical minerals venture capital investment trends\"\n- \"US DFC Export-Import Bank Greenland projects\"\n- \"European Investment Bank Greenland critical minerals\"\n- \"Chinese investment Greenland mining restrictions\"\n**Expected Output:**\n- Investment volumes by year and source country\n- Major deals and financing announcements\n- Government financing programs and amounts\n- Shifts in investor sentiment and geopolitical factors\n\n---\n\n## Phase 6: Data Compilation and Analysis (Steps 21-24)\n\n### Step 21: Create Comprehensive Data Tables\n**Tool:** code_agent\n**Inputs:**\n- Production data from Steps 6-8\n- Reserve estimates from Steps 6-8\n- Price data from Step 18\n- Import/export statistics from Steps 2, 6-8\n**Expected Output:**\n- Formatted Excel tables with:\n  - US production by year (2019-2024) for each material\n  - Greenland reserve estimates with confidence levels\n  - Global production and reserve rankings\n  - US import dependency percentages by year\n  - Price trends with year-over-year changes\n\n### Step 22: Generate Statistical Visualizations\n**Tool:** code_agent\n**Inputs:**\n- Data tables from Step 21\n- Timeline events from Steps 9-17\n**Expected Output:**\n- Line charts: US import dependency trends (2019-2024)\n- Bar charts: Greenland reserves vs. US reserves vs. global\n- Pie charts: US import sources by country for each material\n- Stacked area charts: Global production by country over time\n- Timeline infographics: Major events for each material\n\n### Step 23: Perform Comparative Analysis\n**Tool:** code_agent\n**Inputs:**\n- All compiled data from Steps 21-22\n- Scoring criteria: strategic importance, supply risk, Greenland advantage\n**Expected Output:**\n- Comparative matrix scoring all 3 materials\n- Risk assessment heat map (likelihood vs. impact)\n- Supply chain vulnerability index for each material\n- Justification summary for Top 3 ranking\n\n### Step 24: Create Interactive Timeline Visualization\n**Tool:** code_agent\n**Inputs:**\n- Event data from Steps 9-17\n- Political milestones, project developments, market events\n**Expected Output:**\n- Gantt chart showing parallel timelines for all 3 materials (2019-2024)\n- Annotated timeline with clickable events\n- Color-coded categories (political, technical, economic, geopolitical)\n\n---\n\n## Phase 7: Report Generation and Synthesis (Steps 25-28)\n\n### Step 25: Draft Executive Summary\n**Tool:** doc_generator\n**Inputs:**\n- Top 3 materials with justification from Step 23\n- Key findings from all previous steps\n- Strategic implications for US policy\n**Expected Output:**\n- 2-page executive summary including:\n  - Clear identification of Top 3 materials\n  - One-paragraph summary for each material\n  - Critical findings and recommendations\n  - Visual summary dashboard\n\n### Step 26: Write Detailed Material Profiles\n**Tool:** doc_generator\n**Inputs:**\n- Material-specific data from Steps 6-17\n- Technical specifications and applications\n- Timeline narratives from Steps 9-17\n**Expected Output:**\n- 3-4 page profile for each material including:\n  - Material description and strategic applications\n  - Greenland deposit characteristics and resource estimates\n  - US availability status and import dependency\n  - Detailed 5-year chronological history (2019-2024)\n  - Key stakeholders and project developers\n  - Current status and future outlook\n\n### Step 27: Compile Geopolitical Context Section\n**Tool:** doc_generator\n**Inputs:**\n- Geopolitical findings from Steps 11, 14, 17\n- US-Greenland relations data\n- China/EU competition analysis\n**Expected Output:**\n- 2-3 page section covering:\n  - Evolution of US-Greenland cooperation (2019-2024)\n  - Trump administration's 2019 Greenland interest\n  - Competition from China and Europe\n  - Indigenous rights and environmental considerations\n  - Impact of Greenland elections and policy changes\n\n### Step 28: Generate Final Comprehensive Report\n**Tool:** doc_generator\n**Inputs:**\n- Executive summary from Step 25\n- Material profiles from Step 26\n- Geopolitical context from Step 27\n- All visualizations from Steps 22, 24\n- Data tables from Step 21\n**Expected Output:**\n- Complete PDF report (25-35 pages) with:\n  - Table of contents with page numbers\n  - Executive summary\n  - Methodology section\n  - Top 3 materials detailed analysis\n  - Historical timeline (2019-2024) for each material\n  - Geopolitical and market context\n  - Supporting data appendix\n  - Bibliography with 50+ sources\n  - Professional formatting with charts and tables\n\n---\n\n## Phase 8: Validation and Quality Assurance (Steps 29-30)\n\n### Step 29: Fact-Check and Cross-Verify Critical Claims\n**Tool:** web_search\n**Inputs:**\n- List of key statistical claims from draft report\n- Major historical events and dates\n- Reserve and production figures\n**Expected Output:**\n- Verification of all numerical data from multiple sources\n- Confirmation of dates and event sequences\n- Corrections to any discrepancies\n- Additional citations for unsourced claims\n\n### Step 30: Final Review and Updates\n**Tool:** web_search\n**Inputs:**\n- \"Greenland critical minerals latest news 2024\"\n- \"[Material names] recent developments 2024\"\n- \"US Greenland cooperation 2024 latest\"\n**Expected Output:**\n- Incorporation of any breaking developments (as of December 2024)\n- Updated status of ongoing projects\n- Final accuracy check\n- Version-controlled final report\n\n---\n\n## Summary of Deliverables\n\n**Primary Deliverable:**\n- Comprehensive PDF report identifying Top 3 critical materials in Greenland not available in US/Alaska, with detailed 5-year history (2019-2024)\n\n**Supporting Deliverables:**\n1. Data tables (Excel format) with production, reserves, prices, imports\n2. Statistical visualizations (charts and graphs)\n3. Interactive timeline (Gantt chart or infographic)\n4. Comparative analysis matrix\n5. Bibliography with all sources\n\n**Expected Timeline:**\n- Phase 1-2: Material identification and baseline data (Steps 1-8)\n- Phase 3-4: Historical research (Steps 9-17)\n- Phase 5: Economic analysis (Steps 18-20)\n- Phase 6: Data synthesis (Steps 21-24)\n- Phase 7: Report writing (Steps 25-28)\n- Phase 8: QA and finalization (Steps 29-30)\n\nThis plan will deliver a definitive, well-researched answer with comprehensive historical context for each of the top 3 critical materials.",
+  "steps": [
+    {
+      "step_id": "step_0",
+      "tool": "web_search",
+      "description": "Obtain Official US Critical Minerals List",
+      "inputs": {
+        "queries": [
+          "USGS critical minerals list 2024",
+          "US Department of Interior Federal Register critical minerals final list",
+          "DOE critical materials assessment 2023"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_1",
+      "tool": "web_search",
+      "description": "Determine Current US Domestic Production Status",
+      "inputs": {
+        "queries": [
+          "USGS mineral commodity summaries 2024 rare earth elements",
+          "USGS mineral commodity summaries 2024 graphite production",
+          "USGS mineral commodity summaries 2024 fluorspar cryolite",
+          "US net import reliance statistics 2024",
+          "Alaska critical minerals production data 2024"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_2",
+      "tool": "web_search",
+      "description": "Map Greenland's Major Critical Mineral Deposits",
+      "inputs": {
+        "queries": [
+          "Greenland mineral resources database critical minerals",
+          "Kvanefjeld rare earth deposit resource estimate",
+          "Greenland graphite deposits Amitsoq Graphite",
+          "Greenland Mineral Resources Strategy 2023",
+          "Tanbreez rare earth project Greenland"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_3",
+      "tool": "code_agent",
+      "description": "Cross-Reference and Filter Materials",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_4",
+      "tool": "web_search",
+      "description": "Validate Top 3 Selection with Additional Research",
+      "inputs": {
+        "queries": [
+          "US [Material X] import dependency China 2024",
+          "Greenland [Material X] world-class deposits",
+          "US supply chain vulnerability [Material X]"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_5",
+      "tool": "web_search",
+      "description": "Analyze Material #1 - Detailed Production and Reserve Data",
+      "inputs": {
+        "queries": [
+          "[Material #1] USGS commodity summaries 2019 2020 2021 2022 2023 2024",
+          "Greenland [Material #1] reserve estimates NI 43-101",
+          "US [Material #1] processing capacity domestic",
+          "[Material #1] global supply chain China dominance"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_6",
+      "tool": "web_search",
+      "description": "Analyze Material #2 - Detailed Production and Reserve Data",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_7",
+      "tool": "web_search",
+      "description": "Analyze Material #3 - Detailed Production and Reserve Data",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_8",
+      "tool": "web_search",
+      "description": "Material #1 - Greenland Project Development Timeline",
+      "inputs": {
+        "queries": [
+          "Greenland [Material #1 project name] 2019 feasibility study",
+          "Greenland [Material #1 project name] 2020 environmental assessment",
+          "Greenland [Material #1 project name] 2021 permit application",
+          "Greenland [Material #1 project name] 2022 2023 2024 status",
+          "[Company name] Greenland [Material #1] investment"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_9",
+      "tool": "web_search",
+      "description": "Material #1 - Political and Regulatory Developments",
+      "inputs": {
+        "queries": [
+          "Greenland election 2021 mining policy [Material #1]",
+          "Greenland uranium mining ban 2021 Kvanefjeld",
+          "Greenland coalition government 2024 mining policy",
+          "Greenland [Material #1] export restrictions",
+          "Inuit Ataqatigiit mining policy Greenland"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_10",
+      "tool": "web_search",
+      "description": "Material #1 - US-Greenland Cooperation and Geopolitics",
+      "inputs": {
+        "queries": [
+          "US Greenland memorandum of understanding critical minerals 2019",
+          "Trump Greenland purchase 2019 strategic minerals",
+          "US Greenland defense cooperation 2020 [Material #1]",
+          "China Greenland [Material #1] investment blocked",
+          "US DFC Greenland critical minerals investment"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_11",
+      "tool": "web_search",
+      "description": "Material #2 - Greenland Project Development Timeline",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_12",
+      "tool": "web_search",
+      "description": "Material #2 - Political and Regulatory Developments",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_13",
+      "tool": "web_search",
+      "description": "Material #2 - US-Greenland Cooperation and Geopolitics",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_14",
+      "tool": "web_search",
+      "description": "Material #3 - Greenland Project Development Timeline",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_15",
+      "tool": "web_search",
+      "description": "Material #3 - Political and Regulatory Developments",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_16",
+      "tool": "web_search",
+      "description": "Material #3 - US-Greenland Cooperation and Geopolitics",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_17",
+      "tool": "web_search",
+      "description": "Price and Market Trends for All 3 Materials",
+      "inputs": {
+        "queries": [
+          "[Material #1] price trends 2019 2020 2021 2022 2023 2024",
+          "[Material #2] market size global demand forecast",
+          "[Material #3] price volatility supply disruption",
+          "Critical minerals prices COVID-19 impact 2020",
+          "Clean energy transition [Materials] demand projection"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_18",
+      "tool": "web_search",
+      "description": "Supply Chain Disruption Events (2019-2024)",
+      "inputs": {
+        "queries": [
+          "China rare earth export restrictions 2020 2021",
+          "COVID-19 critical minerals supply chain 2020",
+          "Russia Ukraine war critical minerals impact 2022",
+          "[Material names] supply shortage 2021 2022 2023"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_19",
+      "tool": "web_search",
+      "description": "Investment and Financing Trends",
+      "inputs": {
+        "queries": [
+          "Greenland mining investment 2019 2020 2021 2022 2023 2024",
+          "Critical minerals venture capital investment trends",
+          "US DFC Export-Import Bank Greenland projects",
+          "European Investment Bank Greenland critical minerals",
+          "Chinese investment Greenland mining restrictions"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    }
+  ],
+  "estimated_tools": [
+    "web_search",
+    "code_agent"
+  ]
+}

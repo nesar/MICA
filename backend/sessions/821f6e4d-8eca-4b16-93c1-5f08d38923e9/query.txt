@@ -1,0 +1,1 @@
+Explain options trading in simple terms if I'm familiar with buying and selling stocks.

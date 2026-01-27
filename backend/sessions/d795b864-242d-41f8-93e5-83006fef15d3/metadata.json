@@ -1,0 +1,12 @@
+{
+  "session_id": "d795b864-242d-41f8-93e5-83006fef15d3",
+  "created_at": "2026-01-26T22:04:32.453988",
+  "status": "awaiting_approval",
+  "query": "What are the top 3 critical materials in Greenland that are not avaialble in mainland US or Alaska. Give me history of last 5 years",
+  "user_id": "webui_user",
+  "model": null,
+  "updated_at": "2026-01-26T22:21:47.949020",
+  "approved": true,
+  "approval_feedback": null,
+  "plan_proposed_at": "2026-01-26T22:21:47.948975"
+}

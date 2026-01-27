@@ -97,8 +97,13 @@ def get_session(session_id: str) -> AgentState:
     return _sessions[session_id]
 
 
-async def run_workflow_until_interrupt(session_id: str):
-    """Run the workflow until an interrupt point."""
+async def run_workflow_until_interrupt(session_id: str, state_update: dict = None):
+    """Run the workflow until an interrupt point.
+
+    Args:
+        session_id: The session ID
+        state_update: Optional dict of state updates for resumption (e.g., approval)
+    """
     state = _sessions[session_id]
     workflow = get_workflow()
 
@@ -106,8 +111,23 @@ async def run_workflow_until_interrupt(session_id: str):
         # Run workflow with config
         config_dict = {"configurable": {"thread_id": session_id}}
 
+        # Determine what to pass to the workflow
+        if state_update is not None:
+            # Resuming from interrupt - update the checkpoint state first
+            logger.info(f"[{session_id}] Resuming workflow with update: {state_update}")
+
+            # Update the checkpointed state before resuming
+            workflow.update_state(config_dict, state_update)
+
+            # Resume with None (continue from checkpoint)
+            workflow_input = None
+        else:
+            # Initial run - pass the full state
+            workflow_input = state
+            logger.info(f"[{session_id}] Starting workflow")
+
         # Stream until interrupt - LangGraph returns {node_name: state} dicts
-        async for event in workflow.astream(state, config_dict):
+        async for event in workflow.astream(workflow_input, config_dict):
             if isinstance(event, dict):
                 # LangGraph events are {node_name: updated_state}
                 for node_name, updated_state in event.items():
@@ -115,11 +135,11 @@ async def run_workflow_until_interrupt(session_id: str):
                         # Merge the updated state
                         state.update(updated_state)
                         _sessions[session_id] = state
-                        logger.debug(f"Updated state from node: {node_name}")
+                        logger.info(f"[{session_id}] Node '{node_name}' completed, status: {state.get('status')}")
 
         # Always update the final state
         _sessions[session_id] = state
-        logger.info(f"Workflow paused at: {state.get('current_step')}, status: {state.get('status')}")
+        logger.info(f"[{session_id}] Workflow paused at: {state.get('current_step')}, status: {state.get('status')}")
 
     except Exception as e:
         logger.error(f"Workflow error: {e}", exc_info=True)
@@ -247,8 +267,12 @@ async def approve_plan(
     if session_logger:
         session_logger.log_approval(request.approved, request.feedback)
 
-    # Continue workflow
-    background_tasks.add_task(run_workflow_until_interrupt, session_id)
+    # Continue workflow - pass only the approval update for proper resumption
+    state_update = {
+        "approved": request.approved,
+        "approval_feedback": request.feedback,
+    }
+    background_tasks.add_task(run_workflow_until_interrupt, session_id, state_update)
 
     if request.approved:
         message = "Plan approved. Execution starting..."

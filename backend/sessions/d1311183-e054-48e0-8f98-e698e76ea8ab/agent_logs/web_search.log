@@ -1,0 +1,5 @@
+[2026-01-26T22:31:47.251183] INFO: Agent web_search started
+[2026-01-26T22:31:47.251377] INFO: Executed step step_9
+[2026-01-26T22:31:47.251566] DEBUG: Output: {"status": "success", "data": [], "message": "Found 0 results", "metadata": {"query": "Verify US/Alaska Production Data", "provider": "duckduckgo", "num_results": 0}, "error": "<bound method ToolResult.error of <class 'mica.mcp_tools.base.ToolResult'>>", "execution_time": 0.846422}
+[2026-01-26T22:31:47.251579] INFO: Agent web_search completed
+[2026-01-26T22:31:47.251681] INFO: Duration: 0.00s

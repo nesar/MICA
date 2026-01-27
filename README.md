@@ -2,6 +2,58 @@
 
 An AI-powered multi-agent system for critical materials supply chain analysis, developed for the Department of Energy.
 
+---
+
+## Quick Start (5 minutes)
+
+### 1. Start the MICA Backend
+
+```bash
+cd backend
+pip install -r requirements.txt
+python -m mica.api.main
+# Backend runs at http://localhost:8000
+```
+
+### 2. Start the Pipelines Server
+
+```bash
+cd ui
+python pipelines_server.py
+# Pipelines server runs at http://localhost:9099
+```
+
+### 3. Configure Open WebUI
+
+In Open WebUI, go to **Settings → Connections → OpenAI API**:
+
+| Field | Value |
+|-------|-------|
+| API Base URL | `http://host.docker.internal:9099/v1` |
+| API Key | `mica-key` (any value works) |
+
+Click **Save**. The "MICA" model will appear in the model dropdown.
+
+### 4. Set Credentials (First Time)
+
+```bash
+# For Argo (ANL internal)
+curl -X POST http://localhost:8000/api/v1/credentials \
+  -H "Content-Type: application/json" \
+  -d '{"provider": "argo", "credential": "YOUR_USERNAME"}'
+
+# For Gemini
+curl -X POST http://localhost:8000/api/v1/credentials \
+  -H "Content-Type: application/json" \
+  -d '{"provider": "gemini", "credential": "YOUR_API_KEY"}'
+```
+
+### 5. Start Chatting
+
+Select "mica-analyst" from the model dropdown and ask your question.
+
+---
+
 ## Overview
 
 MICA is a LangGraph-based agentic framework that serves as an intelligent co-analyst for exploring research pathways, identifying cost-competitive sourcing strategies, analyzing market dynamics, and prioritizing investments in domestic supply chain capabilities.

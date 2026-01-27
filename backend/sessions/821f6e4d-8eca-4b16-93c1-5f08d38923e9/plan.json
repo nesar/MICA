@@ -1,0 +1,32 @@
+{
+  "reasoning": "# Analysis Plan\n\n## Step 1: Acknowledge Domain Limitation\n**Action**: Directly communicate to the user without using tools\n\n**Rationale**: This query is completely outside my specialized domain of critical materials supply chain analysis. No amount of web searching or document analysis will make me qualified to provide financial trading advice.\n\n**Specific Response Components**:\n1. Clearly state this topic is outside my expertise area\n2. Explain what I AM designed to help with\n3. Suggest they consult appropriate resources for options trading education\n\n**Expected Output**: A polite, helpful redirect that:\n- Maintains professional tone\n- Doesn't attempt to provide financial information I'm not qualified to give\n- Offers alternative assistance if they have materials-related questions\n\n## Step 2: Offer Alternative Assistance (if applicable)\n**Action**: Provide examples of related queries within my domain\n\n**Specific Examples to Offer**:\n- \"If you're interested in **commodity futures and options for critical materials** (lithium, cobalt, rare earths), I can explain those market dynamics\"\n- \"If you're analyzing **investment risks in materials supply chains**, I can help with that\"\n- \"If you need information on **materials pricing volatility and hedging strategies** for procurement, that's within my scope\"\n\n**Expected Output**: Clear examples that might redirect a user who may have been unclear about my capabilities\n\n---\n\n## No Further Steps Required\n\nThis query requires **no research, no data analysis, and no tool usage**. Attempting to answer it would be:\n- Outside my domain expertise\n- Potentially providing unqualified financial information\n- A misuse of specialized materials intelligence capabilities\n\nThe appropriate response is a clear, professional redirect.",
+  "steps": [
+    {
+      "step_id": "step_0",
+      "tool": "web_search",
+      "description": "Acknowledge Domain Limitation",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_1",
+      "tool": "web_search",
+      "description": "Offer Alternative Assistance (if applicable)",
+      "inputs": {
+        "queries": [
+          "If you're interested in **commodity futures and options for critical materials** (lithium, cobalt, rare earths), I can explain those market dynamics",
+          "If you're analyzing **investment risks in materials supply chains**, I can help with that",
+          "If you need information on **materials pricing volatility and hedging strategies** for procurement, that's within my scope"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    }
+  ],
+  "estimated_tools": [
+    "web_search"
+  ]
+}

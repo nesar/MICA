@@ -1,0 +1,192 @@
+{
+  "reasoning": "# Detailed Analysis Plan\n\n## Step 1: Identify US Critical Minerals List and Domestic Availability\n**Tool:** web_search  \n**Inputs:** \n- \"US critical minerals list 2024 USGS\"\n- \"US domestic production critical minerals Alaska\"\n- \"US Geological Survey critical minerals assessment\"\n\n**Expected Output:** \n- Official list of US critical minerals\n- Current US production status for each mineral\n- Identification of minerals with zero/minimal domestic production\n\n## Step 2: Research Greenland's Mineral Resources Inventory\n**Tool:** web_search  \n**Inputs:**\n- \"Greenland mineral resources rare earth elements 2019-2024\"\n- \"Greenland critical minerals deposits inventory\"\n- \"Greenland Mineral Resources Authority GEUS mineral assessment\"\n- \"Kvanefjeld Kuannersuit project status\"\n\n**Expected Output:**\n- Comprehensive list of Greenland's critical mineral deposits\n- Grade and tonnage estimates\n- Active and proposed mining projects\n\n## Step 3: Cross-Reference to Identify Unique/Unavailable Materials\n**Tool:** code_agent  \n**Inputs:**\n- Data from Steps 1 and 2\n- Comparison criteria: materials with significant Greenland deposits BUT zero/negligible US production\n\n**Expected Output:**\n- Ranked list of critical materials unique to Greenland\n- Quantitative comparison (reserve estimates, grades, production capacity)\n\n## Step 4: Research Cryolite Specifically\n**Tool:** web_search  \n**Inputs:**\n- \"Cryolite Greenland Ivittuut mine history\"\n- \"Cryolite synthetic production US\"\n- \"Natural cryolite deposits worldwide\"\n\n**Expected Output:**\n- Confirmation of cryolite's uniqueness to Greenland\n- Historical context and current status\n- US dependency/alternatives\n\n## Step 5: Investigate Rare Earth Elements (REEs) Timeline 2019-2024\n**Tool:** web_search  \n**Inputs:**\n- \"Greenland rare earth elements 2019 2020 2021 2022 2023 2024\"\n- \"Kvanefjeld rare earth project timeline\"\n- \"Energy Transition Minerals Greenland\"\n- \"Tanbreez rare earth project\"\n\n**Expected Output:**\n- Year-by-year developments in Greenland REE projects\n- Production timelines, regulatory decisions, investment activities\n\n## Step 6: Research Graphite Developments 2019-2024\n**Tool:** web_search  \n**Inputs:**\n- \"Greenland graphite deposits 2019-2024\"\n- \"US graphite production domestic sources\"\n- \"Graphite critical mineral battery supply chain\"\n\n**Expected Output:**\n- Greenland graphite project status\n- US graphite import dependency\n- Recent developments and project timelines\n\n## Step 7: Investigate Geopolitical History 2019-2024\n**Tool:** web_search  \n**Inputs:**\n- \"Trump Greenland purchase 2019\"\n- \"US Greenland critical minerals agreement\"\n- \"China Greenland mining investments\"\n- \"Greenland uranium mining ban 2021 2024\"\n- \"US consulate Nuuk critical minerals\"\n\n**Expected Output:**\n- Timeline of US-Greenland relations regarding minerals\n- Policy changes in Greenland (2019-2024)\n- Strategic competition context\n\n## Step 8: Research Anorthosite/Aluminum Sources\n**Tool:** web_search  \n**Inputs:**\n- \"Greenland anorthosite deposits aluminum\"\n- \"US aluminum production bauxite alternatives\"\n- \"Anorthosite mining Greenland projects\"\n\n**Expected Output:**\n- Viability of anorthosite as unique Greenland resource\n- Comparison with US aluminum sources\n\n## Step 9: Compile Project-Specific Timelines\n**Tool:** web_search  \n**Inputs:**\n- \"Kuannersuit project 2019 2020 2021 2022 2023 2024 status\"\n- \"Greenland mining licenses issued 2019-2024\"\n- \"Tanbreez Mining rare earth timeline\"\n- \"Hudson Resources Greenland graphite\"\n\n**Expected Output:**\n- Detailed project histories for top 3 materials\n- Regulatory approvals/rejections\n- Investment and development milestones\n\n## Step 10: Verify US/Alaska Production Data\n**Tool:** web_search  \n**Inputs:**\n- \"Alaska rare earth elements production Mountain Pass\"\n- \"Alaska graphite deposits\"\n- \"US cryolite production synthetic\"\n- \"USGS Mineral Commodity Summaries 2019-2024\"\n\n**Expected Output:**\n- Confirmation of zero/minimal US production for identified materials\n- Any recent changes in US domestic capacity\n\n## Step 11: Synthesize Top 3 Materials with Evidence\n**Tool:** code_agent  \n**Inputs:**\n- All data from previous steps\n- Ranking criteria: uniqueness, strategic importance, deposit size, US unavailability\n\n**Expected Output:**\n- Definitive top 3 materials with quantitative justification\n- Comparative tables showing Greenland vs US availability\n\n## Step 12: Create Year-by-Year Timeline (2019-2024)\n**Tool:** code_agent  \n**Inputs:**\n- All chronological data from Steps 5, 7, and 9\n- Key events for each of the top 3 materials\n\n**Expected Output:**\n- Structured timeline with major events by year\n- Visualization showing development trajectory\n\n## Step 13: Generate Final Comprehensive Report\n**Tool:** doc_generator  \n**Inputs:**\n- Top 3 materials identification with evidence\n- 5-year historical timeline for each\n- Geopolitical context\n- Comparative analysis tables\n- Timeline visualizations\n\n**Expected Output:**\n- Structured report answering the user's query\n- Executive summary with top 3 materials\n- Detailed historical sections (2019-2024)\n- Supporting data and sources\n\n---\n\n**Contingency Steps:**\n- If fewer than 3 truly \"unavailable\" materials are found, expand to \"significantly advantaged\" materials\n- If PDF documents are needed (USGS reports, Greenland government documents), use pdf_rag tool\n- If data visualization is needed for timelines/comparisons, use code_agent for charts",
+  "steps": [
+    {
+      "step_id": "step_0",
+      "tool": "web_search",
+      "description": "Identify US Critical Minerals List and Domestic Availability",
+      "inputs": {
+        "queries": [
+          "US critical minerals list 2024 USGS",
+          "US domestic production critical minerals Alaska",
+          "US Geological Survey critical minerals assessment"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_1",
+      "tool": "web_search",
+      "description": "Research Greenland's Mineral Resources Inventory",
+      "inputs": {
+        "queries": [
+          "Greenland mineral resources rare earth elements 2019-2024",
+          "Greenland critical minerals deposits inventory",
+          "Greenland Mineral Resources Authority GEUS mineral assessment",
+          "Kvanefjeld Kuannersuit project status"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_2",
+      "tool": "code_agent",
+      "description": "Cross-Reference to Identify Unique/Unavailable Materials",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_3",
+      "tool": "web_search",
+      "description": "Research Cryolite Specifically",
+      "inputs": {
+        "queries": [
+          "Cryolite Greenland Ivittuut mine history",
+          "Cryolite synthetic production US",
+          "Natural cryolite deposits worldwide"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_4",
+      "tool": "web_search",
+      "description": "Investigate Rare Earth Elements (REEs) Timeline 2019-2024",
+      "inputs": {
+        "queries": [
+          "Greenland rare earth elements 2019 2020 2021 2022 2023 2024",
+          "Kvanefjeld rare earth project timeline",
+          "Energy Transition Minerals Greenland",
+          "Tanbreez rare earth project"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_5",
+      "tool": "web_search",
+      "description": "Research Graphite Developments 2019-2024",
+      "inputs": {
+        "queries": [
+          "Greenland graphite deposits 2019-2024",
+          "US graphite production domestic sources",
+          "Graphite critical mineral battery supply chain"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_6",
+      "tool": "web_search",
+      "description": "Investigate Geopolitical History 2019-2024",
+      "inputs": {
+        "queries": [
+          "Trump Greenland purchase 2019",
+          "US Greenland critical minerals agreement",
+          "China Greenland mining investments",
+          "Greenland uranium mining ban 2021 2024",
+          "US consulate Nuuk critical minerals"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_7",
+      "tool": "web_search",
+      "description": "Research Anorthosite/Aluminum Sources",
+      "inputs": {
+        "queries": [
+          "Greenland anorthosite deposits aluminum",
+          "US aluminum production bauxite alternatives",
+          "Anorthosite mining Greenland projects"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_8",
+      "tool": "web_search",
+      "description": "Compile Project-Specific Timelines",
+      "inputs": {
+        "queries": [
+          "Kuannersuit project 2019 2020 2021 2022 2023 2024 status",
+          "Greenland mining licenses issued 2019-2024",
+          "Tanbreez Mining rare earth timeline",
+          "Hudson Resources Greenland graphite"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_9",
+      "tool": "web_search",
+      "description": "Verify US/Alaska Production Data",
+      "inputs": {
+        "queries": [
+          "Alaska rare earth elements production Mountain Pass",
+          "Alaska graphite deposits",
+          "US cryolite production synthetic",
+          "USGS Mineral Commodity Summaries 2019-2024"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_10",
+      "tool": "code_agent",
+      "description": "Synthesize Top 3 Materials with Evidence",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_11",
+      "tool": "code_agent",
+      "description": "Create Year-by-Year Timeline (2019-2024)",
+      "inputs": {},
+      "status": "pending",
+      "output": null,
+      "error": null
+    },
+    {
+      "step_id": "step_12",
+      "tool": "doc_generator",
+      "description": "Generate Final Comprehensive Report",
+      "inputs": {
+        "queries": [
+          "unavailable",
+          "significantly advantaged"
+        ]
+      },
+      "status": "pending",
+      "output": null,
+      "error": null
+    }
+  ],
+  "estimated_tools": [
+    "web_search",
+    "doc_generator",
+    "code_agent"
+  ]
+}
