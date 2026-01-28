@@ -47,7 +47,7 @@ def create_llm(
         llm = create_llm()
 
         # Specify provider and model
-        llm = create_llm(provider="argo", model_id="claudesonnet45")
+        llm = create_llm(provider="argo", model_id="claudeopus4")
 
         # Use Gemini with custom temperature
         llm = create_llm(provider="gemini", model_id="gemini-flash", temperature=0.5)

@@ -149,7 +149,7 @@ MICA is a LangGraph-based agentic framework that serves as an intelligent co-ana
 | Variable | Description | Default |
 |----------|-------------|---------|
 | `MICA_LLM_PROVIDER` | LLM provider (argo/gemini) | `argo` |
-| `MICA_DEFAULT_MODEL` | Default model ID | `claudesonnet45` |
+| `MICA_DEFAULT_MODEL` | Default model ID | `claudeopus4` |
 | `ARGO_USERNAME` | Argo API username | - |
 | `GOOGLE_API_KEY` | Google API key | - |
 | `MICA_SESSION_DIR` | Session storage path | `./sessions` |

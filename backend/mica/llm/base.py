@@ -42,7 +42,7 @@ class BaseLLM(ABC):
         Initialize the LLM provider.
 
         Args:
-            model_id: The specific model to use (e.g., 'claudesonnet45', 'gemini-flash')
+            model_id: The specific model to use (e.g., 'claudeopus4', 'gemini-flash')
             **kwargs: Provider-specific configuration
         """
         self.model_id = model_id

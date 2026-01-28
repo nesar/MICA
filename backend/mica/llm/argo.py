@@ -74,7 +74,7 @@ class ArgoLLM(BaseLLM):
 
     def __init__(
         self,
-        model_id: str = "claudesonnet45",
+        model_id: str = "claudeopus4",
         username: Optional[str] = None,
         temperature: float = 0.7,
         max_tokens: int = 20000,
@@ -84,7 +84,7 @@ class ArgoLLM(BaseLLM):
         Initialize Argo LLM.
 
         Args:
-            model_id: The model to use (e.g., 'claudesonnet45', 'gpt4o')
+            model_id: The model to use (e.g., 'claudeopus4', 'claudesonnet45', 'gpt4o')
             username: Argo username (defaults to ARGO_USERNAME env var)
             temperature: Sampling temperature
             max_tokens: Maximum tokens to generate
