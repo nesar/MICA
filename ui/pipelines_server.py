@@ -317,7 +317,8 @@ async def process_message_stream(request: ChatRequest) -> AsyncGenerator[str, No
                                     json={"session_id": session_id, "approved": True}
                                 )
                                 yield "**Plan approved.** Executing analysis...\n\n"
-                                yield "<details>\n<summary>Execution Progress (click to expand)</summary>\n\n```\n"
+                                yield "---\n\n"
+                                yield "**Execution Progress:**\n\n"
 
                                 # Poll for execution results
                                 shown_steps = set()
@@ -331,10 +332,9 @@ async def process_message_stream(request: ChatRequest) -> AsyncGenerator[str, No
                                     plan = exec_data.get("plan", [])
 
                                     if exec_status in ["completed", "awaiting_feedback"]:
-                                        # Close progress section
-                                        yield "```\n</details>\n\n---\n\n"
+                                        yield "\n\n---\n\n"
                                         summary = exec_data.get("final_summary", "Analysis complete.")
-                                        yield f"## Results\n\n{summary}"
+                                        yield f"## Final Results\n\n{summary}"
 
                                         # Check for plots/artifacts
                                         try:
@@ -354,12 +354,12 @@ async def process_message_stream(request: ChatRequest) -> AsyncGenerator[str, No
                                         return
 
                                     elif exec_status == "failed":
-                                        yield "```\n</details>\n\n"
+                                        yield "\n\n---\n\n"
                                         errors = exec_data.get("errors", [])
-                                        yield f"\n\nExecution failed: {errors[0].get('error') if errors else 'Unknown error'}"
+                                        yield f"**Execution failed:** {errors[0].get('error') if errors else 'Unknown error'}"
                                         return
 
-                                    # Show progress in compact format (inside code block)
+                                    # Show progress with details
                                     completed_steps = [s for s in plan if s.get("status") == "completed"]
                                     running_steps = [s for s in plan if s.get("status") == "running"]
 
@@ -368,17 +368,26 @@ async def process_message_stream(request: ChatRequest) -> AsyncGenerator[str, No
                                         if step_id not in shown_steps:
                                             shown_steps.add(step_id)
                                             tool = step.get("tool", "")
-                                            desc = step.get("description", "")[:60]
-                                            yield f"[done] {desc} ({tool})\n"
+                                            desc = step.get("description", "")[:70]
+                                            output = step.get("output")
+
+                                            yield f"```\n[{len(shown_steps)}/{len(plan)}] {desc}\n"
+                                            yield f"Tool: {tool}\n"
+
+                                            # Show output preview
+                                            if output:
+                                                output_preview = format_step_output(tool, output)
+                                                if output_preview:
+                                                    yield f"{output_preview}\n"
+                                            yield "```\n\n"
 
                                     if running_steps and i % 3 == 0:
                                         current = running_steps[0]
                                         desc = current.get("description", "")[:50]
                                         tool = current.get("tool", "")
-                                        progress = f"{len(completed_steps)}/{len(plan)}"
-                                        yield f"[running] {desc}... ({progress})\n"
+                                        yield f"*Running: {desc}...*\n\n"
 
-                                yield "```\n</details>\n\nExecution is taking longer than expected. Check session status manually."
+                                yield "\n\n---\n\nExecution is taking longer than expected. Check session status manually."
                                 return
                             elif any(w in lower_msg for w in ["no", "reject", "cancel"]):
                                 await client.post(
@@ -470,7 +479,7 @@ async def process_message_stream(request: ChatRequest) -> AsyncGenerator[str, No
                                             return
 
                                     elif status == "executing":
-                                        # Show progress in compact format
+                                        # Show progress with details in code blocks
                                         completed_steps = [s for s in plan if s.get("status") == "completed"]
                                         running_steps = [s for s in plan if s.get("status") == "running"]
 
@@ -479,14 +488,22 @@ async def process_message_stream(request: ChatRequest) -> AsyncGenerator[str, No
                                             if step_id not in shown_steps:
                                                 shown_steps.add(step_id)
                                                 tool = step.get("tool", "")
-                                                desc = step.get("description", "")[:60]
-                                                yield f"> [done] {desc} ({tool})\n"
+                                                desc = step.get("description", "")[:70]
+                                                output = step.get("output")
+
+                                                yield f"```\n[{len(shown_steps)}/{len(plan)}] {desc}\n"
+                                                yield f"Tool: {tool}\n"
+                                                if output:
+                                                    output_preview = format_step_output(tool, output)
+                                                    if output_preview:
+                                                        yield f"{output_preview}\n"
+                                                yield "```\n\n"
 
                                         if running_steps and i % 4 == 0:
                                             current = running_steps[0]
                                             desc = current.get("description", "")[:50]
                                             progress = f"{len(completed_steps)}/{len(plan)}"
-                                            yield f"> [running] {desc}... ({progress})\n"
+                                            yield f"*Running: {desc}...*\n\n"
 
                                     elif status == "failed":
                                         errors = status_data.get("errors", [])

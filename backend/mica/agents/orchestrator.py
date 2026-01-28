@@ -605,35 +605,131 @@ def generate_final_summary(state: AgentState) -> AgentState:
         state["final_summary"] = summary
         state["messages"].append(AIMessage(content=summary))
 
-        # Generate report if we have substantial results
-        if len(state["intermediate_outputs"]) >= 2:
+        # Always generate a report when we have a summary
+        num_outputs = len(state["intermediate_outputs"])
+        logger.info(f"[{state['session_id']}] Generating PDF report (intermediate_outputs: {num_outputs})")
+
+        try:
             doc_gen = DocumentGeneratorTool(session_logger=session)
 
-            sections = [
-                {
-                    "title": "Executive Summary",
-                    "content": summary.split("\n\n")[0] if "\n\n" in summary else summary[:500],
-                },
-                {
-                    "title": "Analysis",
-                    "content": summary,
-                },
-            ]
+            # Collect references from web search results
+            references = []
+            web_search_findings = []
+            analysis_findings = []
+            data_tables = []
 
-            # Add results sections
-            for output in state["intermediate_outputs"][:5]:
+            for output in state["intermediate_outputs"]:
+                tool = output.get("tool", "")
+                out_data = output.get("output", {})
+
+                if tool == "web_search":
+                    # Extract references from web search
+                    if isinstance(out_data, list):
+                        for item in out_data:
+                            if isinstance(item, dict):
+                                ref = {
+                                    "title": item.get("title", ""),
+                                    "source": item.get("source", item.get("url", "")),
+                                    "url": item.get("url", item.get("link", "")),
+                                    "date": datetime.utcnow().strftime("%Y-%m-%d"),
+                                }
+                                if ref["title"] and ref not in references:
+                                    references.append(ref)
+                                # Collect findings
+                                snippet = item.get("snippet", item.get("description", ""))
+                                if snippet:
+                                    web_search_findings.append(f"**{item.get('title', 'Source')}**: {snippet}")
+                    elif isinstance(out_data, dict):
+                        results = out_data.get("results", [])
+                        for item in results:
+                            if isinstance(item, dict):
+                                ref = {
+                                    "title": item.get("title", ""),
+                                    "source": item.get("source", ""),
+                                    "url": item.get("url", item.get("link", "")),
+                                    "date": datetime.utcnow().strftime("%Y-%m-%d"),
+                                }
+                                if ref["title"] and ref not in references:
+                                    references.append(ref)
+
+                elif tool == "code_agent":
+                    # Extract analysis results
+                    if isinstance(out_data, dict):
+                        result = out_data.get("result", out_data.get("output", ""))
+                        if result:
+                            analysis_findings.append(str(result)[:1500])
+
+            # Build structured sections
+            sections = []
+
+            # Executive Summary - first paragraph of LLM summary
+            exec_summary = summary.split("\n\n")[0] if "\n\n" in summary else summary[:800]
+            sections.append({
+                "title": "Executive Summary",
+                "content": exec_summary,
+            })
+
+            # Background - from query context
+            sections.append({
+                "title": "Background and Objectives",
+                "content": f"This analysis was conducted in response to the following query:\n\n**Query:** {state['query']}\n\nThe objective was to provide comprehensive analysis using publicly available data sources including USGS, DOE, and other federal resources.",
+            })
+
+            # Key Findings - from web search
+            if web_search_findings:
+                findings_content = "Based on research from authoritative sources:\n\n"
+                findings_content += "\n\n".join(web_search_findings[:10])
                 sections.append({
-                    "title": f"Results: {output['step_id']}",
-                    "content": str(output["output"])[:3000],
+                    "title": "Key Findings from Research",
+                    "content": findings_content,
+                })
+
+            # Analysis section - full LLM summary
+            sections.append({
+                "title": "Detailed Analysis",
+                "content": summary,
+            })
+
+            # Data Analysis section - from code agent
+            if analysis_findings:
+                analysis_content = "Quantitative analysis results:\n\n"
+                analysis_content += "\n\n---\n\n".join(analysis_findings[:5])
+                sections.append({
+                    "title": "Data Analysis Results",
+                    "content": analysis_content,
+                })
+
+            # Methodology
+            tools_used = list(set(o.get("tool", "") for o in state["intermediate_outputs"]))
+            method_content = "This analysis employed the following methods and tools:\n\n"
+            method_content += "- **Web Search**: Federal document retrieval from USGS, DOE, and other authoritative sources\n"
+            if "code_agent" in tools_used:
+                method_content += "- **Statistical Analysis**: Python-based data analysis and visualization\n"
+            if "pdf_rag" in tools_used:
+                method_content += "- **Document Analysis**: Extraction and analysis of PDF reports\n"
+            if "excel_handler" in tools_used:
+                method_content += "- **Data Processing**: Excel and CSV data analysis\n"
+            method_content += "\nAll data sources are cited in the References section."
+            sections.append({
+                "title": "Methodology",
+                "content": method_content,
+            })
+
+            # Add references section if we have any
+            if references:
+                sections.append({
+                    "title": "References and Data Sources",
+                    "content": "The following sources were consulted during this analysis:",
+                    "references": references[:20],  # Limit to 20 references
                 })
 
             report_result = doc_gen.execute({
-                "title": f"MICA Analysis: {state['query'][:50]}...",
+                "title": state["query"][:80] if len(state["query"]) <= 80 else state["query"][:77] + "...",
                 "sections": sections,
                 "metadata": {
                     "Session ID": state["session_id"],
-                    "Query": state["query"],
-                    "Generated": datetime.utcnow().strftime("%Y-%m-%d %H:%M UTC"),
+                    "Analysis Date": datetime.utcnow().strftime("%B %d, %Y"),
+                    "Prepared by": "MICA - Materials Intelligence Co-Analyst",
                 },
             })
 
@@ -645,6 +741,14 @@ def generate_final_summary(state: AgentState) -> AgentState:
                     "report",
                     report_result.data["path"],
                 )
+                logger.info(f"[{state['session_id']}] PDF report generated: {report_result.data['path']}")
+            else:
+                logger.warning(f"[{state['session_id']}] Report generation returned no path: {report_result}")
+
+        except Exception as report_error:
+            logger.error(f"[{state['session_id']}] PDF report generation failed: {report_error}")
+            import traceback
+            logger.error(traceback.format_exc())
 
         # Finalize session logging
         if session:
