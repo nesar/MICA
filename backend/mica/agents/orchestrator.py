@@ -159,9 +159,14 @@ def is_simple_query(query: str) -> bool:
     return False
 
 
-def answer_simple_query(query: str, llm) -> str:
+def answer_simple_query(query: str, llm, context: str = "") -> str:
     """
     Generate a direct answer for simple queries without multi-step planning.
+
+    Args:
+        query: The user's query
+        llm: The LLM instance to use
+        context: Previous conversation context for follow-up questions
     """
     # Special handling for tool queries
     query_lower = query.lower()
@@ -201,12 +206,24 @@ For complex supply chain analysis, MICA will create a detailed plan and ask for 
     # For other simple queries, use LLM directly
     from langchain_core.messages import SystemMessage, HumanMessage
 
-    prompt = f"""Answer this question directly and concisely. This is a simple informational query.
+    # Build prompt with context if available
+    context_section = ""
+    if context:
+        context_section = f"""
+IMPORTANT - Previous conversation context:
+{context}
 
-Question: {query}
+The user is asking a follow-up question. Use the context above to understand what they're referring to.
+"""
+
+    prompt = f"""Answer this question directly and concisely. This is a simple informational query.
+{context_section}
+Current Question: {query}
 
 Provide a clear, helpful answer. If this relates to critical materials or supply chains,
-include relevant context. Keep the response focused and under 500 words."""
+include relevant context. Keep the response focused and under 500 words.
+
+If this is a follow-up question, make sure to answer in the context of the previous discussion."""
 
     messages = [
         SystemMessage(content=ORCHESTRATOR_SYSTEM_PROMPT),
@@ -250,12 +267,17 @@ def conduct_preliminary_research(state: AgentState) -> AgentState:
     try:
         llm = get_llm()
 
+        # Build context from any previous interactions (for follow-ups)
+        context = ""
+        if state["clarifications"]:
+            context = "\n".join(state["clarifications"])
+
         # Check if this is a simple query that doesn't need full planning
         if is_simple_query(query):
             logger.info(f"[{state['session_id']}] Simple query detected - fast-track response")
 
-            # Generate direct answer
-            direct_answer = answer_simple_query(query, llm)
+            # Generate direct answer with context for follow-ups
+            direct_answer = answer_simple_query(query, llm, context)
 
             # Mark as simple query in metadata
             state["metadata"]["simple_query"] = True
@@ -279,18 +301,18 @@ def conduct_preliminary_research(state: AgentState) -> AgentState:
                     agent_log.log("Simple query - direct response generated")
                     agent_log.log_output({"response": direct_answer[:500]})
 
+            # Pre-set status for the interrupt before await_feedback
+            # This ensures the status is correct even if workflow pauses before await_feedback_node runs
+            state["status"] = WorkflowStatus.AWAITING_FEEDBACK
+            state["current_step"] = "awaiting_feedback"
+
             logger.info(f"[{state['session_id']}] Simple query answered directly")
             return state
 
         # Complex query - proceed with full research
         logger.info(f"[{state['session_id']}] Complex query - proceeding with full research")
 
-        # Build context from any previous interactions
-        context = ""
-        if state["clarifications"]:
-            context = "\n".join(state["clarifications"])
-
-        # Generate research prompt
+        # Generate research prompt (context already built above)
         prompt = RESEARCH_PROMPT.format(
             query=query,
             context=context or "No previous context.",
@@ -660,11 +682,34 @@ def handle_feedback(state: AgentState) -> AgentState:
     # Check if follow-up is requested
     follow_up_query = state.get("metadata", {}).get("follow_up_query")
     if follow_up_query:
+        logger.info(f"[{state['session_id']}] Processing follow-up query: {follow_up_query[:100]}")
+
+        # Preserve context from previous conversation
+        previous_query = state.get("query", "")
+        previous_summary = state.get("final_summary", "")
+
+        # Add previous conversation to clarifications for context
+        if previous_query:
+            state["clarifications"].append(f"Previous query: {previous_query}")
+        if previous_summary:
+            # Truncate summary to avoid overwhelming the context
+            summary_preview = previous_summary[:1000] + "..." if len(previous_summary) > 1000 else previous_summary
+            state["clarifications"].append(f"Previous response summary: {summary_preview}")
+
+        # Set the new follow-up as the current query
         state["query"] = follow_up_query
-        # Reset for new analysis
+
+        # Reset only execution-related state, preserve context
         state["plan"] = []
         state["tool_results"] = {}
         state["intermediate_outputs"] = []
+        state["approved"] = None
+        state["approval_feedback"] = None
+        state["errors"] = []
+
+        # Clear the follow_up_query to prevent re-processing
+        state["metadata"]["follow_up_query"] = None
+        state["metadata"]["feedback"] = None
 
     return state
 

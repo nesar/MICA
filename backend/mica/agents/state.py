@@ -265,8 +265,10 @@ class AnalysisPlan:
         }
 
         # Try to parse structured format with ## Step headers
-        step_pattern = r'##\s*Step\s*\d+[:\s]+([^\n]+)'
-        tool_pattern = r'\*\*Tool[:\*]*\s*([a-z_]+)'
+        # Flexible pattern: 2-4 hashes, optional bold/asterisks, "Step N:" format
+        step_pattern = r'#{2,4}\s*\*{0,2}\s*Step\s*\d+[:\s\*]+([^\n]+)'
+        # Tool pattern: handle **Tool:** or - **Tool**: with optional backticks around tool name
+        tool_pattern = r'\*\*Tool\*?\*?[:\s]*[`\']?([a-z_]+)[`\']?'
 
         step_headers = list(re.finditer(step_pattern, response, re.IGNORECASE))
 
@@ -274,14 +276,23 @@ class AnalysisPlan:
             # Parse structured format
             for i, match in enumerate(step_headers):
                 step_title = match.group(1).strip()
+                # Clean up any trailing asterisks or formatting
+                step_title = re.sub(r'\*+$', '', step_title).strip()
 
                 # Find the content between this step and the next
                 start_pos = match.end()
                 end_pos = step_headers[i + 1].start() if i + 1 < len(step_headers) else len(response)
                 step_content = response[start_pos:end_pos]
 
-                # Extract tool from **Tool:** line
+                # Extract tool from **Tool:** line (multiple patterns)
                 tool_match = re.search(tool_pattern, step_content, re.IGNORECASE)
+                if not tool_match:
+                    # Try alternative: - **Tool**: `tool_name`
+                    tool_match = re.search(r'-\s*\*\*Tool\*?\*?[:\s]*[`\']?([a-z_]+)', step_content, re.IGNORECASE)
+                if not tool_match:
+                    # Try: Tool: tool_name (no bold)
+                    tool_match = re.search(r'Tool[:\s]+[`\']?([a-z_]+)', step_content, re.IGNORECASE)
+
                 if tool_match:
                     tool_name = tool_match.group(1).lower().strip()
                     tool = tool_mapping.get(tool_name, "orchestrator")
@@ -305,7 +316,9 @@ class AnalysisPlan:
                     error=None,
                 ))
                 current_step_num += 1
-        else:
+
+        # If no steps found with Step pattern, try numbered list format
+        if not steps:
             # Fallback: parse simple numbered list (only top-level numbered items)
             simple_step_pattern = r'^(\d+)\.\s+(.+?)(?=^\d+\.|$)'
             matches = re.findall(simple_step_pattern, response, re.MULTILINE | re.DOTALL)

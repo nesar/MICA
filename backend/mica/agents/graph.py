@@ -28,15 +28,16 @@ from .orchestrator import (
 logger = logging.getLogger(__name__)
 
 
-def should_continue_after_research(state: AgentState) -> Literal["propose_plan", "complete", "error"]:
+def should_continue_after_research(state: AgentState) -> Literal["propose_plan", "await_feedback", "error"]:
     """Determine next step after preliminary research."""
     if state["errors"]:
         return "error"
 
     # Check if this was a simple query that was answered directly
+    # Route to await_feedback so user can ask follow-up questions
     is_simple = state.get("preliminary_research", {}).get("simple_query", False)
     if is_simple:
-        return "complete"
+        return "await_feedback"
 
     return "propose_plan"
 
@@ -88,11 +89,11 @@ def should_continue_after_summary(
 
 def should_continue_after_feedback(
     state: AgentState,
-) -> Literal["execute", "end"]:
+) -> Literal["handle_feedback", "end"]:
     """Determine next step based on user feedback."""
-    # If user provides new instructions, we might need to re-execute
+    # If user provides a follow-up query, process it through handle_feedback
     if state.get("metadata", {}).get("follow_up_query"):
-        return "execute"
+        return "handle_feedback"
     return "end"
 
 
@@ -213,7 +214,7 @@ def create_workflow() -> StateGraph:
         should_continue_after_research,
         {
             "propose_plan": "propose_plan",
-            "complete": "complete",  # Simple queries skip planning
+            "await_feedback": "await_feedback",  # Simple queries go to feedback for follow-ups
             "error": "error",
         },
     )
@@ -262,12 +263,13 @@ def create_workflow() -> StateGraph:
         "await_feedback",
         should_continue_after_feedback,
         {
-            "execute": "execute",
+            "handle_feedback": "handle_feedback",  # Process follow-up query
             "end": "complete",
         },
     )
 
-    workflow.add_edge("handle_feedback", "complete")
+    # After handling feedback, go back to research for follow-up
+    workflow.add_edge("handle_feedback", "research")
     workflow.add_edge("complete", END)
     workflow.add_edge("error", END)
 

@@ -343,8 +343,11 @@ async def submit_feedback(
     _sessions[session_id] = state
 
     if request.follow_up_query:
-        # Continue with follow-up
-        background_tasks.add_task(run_workflow_until_interrupt, session_id)
+        # Continue with follow-up - pass the metadata update for proper checkpoint resumption
+        state_update = {
+            "metadata": state["metadata"].copy(),  # Include the follow_up_query
+        }
+        background_tasks.add_task(run_workflow_until_interrupt, session_id, state_update)
         return {
             "session_id": session_id,
             "status": "processing",

@@ -1,0 +1,2242 @@
+
+╭─── Claude Code v2.0.70 ──────────────────────────────────────────────────────╮
+│                                                    │ Tips for getting        │
+│                Welcome back Nessie!                │ started                 │
+│                                                    │ ✔ Run /init to create … │
+│                    * ▗ ▗   ▖ ▖ *                   │ ─────────────────────── │
+│                   *             *                  │ Recent activity         │
+│                    *   ▘▘ ▝▝   *                   │ No recent activity      │
+│                                                    │                         │
+│   Opus 4.5 · Claude Max · nayaknesar@gmail.com's   │                         │
+│   Organization                                     │                         │
+│              ~/Projects/CM/codes/MICA              │                         │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+> /clear 
+  ⎿  (no content)
+
+> I just ran a simple test (a query that does not require planning and 
+executing -- the first query works but the follow-up question does not. See 
+how to correct it: what is mica? which country is the largest supplier or 
+mica?
+
+profile
+MICA - Materials Intelligence Co-Analyst 
+Submitting query to MICA...
+
+Session: a80c59f0-5740-4452-bb2d-7160b5ee141b
+
+Conducting preliminary research and generating analysis plan...
+
+What is Mica?
+Mica is a group of naturally occurring silicate minerals known for their 
+distinctive sheet-like or layered crystal structure. The name comes from the
+ Latin word "micare," meaning "to glitter." Mica minerals can be easily 
+split into thin, flexible, transparent sheets.
+
+Key Properties:
+Electrical insulation : Excellent dielectric properties
+Heat resistance : Can withstand high temperatures
+Chemical stability : Resistant to water, acids, and oils
+Transparency : Some varieties are optically clear
+Flexibility : Thin sheets are elastic and tough
+Main Types:
+Muscovite (white/clear mica): Most common, used in electrical applications
+Phlogopite (amber/brown mica): Better heat resistance
+Biotite (black mica): Less commercially important
+Applications:
+Electronics : Insulation in capacitors, vacuum tubes, and electrical 
+equipment
+Construction : Joint cement, roofing shingles, wallboard
+Cosmetics : Shimmer and shine in makeup products
+Automotive : Brake linings, clutch plates
+Paints and coatings : Pigments and protective coatings
+Largest Suppliers of Mica
+India is by far the world's largest producer and supplier of mica, 
+accounting for approximately 60-70% of global production.
+
+Top Mica-Producing Countries:
+India - Dominant producer (Jharkhand, Bihar, Rajasthan states)
+China - Second largest producer
+Madagascar - Significant producer, especially of high-quality sheet mica
+Brazil - Notable producer
+Russia - Smaller but consistent production
+Supply Chain Context:
+India's dominance in mica production raises some supply chain 
+considerations:
+
+Concentration risk : Heavy reliance on a single country
+Ethical concerns : Some Indian mica mining involves child labor and unsafe 
+working conditions, particularly in illegal mines
+Quality variations : Indian mica ranges from high-quality sheet mica to 
+lower-grade scrap mica
+Export controls : India has periodically restricted exports of strategic 
+minerals
+Critical Materials Note:
+While mica itself is not typically classified as a "critical material" by 
+the U.S. Department of Energy (unlike rare earths or lithium), it remains 
+important for specific industrial applications, particularly in electrical 
+insulation and specialty applications where its unique properties are 
+difficult to substitute.
+
+Can you also tell me what is the percentage of mica production by each 
+country?
+
+profile
+MICA - Materials Intelligence Co-Analyst 11:10 am
+Submitting query to MICA...
+
+Session: 9820c6d7-0afc-464f-a614-5ac2fd9286f3
+
+Conducting preliminary research and generating analysis plan...
+
+Still working... (status: researching)
+Analysis failed: Unknown error 
+
+⏺ I'll investigate the issue with follow-up questions failing. Let me look at the relevant code to understand how follow-up queries are handled.
+
+⏺ Read(backend/mica/agents/graph.py)
+  ⎿  Read 317 lines
+
+⏺ Read(backend/mica/agents/orchestrator.py)
+  ⎿  Read 690 lines
+
+⏺ Read(backend/mica/api/routes.py)
+  ⎿  Read 598 lines
+
+⏺ Read(ui/pipes/mica_pipe.py)
+  ⎿  Read 377 lines
+
+⏺ Let me check the session state handling and look for where the "completed" status case is missing.
+
+⏺ Search(pattern: "completed.*status|status.*completed", path:
+        "~/Projects/CM/codes/MICA", output_mode: "content")
+  ⎿  Found 13 lines (ctrl+o to expand)
+
+⏺ Search(pattern: "/Users/nesar/Projects/CM/codes/MICA/ui/**/*.py")
+  ⎿  Found 3 files (ctrl+o to expand)
+
+⏺ Read(ui/pipelines_server.py)
+  ⎿  Read 328 lines
+
+⏺ I found the issue. There are multiple problems:
+
+  Problem 1: For simple queries that are answered directly, the workflow goes to complete status instead of await_feedback, so there's no way to ask follow-up questions.
+
+  Problem 2: The pipelines server doesn't handle the case when a session is in completed or awaiting_feedback status - it falls through and creates a new session without passing the existing session_id.
+
+  Problem 3: Even if the backend did wait for feedback after simple queries, the follow-up routing goes to execute instead of back to research.
+
+  Let me fix these issues:
+
+> also I saw that the session id changed in the follow-up question. Is that 
+normal? shouldn't we expect the session ids of original query to be linked? 
+
+⏺ You're correct - the session ID should remain the same for follow-up questions. That's exactly the bug. The session ID changed from a80c59f0... to 9820c6d7... because:
+
+  1. For simple queries, the workflow marks the session as completed immediately
+  2. The pipelines server doesn't properly handle follow-ups for completed sessions
+  3. It then creates a brand new session instead of continuing the existing one
+
+  Let me fix this now.
+
+⏺ Update(backend/mica/agents/graph.py)
+  ⎿  Added 3 lines, removed 2 lines                                   
+       28    logger = logging.getLogger(__name__)
+       29    
+       30    
+       31 -  def should_continue_after_research(state: AgentState) -> 
+          -  Literal["propose_plan", "complete", "error"]:
+       31 +  def should_continue_after_research(state: AgentState) -> 
+          +  Literal["propose_plan", "await_feedback", "error"]:
+       32        """Determine next step after preliminary research."""
+       33        if state["errors"]:
+       34            return "error"
+       35    
+       36        # Check if this was a simple query that was answered 
+            directly
+       37 +      # Route to await_feedback so user can ask follow-up 
+          + questions
+       38        is_simple = state.get("preliminary_research", 
+            {}).get("simple_query", False)
+       39        if is_simple:
+       40 -          return "complete"
+       40 +          return "await_feedback"
+       41    
+       42        return "propose_plan"
+       43    
+
+⏺ Update(backend/mica/agents/graph.py)
+  ⎿  Added 1 line, removed 1 line                                        
+       214            should_continue_after_research,
+       215            {
+       216                "propose_plan": "propose_plan",
+       217 -              "complete": "complete",  # Simple queries skip 
+           - planning
+       217 +              "await_feedback": "await_feedback",  # Simple 
+           + queries go to feedback for follow-ups
+       218                "error": "error",
+       219            },
+       220        )
+
+⏺ Update(backend/mica/agents/graph.py)
+  ⎿  Added 3 lines, removed 3 lines                                    
+       89    
+       90    def should_continue_after_feedback(
+       91        state: AgentState,
+       92 -  ) -> Literal["execute", "end"]:
+       92 +  ) -> Literal["research", "end"]:
+       93        """Determine next step based on user feedback."""
+       94 -      # If user provides new instructions, we might need to 
+          - re-execute
+       94 +      # If user provides a follow-up query, start a new 
+          + research cycle
+       95        if state.get("metadata", {}).get("follow_up_query"):
+       96 -          return "execute"
+       96 +          return "research"
+       97        return "end"
+       98    
+       99    
+
+⏺ Update(backend/mica/agents/graph.py)
+  ⎿  Added 1 line, removed 1 line                                      
+       263            "await_feedback",
+       264            should_continue_after_feedback,
+       265            {
+       266 -              "execute": "execute",
+       266 +              "research": "research",  # Follow-up queries 
+           + start fresh research cycle
+       267                "end": "complete",
+       268            },
+       269        )
+
+⏺ Now let me fix the pipelines server to properly handle follow-up questions when a session is in awaiting_feedback or completed status.
+
+⏺ Update(ui/pipelines_server.py)
+  ⎿  Added 69 lines, removed 3 lines                                     
+       212    
+       213                                        if exec_status in 
+             ["completed", "awaiting_feedback"]:
+       214                                            summary = 
+             exec_data.get("final_summary", "Analysis complete.")
+       215 -                                          if chat_id in 
+           - sessions:
+       216 -                                              del 
+           - sessions[chat_id]
+       215                                            yield f"\n\n## 
+             Results\n\n{summary}"
+       216 +                                          yield 
+           + f"\n\n---\n*Session: `{session_id}` - Ask a follow-up 
+           + question or say 'done' to finish.*"
+       217                                            return
+       218    
+       219                                        elif exec_status == 
+             "failed":
+     ...
+       237                                        del sessions[chat_id]
+       238                                    yield "Plan rejected. Feel 
+             free to ask a new question."
+       239                                    return
+       240 -                  except:
+       240 +  
+       241 +                          # Handle follow-up questions when 
+           + session is awaiting feedback
+       242 +                          elif current_status == 
+           + "awaiting_feedback":
+       243 +                              lower_msg = 
+           + user_message.lower()
+       244 +                              # Check if user wants to end 
+           + the session
+       245 +                              if lower_msg in ["done", 
+           + "finish", "end", "thanks", "thank you"]:
+       246 +                                  await client.post(
+       247 +                                      
+           + f"{MICA_BACKEND_URL}/api/v1/session/{session_id}/feedback",
+       248 +                                      json={"session_id": 
+           + session_id, "feedback": user_message}
+       249 +                                  )
+       250 +                                  if chat_id in sessions:
+       251 +                                      del sessions[chat_id]
+       252 +                                  yield "Session completed. 
+           + Feel free to start a new query!"
+       253 +                                  return
+       254 +                              else:
+       255 +                                  # Submit as follow-up query
+       256 +                                  yield f"**Processing 
+           + follow-up question...**\n\nSession: `{session_id}`\n\n"
+       257 +  
+       258 +                                  feedback_res = await 
+           + client.post(
+       259 +                                      
+           + f"{MICA_BACKEND_URL}/api/v1/session/{session_id}/feedback",
+       260 +                                      json={
+       261 +                                          "session_id": 
+           + session_id,
+       262 +                                          "feedback": 
+           + user_message,
+       263 +                                          "follow_up_query": 
+           + user_message
+       264 +                                      }
+       265 +                                  )
+       266 +  
+       267 +                                  if feedback_res.status_code
+           +  != 200:
+       268 +                                      yield f"Error 
+           + submitting follow-up: {feedback_res.text}"
+       269 +                                      return
+       270 +  
+       271 +                                  # Poll for results 
+           + (follow-up goes through research cycle)
+       272 +                                  for i in range(30):  # 5 
+           + minutes max
+       273 +                                      await asyncio.sleep(10)
+       274 +  
+       275 +                                      status_res = await clie
+           + nt.get(f"{MICA_BACKEND_URL}/api/v1/session/{session_id}")
+       276 +                                      status_data = 
+           + status_res.json()
+       277 +                                      status = 
+           + status_data.get("status", "")
+       278 +  
+       279 +                                      if status in 
+           + ["plan_proposed", "awaiting_approval"]:
+       280 +                                          plan = 
+           + status_data.get("plan", [])
+       281 +                                          yield "## Analysis 
+           + Plan Generated\n\n"
+       282 +                                          for j, step in 
+           + enumerate(plan):
+       283 +                                              yield f"**Step 
+           + {j+1}:** {step.get('description', 'N/A')}\n"
+       284 +                                              yield f"- Tool:
+           +  `{step.get('tool', 'N/A')}`\n\n"
+       285 +                                          yield "---\n\n"
+       286 +                                          yield "**Reply 
+           + 'approve' to execute this plan, or 'reject' to cancel.**"
+       287 +                                          return
+       288 +  
+       289 +                                      elif status == 
+           + "awaiting_feedback":
+       290 +                                          summary = 
+           + status_data.get("final_summary", "Analysis complete.")
+       291 +                                          yield summary
+       292 +                                          yield 
+           + f"\n\n---\n*Session: `{session_id}` - Ask a follow-up 
+           + question or say 'done' to finish.*"
+       293 +                                          return
+       294 +  
+       295 +                                      elif status == 
+           + "failed":
+       296 +                                          errors = 
+           + status_data.get("errors", [])
+       297 +                                          yield f"Analysis 
+           + failed: {errors[0].get('error') if errors else 'Unknown 
+           + error'}"
+       298 +                                          return
+       299 +  
+       300 +                                      if i % 3 == 0 and i > 
+           + 0:
+       301 +                                          yield f"Still 
+           + working... (status: {status})\n"
+       302 +  
+       303 +                                  yield "Analysis is taking 
+           + longer than expected. Check back later."
+       304 +                                  return
+       305 +  
+       306 +                  except Exception as e:
+       307 +                      # Log the error but continue to submit 
+           + as new query
+       308                        pass
+       309    
+       310                # Check credentials
+
+⏺ Now let me also update the part where simple queries complete - they should keep the session active for follow-ups:
+
+⏺ Update(ui/pipelines_server.py)
+  ⎿  Added 2 lines, removed 2 lines                                     
+       361    
+       362                    elif status in ["completed", 
+             "awaiting_feedback"]:
+       363                        summary = 
+             status_data.get("final_summary", "Analysis complete.")
+       364 -                      if chat_id in sessions:
+       365 -                          del sessions[chat_id]
+       364                        yield summary
+       365 +                      # Keep session for follow-ups (don't 
+           + delete from sessions dict)
+       366 +                      yield f"\n\n---\n*Session: 
+           + `{session_id}` - Ask a follow-up question or say 'done' to 
+           + finish.*"
+       367                        return
+       368    
+       369                    if i % 3 == 0 and i > 0:
+
+⏺ Now let me check if the backend's feedback endpoint properly handles the state transition:
+
+⏺ Read(backend/mica/api/routes.py)
+  ⎿  Read 45 lines
+
+⏺ I see there's another issue. The handle_feedback node that processes follow-up queries isn't being called in the current flow. The await_feedback node goes directly to research, but the actual follow-up processing happens in handle_feedback. Let me fix the graph structure:
+
+⏺ Update(backend/mica/agents/graph.py)
+  ⎿  Added 3 lines, removed 3 lines                                      
+       89    
+       90    def should_continue_after_feedback(
+       91        state: AgentState,
+       92 -  ) -> Literal["research", "end"]:
+       92 +  ) -> Literal["handle_feedback", "end"]:
+       93        """Determine next step based on user feedback."""
+       94 -      # If user provides a follow-up query, start a new 
+          -  research cycle
+       94 +      # If user provides a follow-up query, process it through
+          +   handle_feedback
+       95        if state.get("metadata", {}).get("follow_up_query"):
+       96 -          return "research"
+       96 +          return "handle_feedback"
+       97        return "end"
+       98    
+       99    
+
+⏺ Update(backend/mica/agents/graph.py)
+  ⎿  Added 3 lines, removed 2 lines                                    
+       263            "await_feedback",
+       264            should_continue_after_feedback,
+       265            {
+       266 -              "research": "research",  # Follow-up queries 
+           - start fresh research cycle
+       266 +              "handle_feedback": "handle_feedback",  # 
+           + Process follow-up query
+       267                "end": "complete",
+       268            },
+       269        )
+       270    
+       271 -      workflow.add_edge("handle_feedback", "complete")
+       271 +      # After handling feedback, go back to research for 
+           + follow-up
+       272 +      workflow.add_edge("handle_feedback", "research")
+       273        workflow.add_edge("complete", END)
+       274        workflow.add_edge("error", END)
+       275    
+
+⏺ Let me also check that the handle_feedback function in the orchestrator properly sets up the state for follow-up:
+
+⏺ Read(backend/mica/agents/orchestrator.py)
+  ⎿  Read 30 lines
+
+⏺ The handle_feedback function looks good, but let me add a few more state resets to ensure a clean follow-up cycle:
+
+⏺ Update(backend/mica/agents/orchestrator.py)
+  ⎿  Added 10 lines, removed 1 line                                    
+       660        # Check if follow-up is requested
+       661        follow_up_query = state.get("metadata", 
+             {}).get("follow_up_query")
+       662        if follow_up_query:
+       663 +          logger.info(f"[{state['session_id']}] Processing 
+           + follow-up query: {follow_up_query[:100]}")
+       664            state["query"] = follow_up_query
+       665 -          # Reset for new analysis
+       665 +          # Reset for new analysis cycle
+       666            state["plan"] = []
+       667            state["tool_results"] = {}
+       668            state["intermediate_outputs"] = []
+       669 +          state["preliminary_research"] = {}
+       670 +          state["approved"] = None
+       671 +          state["approval_feedback"] = None
+       672 +          state["final_summary"] = None
+       673 +          state["errors"] = []
+       674 +          # Clear the follow_up_query to prevent 
+           + re-processing
+       675 +          state["metadata"]["follow_up_query"] = None
+       676 +          state["metadata"]["feedback"] = None
+       677    
+       678        return state
+       679    
+
+⏺ Let me verify the final graph structure looks correct:
+
+⏺ Read(backend/mica/agents/graph.py)
+  ⎿  Read 100 lines
+
+⏺ The graph structure looks correct. Here's a summary of all the changes I made to fix the follow-up question issue:
+
+  Summary of Changes
+
+  1. backend/mica/agents/graph.py
+
+  - Simple queries now go to await_feedback instead of complete, allowing follow-up questions
+  - Follow-up queries route through handle_feedback → research to start a new research cycle with the follow-up
+
+  New workflow:
+  Simple query:  research → await_feedback (wait) → handle_feedback → research → ...
+  Complex query: research → propose_plan → await_approval (wait) → execute → summarize → await_feedback (wait) → handle_feedback → research → ...
+
+  2. backend/mica/agents/orchestrator.py
+
+  - Enhanced handle_feedback() to fully reset state for follow-up queries (clearing old plan, results, errors, etc.)
+
+  3. ui/pipelines_server.py
+
+  - Added handler for awaiting_feedback status to detect and process follow-up questions
+  - Follow-ups are now submitted via /feedback endpoint with the same session ID
+  - Session is no longer deleted after simple queries, keeping it active for follow-ups
+
+  Testing
+
+  You should restart the backend server and test with:
+  1. Ask "What is mica?"
+  2. Ask a follow-up like "What percentage of mica is produced by each country?"
+  3. The session ID should remain the same and the follow-up should work
+
+⏺ Bash(git diff --stat)
+  ⎿  backend/mica/agents/graph.py        | 18 +++++----                    
+     backend/mica/agents/orchestrator.py | 11 +++++-
+     ui/pipelines_server.py              | 76 +++++++++++++++++++++++++++++
+    … +2 lines (ctrl+o to expand)
+
+
+⏺ To test the fix, restart your backend server:
+
+  cd backend
+  python -m mica.api.main
+
+  Then try your original test:
+  1. "What is mica?" → Should get answer and stay in session
+  2. "What percentage of mica is produced by each country?" → Should use same session ID and process as follow-up
+
+> what is mica? which country is the largest supplier or mica?
+
+
+
+profile
+MICA - Materials Intelligence Co-Analyst 
+Submitting query to MICA...
+
+Session: 201d11b0-03cf-4f3c-a0ef-f008e45700ef
+
+Conducting preliminary research and generating analysis plan...
+
+Still working... (status: researching)
+Still working... (status: researching)
+Still working... (status: researching)
+Still working... (status: researching)
+Still working... (status: researching)
+Still working... (status: researching)
+Still working... (status: researching)
+Still working... (status: researching)
+Still working... (status: researching)
+Analysis is taking longer than expected. Check back later. 
+
+⏺ The query is timing out at the research phase. Let me check what's happening with the backend. First, let me check the session status directly:
+
+⏺ Bash(curl -s
+      http://localhost:8000/api/v1/session/201d11b0-03cf-4f3c-a0ef-f008e45700ef
+      2>/dev/null | python3 -m json.tool 2>/dev/null || echo "Backend not
+      responding…)
+  ⎿  {                                                        
+         "session_id": "201d11b0-03cf-4f3c-a0ef-f008e45700ef",
+         "status": "researching",
+     … +40 lines (ctrl+o to expand)
+
+⏺ I see the issue. The backend has the answer (check final_summary in the response), but the status is stuck at "researching". This is because the workflow interrupt happens before the await_feedback node runs, so the status never gets updated.
+
+  The summarize_node has a workaround for this by pre-setting the status before the interrupt. I need to add the same fix for simple queries in the research path.
+
+⏺ Update(backend/mica/agents/orchestrator.py)
+  ⎿  Added 5 lines                                                     
+       279                        agent_log.log("Simple query - direct 
+             response generated")
+       280                        agent_log.log_output({"response": 
+             direct_answer[:500]})
+       281    
+       282 +              # Pre-set status for the interrupt before 
+           + await_feedback
+       283 +              # This ensures the status is correct even if 
+           + workflow pauses before await_feedback_node runs
+       284 +              state["status"] = 
+           + WorkflowStatus.AWAITING_FEEDBACK
+       285 +              state["current_step"] = "awaiting_feedback"
+       286 +  
+       287                logger.info(f"[{state['session_id']}] Simple 
+             query answered directly")
+       288                return state
+       289    
+
+⏺ Now restart the backend server and try again. The status should now properly show awaiting_feedback for simple queries.
+
+  Also, your current session already has the answer - you can see it in the final_summary. The polling just timed out because the status was incorrect. After restarting, new sessions will work correctly.
+
+  Let me also check if there's an issue with the pipelines polling - it might not be detecting the correct status:
+
+⏺ Read(ui/pipelines_server.py)
+  ⎿  Read 40 lines
+
+⏺ Read(ui/pipelines_server.py)
+  ⎿  Read 50 lines
+
+⏺ The polling code looks correct - it does check for awaiting_feedback status at line 362. The issue was that the status was stuck at researching instead of transitioning to awaiting_feedback.
+
+  The fix I made should resolve this. To test:
+
+  1. Restart the backend server:
+  cd backend
+  python -m mica.api.main
+
+  2. Try again with a new query:
+  "What is mica? Which country is the largest supplier?"
+
+  The status should now properly show awaiting_feedback after the simple query is answered, and the response should display immediately without timing out.
+
+⏺ Bash(git diff --no-color backend/mica/agents/orchestrator.py | head -50)
+  ⎿ diff --git a/backend/mica/agents/orchestrator.py b/backend/mica/agents/
+    orchestrator.py
+    index c3b69a5..c3ca5ae 100644
+    … +42 lines (ctrl+o to expand)
+
+
+⏺ Here's a summary of the complete fix:
+
+  Root causes:
+  1. Simple queries set final_summary but status stayed at researching because the interrupt pauses before the await_feedback node could update the status
+  2. Follow-up questions weren't linked to the existing session
+
+  Fixes applied:
+  1. orchestrator.py: Pre-set status to AWAITING_FEEDBACK for simple queries before returning from research (like summarize_node does)
+  2. orchestrator.py: Enhanced handle_feedback to fully reset state for follow-ups
+  3. graph.py: Route simple queries to await_feedback instead of complete
+  4. graph.py: Route follow-ups through handle_feedback → research cycle
+  5. pipelines_server.py: Handle awaiting_feedback status for follow-up submissions
+
+  Please restart the backend and test again. The session ID should now remain the same across follow-up questions.
+
+> ok the follow up works but look at the responses --- they are identical 
+respones to original query: ?
+
+MICA - Materials Intelligence Co-Analyst
+
+
+
+
+what is mica? how is it mined?
+
+profile
+MICA - Materials Intelligence Co-Analyst 12:30 pm
+Submitting query to MICA...
+
+Session: e90f5f72-7be9-4e4e-a673-e582812d463e
+
+Conducting preliminary research and generating analysis plan...
+
+What is Mica?
+Mica is a group of naturally occurring silicate minerals known for their 
+distinctive sheet-like crystal structure that allows them to be split into 
+thin, flexible, transparent layers. The name comes from the Latin word 
+"micare," meaning "to glitter."
+
+Key Properties:
+Heat resistant - withstands temperatures up to 500-600°C
+Electrically insulating - excellent dielectric properties
+Chemically inert - resistant to water, acids, and oils
+Flexible yet strong - thin sheets are elastic and durable
+Common Types:
+Muscovite (white/clear mica) - most commercially important
+Phlogopite (amber/brown mica) - better heat resistance
+Biotite (black mica) - less commercial value
+How is Mica Mined?
+Mining Methods:
+1. Open-Pit Mining (most common)
+
+Used when mica deposits are near the surface
+Large-scale excavation of pegmatite rocks containing mica
+Heavy machinery removes overburden and extracts ore
+2. Underground Mining
+
+Used for deeper deposits
+Shaft or drift mining to access mica-bearing pegmatites
+More labor-intensive and costly
+3. Artisanal/Small-Scale Mining
+
+Common in India, Madagascar, and parts of Africa
+Manual extraction using basic tools
+Often involves concerning labor practices, including child labor
+Processing Steps:
+Extraction - Remove mica-bearing rock from deposit
+Cobbing - Manual sorting to separate mica from waste rock
+Rifting - Splitting mica blocks into sheets
+Trimming - Cutting sheets to desired sizes
+Grading - Sorting by quality, size, and clarity
+Grinding (for scrap mica) - Processing into powder form
+Critical Materials Context:
+While mica itself isn't classified as a "critical mineral" by the U.S. 
+Department of Energy, it has important industrial applications:
+
+Electronics - insulators in capacitors, vacuum tubes
+Automotive - heat shields, gaskets
+Cosmetics - pearlescent pigments
+Construction - joint cement, wallboard, roofing
+Supply Chain Note: China, India, and Russia are the dominant producers. The 
+U.S. has limited domestic production and relies heavily on imports, 
+primarily of processed mica products. Ethical sourcing remains a concern due
+ to artisanal mining practices in some regions.
+
+Session: e90f5f72-7be9-4e4e-a673-e582812d463e - Ask a follow-up question or 
+say 'done' to finish.
+
+
+
+
+
+
+what countries are the largest suppliers of mica. And at what percentages?
+
+profile
+MICA - Materials Intelligence Co-Analyst 
+Processing follow-up question...
+
+Session: e90f5f72-7be9-4e4e-a673-e582812d463e
+
+What is Mica?
+Mica is a group of naturally occurring silicate minerals known for their 
+distinctive sheet-like crystal structure that allows them to be split into 
+thin, flexible, transparent layers. The name comes from the Latin word 
+"micare," meaning "to glitter."
+
+Key Properties:
+Heat resistant - withstands temperatures up to 500-600°C
+Electrically insulating - excellent dielectric properties
+Chemically inert - resistant to water, acids, and oils
+Flexible yet strong - thin sheets are elastic and durable
+Common Types:
+Muscovite (white/clear mica) - most commercially important
+Phlogopite (amber/brown mica) - better heat resistance
+Biotite (black mica) - less commercial value
+How is Mica Mined?
+Mining Methods:
+1. Open-Pit Mining (most common)
+
+Used when mica deposits are near the surface
+Large-scale excavation of pegmatite rocks containing mica
+Heavy machinery removes overburden and extracts ore
+2. Underground Mining
+
+Used for deeper deposits
+Shaft or drift mining to access mica-bearing pegmatites
+More labor-intensive and costly
+3. Artisanal/Small-Scale Mining
+
+Common in India, Madagascar, and parts of Africa
+Manual extraction using basic tools
+Often involves concerning labor practices, including child labor
+Processing Steps:
+Extraction - Remove mica-bearing rock from deposit
+Cobbing - Manual sorting to separate mica from waste rock
+Rifting - Splitting mica blocks into sheets
+Trimming - Cutting sheets to desired sizes
+Grading - Sorting by quality, size, and clarity
+Grinding (for scrap mica) - Processing into powder form
+Critical Materials Context:
+While mica itself isn't classified as a "critical mineral" by the U.S. 
+Department of Energy, it has important industrial applications:
+
+Electronics - insulators in capacitors, vacuum tubes
+Automotive - heat shields, gaskets
+Cosmetics - pearlescent pigments
+Construction - joint cement, wallboard, roofing
+Supply Chain Note: China, India, and Russia are the dominant producers. The 
+U.S. has limited domestic production and relies heavily on imports, 
+primarily of processed mica products. Ethical sourcing remains a concern due
+ to artisanal mining practices in some regions.
+
+Session: e90f5f72-7be9-4e4e-a673-e582812d463e - Ask a follow-up question or 
+say 'done' to finish.
+
+what percentages?
+
+profile
+MICA - Materials Intelligence Co-Analyst 
+Processing follow-up question...
+
+Session: e90f5f72-7be9-4e4e-a673-e582812d463e
+
+What is Mica?
+Mica is a group of silicate minerals known for their distinctive sheet-like 
+crystal structure that allows them to be split into thin, flexible, 
+transparent layers. The name comes from the Latin word "micare" meaning "to 
+glitter."
+
+Key Properties:
+Heat resistant - withstands high temperatures
+Electrically insulating - doesn't conduct electricity
+Chemically inert - resistant to most chemicals
+Flexible and elastic - thin sheets can bend without breaking
+Transparent to translucent - allows light transmission
+Common Types:
+Muscovite (white/clear mica) - most commercially important
+Phlogopite (amber/brown mica) - better heat resistance
+Biotite (black mica) - less commercial value
+How is Mica Mined?
+Mining Methods:
+1. Open-Pit Mining (most common)
+
+Used when mica deposits are near the surface
+Large-scale excavation of ore-bearing rock
+More economical for lower-grade deposits
+2. Underground Mining
+
+Used for deeper, higher-grade deposits
+Shaft or tunnel access to mica-bearing pegmatites
+More selective extraction
+3. Artisanal/Small-Scale Mining
+
+Common in India, Madagascar, and parts of Africa
+Manual extraction using basic tools
+Often associated with concerning labor practices, including child labor
+Processing Steps:
+Extraction - Remove mica-bearing rock from deposit
+Cobbing - Hand-sort to remove waste rock
+Splitting - Separate mica into thin sheets (for sheet mica)
+Grinding - Crush and mill into powder (for scrap/flake mica)
+Classification - Sort by size, quality, and grade
+Critical Materials Context:
+While mica itself isn't typically classified as a "critical material" by DOE
+ standards, it has important industrial applications:
+
+Electronics - insulation in capacitors and electrical equipment
+Construction - additive in paints, drywall, and roofing
+Cosmetics - shimmer and texture in makeup
+Automotive - heat shields and gaskets
+Supply Chain Note: India dominates global mica production (~60%), with 
+China, Finland, and Russia as other major producers. The U.S. imports most 
+of its mica, creating potential supply chain considerations for defense and 
+electronics applications.
+
+Ethical Concerns: Mica mining, particularly in India and Madagascar, has 
+significant child labor issues in artisanal mines, leading to increased 
+scrutiny of supply chains by cosmetics and electronics manufacturers.
+
+Session: e90f5f72-7be9-4e4e-a673-e582812d463e - Ask a follow-up question or 
+say 'done' to finish.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+LLMs can make mistakes. Verify important information.
+MICA Analysis System | Open WebUI 
+
+⏺ I see the problem. When submitting a follow-up, the pipelines server immediately starts polling and sees the status is still awaiting_feedback with the OLD final_summary before the backend has started processing the new query. It then returns that old summary.
+
+  The fix is to wait for the status to change away from awaiting_feedback first (indicating the follow-up is being processed), then wait for it to return to awaiting_feedback with the new answer.
+
+⏺ Update(ui/pipelines_server.py)
+  ⎿  Added 19 lines, removed 1 line                                      
+       267                                        yield f"Error 
+             submitting follow-up: {feedback_res.text}"
+       268                                        return
+       269    
+       270 -                                  # Poll for results 
+           - (follow-up goes through research cycle)
+       270 +                                  # First, wait for status to
+           +  change FROM awaiting_feedback
+       271 +                                  # (indicating the follow-up
+           +  processing has started)
+       272 +                                  processing_started = False
+       273 +                                  for _ in range(30):  # 30 
+           + seconds to start processing
+       274 +                                      await asyncio.sleep(1)
+       275 +                                      status_res = await clie
+           + nt.get(f"{MICA_BACKEND_URL}/api/v1/session/{session_id}")
+       276 +                                      status_data = 
+           + status_res.json()
+       277 +                                      status = 
+           + status_data.get("status", "")
+       278 +                                      if status != 
+           + "awaiting_feedback":
+       279 +                                          processing_started 
+           + = True
+       280 +                                          yield f"Researching
+           +  your follow-up...\n\n"
+       281 +                                          break
+       282 +  
+       283 +                                  if not processing_started:
+       284 +                                      yield "Follow-up 
+           + submission may have failed. Please try again."
+       285 +                                      return
+       286 +  
+       287 +                                  # Now poll for results 
+           + (follow-up goes through research cycle)
+       288                                    for i in range(30):  # 5 
+             minutes max
+       289                                        await asyncio.sleep(10)
+       290    
+     ...
+       286                                            return
+       287    
+       288                                        elif status == 
+             "awaiting_feedback":
+       289 +                                          # Now we can return
+           +  the NEW summary
+       290                                            summary = 
+             status_data.get("final_summary", "Analysis complete.")
+       291                                            yield summary
+       292                                            yield 
+             f"\n\n---\n*Session: `{session_id}` - Ask a follow-up 
+             question or say 'done' to finish.*"
+
+⏺ Wait, there might be a deeper issue in the backend. When the feedback is submitted, the workflow resumes but might not be getting the updated state with the follow_up_query. Let me check the feedback endpoint handling:
+
+⏺ Read(backend/mica/api/routes.py)
+  ⎿  Read 50 lines
+
+⏺ I see the issue. When resuming from the await_feedback interrupt, the workflow needs the checkpoint to be updated with the follow_up_query metadata, but currently it's just passing the full state as new input which might not properly resume from the interrupt.
+
+  Let me fix the feedback endpoint to properly update the checkpoint state:
+
+⏺ Update(backend/mica/api/routes.py)
+  ⎿  Added 5 lines, removed 2 lines                                  
+       343        _sessions[session_id] = state
+       344    
+       345        if request.follow_up_query:
+       346 -          # Continue with follow-up
+       347 -          
+           - background_tasks.add_task(run_workflow_until_interrupt, 
+           - session_id)
+       346 +          # Continue with follow-up - pass the metadata 
+           + update for proper checkpoint resumption
+       347 +          state_update = {
+       348 +              "metadata": state["metadata"].copy(),  # 
+           + Include the follow_up_query
+       349 +          }
+       350 +          
+           + background_tasks.add_task(run_workflow_until_interrupt, 
+           + session_id, state_update)
+       351            return {
+       352                "session_id": session_id,
+       353                "status": "processing",
+
+⏺ Now restart both servers:
+
+  1. Restart backend:
+  cd backend
+  python -m mica.api.main
+
+  2. Restart pipelines server:
+  cd ui
+  python pipelines_server.py
+
+  The changes I made:
+
+  1. pipelines_server.py: Wait for status to change from awaiting_feedback before polling for results - ensures we don't return the old summary
+  2. routes.py: Pass the metadata (with follow_up_query) as a state update when resuming the workflow - ensures the checkpoint is properly updated for LangGraph to see the follow-up query
+
+  These two fixes together should ensure:
+  - Follow-up queries are properly recognized by the workflow
+  - The pipeline waits for the NEW answer instead of returning the old one
+
+> now i have this: what is mica? how is it mined?
+
+
+
+profile
+MICA - Materials Intelligence Co-Analyst 
+Submitting query to MICA...
+
+Session: 43714371-93c1-4108-adbc-dcace2882c4c
+
+Conducting preliminary research and generating analysis plan...
+
+What is Mica?
+Mica is a group of naturally occurring silicate minerals characterized by 
+their distinctive sheet-like crystal structure that allows them to be split 
+into thin, flexible, transparent layers. The name comes from the Latin word 
+"micare," meaning "to glitter."
+
+Key Properties:
+Heat resistant - withstands temperatures up to 500-600°C
+Electrically insulating - excellent dielectric properties
+Chemically inert - resistant to acids, water, and solvents
+Transparent to translucent - allows light transmission
+Flexible in thin sheets - can be peeled into layers
+Main Types:
+Muscovite (white mica) - most commercially important
+Phlogopite (amber mica) - better heat resistance
+Biotite (black mica) - less commercial value
+How is Mica Mined?
+Mining Methods:
+1. Open-Pit Mining (most common)
+
+Used when mica deposits are near the surface
+Overburden is removed to expose mica-bearing pegmatites
+Excavators extract ore containing mica crystals
+2. Underground Mining
+
+Used for deeper deposits
+Tunnels and shafts access mica veins
+More labor-intensive and costly
+3. Artisanal/Small-Scale Mining
+
+Common in India, Madagascar, and parts of Africa
+Often involves manual extraction with basic tools
+Raises concerns about child labor and unsafe conditions
+Processing:
+Extraction - Mica crystals separated from host rock
+Cobbing - Manual sorting and trimming
+Splitting - Sheets split to desired thickness
+Grading - Classified by size, quality, and color
+Grinding - Lower grades ground into powder (dry or wet milling)
+Critical Materials Context:
+While mica isn't typically classified as a "critical material" like rare 
+earths or lithium, it has important industrial applications:
+
+Electronics - insulators in capacitors, vacuum tubes
+Automotive - gaskets, brake linings
+Construction - joint cement, roofing, wallboard
+Cosmetics - shimmer in makeup products
+Aerospace - thermal insulation
+Supply Chain Notes:
+
+Major producers : India (~60% global share), China, Madagascar, Brazil
+U.S. dependency : 100% import reliant for sheet mica
+Ethical concerns : Artisanal mining in some regions involves child labor and
+ poor safety standards
+The mica supply chain has faced scrutiny regarding responsible sourcing, 
+particularly in cosmetics and electronics industries, leading to increased 
+traceability efforts.
+
+Session: 43714371-93c1-4108-adbc-dcace2882c4c - Ask a follow-up question or 
+say 'done' to finish.
+
+what is the percentage of produce from Major producers
+
+
+2/2
+
+profile
+MICA - Materials Intelligence Co-Analyst 
+Processing follow-up question...
+
+Session: 43714371-93c1-4108-adbc-dcace2882c4c
+
+Follow-up submission may have failed. Please try again. 
+
+⏺ Let me check what's happening with that session:
+
+⏺ Bash(curl -s
+      http://localhost:8000/api/v1/session/43714371-93c1-4108-adbc-dcace2882c4c
+      2>/dev/null | python3 -m json.tool 2>/dev/null || echo "Session not found
+      or b…)
+  ⎿  {                                                        
+         "session_id": "43714371-93c1-4108-adbc-dcace2882c4c",
+         "status": "awaiting_feedback",
+     … +23 lines (ctrl+o to expand)
+
+⏺ The follow-up actually DID work - the final_summary was updated with a new answer about percentages. The issue is the pipelines_server timing - the workflow completes so fast that the status is already back at awaiting_feedback before we can detect the transition.
+
+  Let me fix the polling logic to check if the final_summary has changed instead of waiting for status transitions:
+
+⏺ Update(ui/pipelines_server.py)
+  ⎿  Added 11 lines, removed 25 lines                                    
+       251                                    yield "Session completed. 
+             Feel free to start a new query!"
+       252                                    return
+       253                                else:
+       254 +                                  # Store the original 
+           + summary to detect when it changes
+       255 +                                  original_summary = 
+           + status_data.get("final_summary", "")
+       256 +  
+       257                                    # Submit as follow-up query
+       258                                    yield f"**Processing 
+             follow-up question...**\n\nSession: `{session_id}`\n\n"
+       259    
+     ...
+       267                                        yield f"Error 
+             submitting follow-up: {feedback_res.text}"
+       268                                        return
+       269    
+       270 -                                  # First, wait for status to
+           -  change FROM awaiting_feedback
+       271 -                                  # (indicating the follow-up
+           -  processing has started)
+       272 -                                  processing_started = False
+       273 -                                  for _ in range(30):  # 30 
+           - seconds to start processing
+       274 -                                      await asyncio.sleep(1)
+       275 -                                      status_res = await clie
+           - nt.get(f"{MICA_BACKEND_URL}/api/v1/session/{session_id}")
+       276 -                                      status_data = 
+           - status_res.json()
+       277 -                                      status = 
+           - status_data.get("status", "")
+       278 -                                      if status != 
+           - "awaiting_feedback":
+       279 -                                          processing_started 
+           - = True
+       280 -                                          yield f"Researching
+           -  your follow-up...\n\n"
+       281 -                                          break
+       270 +                                  # Poll until the summary 
+           + changes or we hit a different status
+       271 +                                  for i in range(60):  # 10 
+           + minutes max
+       272 +                                      await asyncio.sleep(5)
+       273    
+       274 -                                  if not processing_started:
+       275 -                                      yield "Follow-up 
+           - submission may have failed. Please try again."
+       276 -                                      return
+       277 -  
+       278 -                                  # Now poll for results 
+           - (follow-up goes through research cycle)
+       279 -                                  for i in range(30):  # 5 
+           - minutes max
+       280 -                                      await asyncio.sleep(10)
+       281 -  
+       274                                        status_res = await clie
+             nt.get(f"{MICA_BACKEND_URL}/api/v1/session/{session_id}")
+       275                                        status_data = 
+             status_res.json()
+       276                                        status = 
+             status_data.get("status", "")
+       277 +                                      current_summary = 
+           + status_data.get("final_summary", "")
+       278    
+       279                                        if status in 
+             ["plan_proposed", "awaiting_approval"]:
+       280                                            plan = 
+             status_data.get("plan", [])
+     ...
+       302                                            yield "**Reply 
+             'approve' to execute this plan, or 'reject' to cancel.**"
+       303                                            return
+       304    
+       305 -                                      elif status == 
+           -  "awaiting_feedback":
+       306 -                                          # Now we can return
+           -   the NEW summary
+       307 -                                          summary = 
+           - status_data.get("final_summary", "Analysis complete.")
+       308 -                                          yield summary
+       305 +                                      elif status == 
+           +  "awaiting_feedback" and current_summary != original_summary
+           +  :
+       306 +                                          # Summary has 
+           +  changed - we have a new answer
+       307 +                                          yield 
+           + current_summary
+       308                                            yield 
+             f"\n\n---\n*Session: `{session_id}` - Ask a follow-up 
+             question or say 'done' to finish.*"
+       309                                            return
+       310    
+     ...
+       314                                            yield f"Analysis 
+             failed: {errors[0].get('error') if errors else 'Unknown 
+             error'}"
+       315                                            return
+       316    
+       317 -                                      if i % 3
+           -   == 0 and i > 0:
+       317 +                                      if i % 6
+           +   == 0 and i > 0:
+       318                                            yield f"Still 
+             working... (status: {status})\n"
+       319    
+       320                                    yield "Analysis is taking 
+             longer than expected. Check back later."
+
+⏺ Restart the pipelines server and test again:
+
+  cd ui
+  python pipelines_server.py
+
+  The fix now compares the final_summary before and after submitting the follow-up. When the summary changes, we know a new answer is ready - regardless of how fast the workflow completes.
+
+  By the way, your follow-up DID get answered - the backend processed it and generated a response asking for clarification about which specific material you meant. The issue was just the pipelines server timing out before detecting the change.
+
+> it's worse: what is mica? how is it mined?
+
+
+
+profile
+MICA - Materials Intelligence Co-Analyst 
+Processing follow-up question...
+
+Session: f32d95b8-2c72-477b-adc8-46f35f6e636a
+
+Session: f32d95b8-2c72-477b-adc8-46f35f6e636a - Ask a follow-up question or 
+say 'done' to finish.
+
+show me
+
+profile
+MICA - Materials Intelligence Co-Analyst 
+Processing follow-up question...
+
+Session: f32d95b8-2c72-477b-adc8-46f35f6e636a
+
+Session: f32d95b8-2c72-477b-adc8-46f35f6e636a - Ask a follow-up question or 
+say 'done' to finish. 
+
+⏺ The issue is that the pipelines server is incorrectly matching new queries to old sessions. Let me check the session:
+
+⏺ Bash(curl -s
+      http://localhost:8000/api/v1/session/f32d95b8-2c72-477b-adc8-46f35f6e636a
+      2>/dev/null | python3 -m json.tool 2>/dev/null || echo "Session not
+      found")
+  ⎿  {                                                        
+         "session_id": "f32d95b8-2c72-477b-adc8-46f35f6e636a",
+         "status": "plan_proposed",
+     … +94 lines (ctrl+o to expand)
+
+⏺ I see the problem. The pipelines server is persisting old sessions and incorrectly matching new chats to them. The first query "what is mica?" is being treated as a follow-up to a stale session.
+
+  The issue is the session tracking logic. Let me fix it to be more robust:
+
+⏺ Update(ui/pipelines_server.py)
+  ⎿  Added 17 lines, removed 1 line                                      
+       123    
+       124    
+       125    def extract_session_id_from_messages(messages: 
+             List[Message]) -> Optional[str]:
+       126 -      """Extract MICA session ID from previous assistant 
+           -  messages."""
+       126 +      """Extract MICA session ID from the MOST RECENT 
+           +  assistant message only."""
+       127        import re
+       128 +      # Only look at the last assistant message to avoid 
+           + stale sessions
+       129        for msg in reversed(messages):
+       130            if msg.role == "assistant":
+       131                # Look for session ID pattern like "Session: 
+             `abc123...`"
+       132                match = 
+             re.search(r'Session:\s*`?([a-f0-9-]{8,36})', msg.content)
+       133                if match:
+       134                    return match.group(1)
+       135 +              # If the last assistant message doesn't have a 
+           + session ID, return None
+       136 +              # (don't search older messages - they're stale)
+       137 +              return None
+       138        return None
+       139    
+       140    
+       141 +  def is_new_query(message: str) -> bool:
+       142 +      """Detect if a message looks like a new query rather 
+           + than a follow-up."""
+       143 +      msg_lower = message.lower().strip()
+       144 +      # New query patterns - questions that start a new topic
+       145 +      new_query_patterns = [
+       146 +          "what is ", "what are ", "how do ", "how does ", 
+           + "how is ",
+       147 +          "explain ", "describe ", "tell me about ", "define 
+           + ",
+       148 +          "who ", "where ", "when ", "why ", "which ",
+       149 +      ]
+       150 +      return any(msg_lower.startswith(p) for p in 
+           + new_query_patterns)
+       151 +  
+       152 +  
+       153    def get_first_user_query(messages: List[Message]) -> str:
+       154        """Get the first user message to use as stable chat 
+             identifier."""
+       155        for msg in messages:
+
+⏺ Now let me update the main logic to use this detection and also validate sessions exist before using them:
+
+⏺ Update(ui/pipelines_server.py)
+  ⎿  Added 19 lines                                                      
+       197                # Check if we have an active session (prefer 
+             extracted, then stored)
+       198                session_id = extracted_session_id or 
+             sessions.get(chat_id)
+       199    
+       200 +              # If this looks like a completely new query, 
+           + don't try to use old session
+       201 +              if session_id and is_new_query(user_message):
+       202 +                  # Clear the stale session - user is 
+           + starting fresh
+       203 +                  if chat_id in sessions:
+       204 +                      del sessions[chat_id]
+       205 +                  session_id = None
+       206 +  
+       207                if session_id:
+       208 +                  # Validate the session still exists in the 
+           + backend
+       209 +                  try:
+       210 +                      status_res = await client.get(f"{MICA_B
+           + ACKEND_URL}/api/v1/session/{session_id}")
+       211 +                      if status_res.status_code != 200:
+       212 +                          # Session doesn't exist in backend,
+           +  clear it
+       213 +                          if chat_id in sessions:
+       214 +                              del sessions[chat_id]
+       215 +                          session_id = None
+       216 +                  except:
+       217 +                      session_id = None
+       218 +  
+       219 +              if session_id:
+       220                    # Ensure session is tracked in our local 
+             dict
+       221                    sessions[chat_id] = session_id
+       222    
+
+⏺ Let me verify the changes look correct:
+
+⏺ Read(ui/pipelines_server.py)
+  ⎿  Read 60 lines
+
+⏺ The logic looks correct. Now restart both servers to test:
+
+  # Terminal 1 - Backend
+  cd backend
+  python -m mica.api.main
+
+  # Terminal 2 - Pipelines
+  cd ui
+  python pipelines_server.py
+
+  The fixes now:
+  1. Detect new queries - Messages starting with "what is", "how", "explain", etc. are treated as new queries, not follow-ups
+  2. Validate sessions exist - Checks if session exists in backend before using it
+  3. Clear stale sessions - Removes session mapping when starting fresh
+
+  Try again with "What is mica? How is it mined?" - it should now correctly submit as a new query, not a follow-up.
+
+> ok now the follow-up works. but there is a new session id, AND the 
+Question-response from the previous query is fully lost. Then I ask another 
+follow up message, which doesn't seem to show any answer: what is mica? how 
+is it mined?
+
+
+
+profile
+MICA - Materials Intelligence Co-Analyst 
+Submitting query to MICA...
+
+Session: 3a93b695-0f51-430b-8566-42634706cfdd
+
+Conducting preliminary research and generating analysis plan...
+
+Mica: Mineral Properties and Mining
+What is Mica?
+Mica is a group of silicate minerals known for their distinctive sheet-like 
+or layered crystal structure that allows them to be split into thin, 
+flexible, transparent sheets. The most common types are:
+
+Muscovite (white/clear mica) - used in electronics, cosmetics, and 
+insulation
+Phlogopite (amber/brown mica) - preferred for high-temperature applications
+Biotite (black mica) - less commercially important
+Mica's unique properties include excellent electrical insulation, heat 
+resistance, chemical stability, and transparency to light, making it 
+valuable in electronics, construction materials, cosmetics, and industrial 
+applications.
+
+How is Mica Mined?
+Mining Methods:
+1. Open-Pit Mining (most common)
+
+Used when mica deposits are near the surface
+Large-scale mechanical extraction using excavators
+Ore is removed in benches or terraces
+2. Underground Mining
+
+For deeper, high-quality deposits
+Room-and-pillar or shaft mining methods
+More labor-intensive and expensive
+3. Artisanal/Small-Scale Mining
+
+Common in India, Madagascar, and parts of Africa
+Manual extraction using basic tools
+Often associated with problematic labor practices, including child labor
+Processing Steps:
+Extraction : Ore containing mica is removed from pegmatite or schist 
+formations
+Sorting : Hand-picking or mechanical separation of mica from waste rock
+Splitting/Delamination : Mica sheets are carefully split along cleavage 
+planes
+Grading : Sorted by size, quality, and transparency
+Processing : Cut, trimmed, or ground depending on end use
+Critical Materials Context:
+While mica itself is not currently classified as a "critical material" by 
+the U.S. Department of Energy, it has supply chain considerations:
+
+Import Dependency : The U.S. imports most of its mica, primarily from 
+Canada, India, and China
+Electronics Applications : High-purity muscovite is important for capacitors
+ and electronic components
+Ethical Concerns : Significant portions of global mica supply (especially 
+from India and Madagascar) involve problematic mining conditions
+Substitution Challenges : For certain high-performance applications, 
+synthetic alternatives exist but may be more expensive
+The mica supply chain exemplifies how even non-critical minerals can have 
+important industrial applications and supply chain vulnerabilities worth 
+monitoring.
+
+Session: 3a93b695-0f51-430b-8566-42634706cfdd - Ask a follow-up question or 
+say 'done' to finish.
+
+what is percentage of production from each country?
+
+profile
+MICA - Materials Intelligence Co-Analyst 
+Submitting query to MICA...
+
+Session: 49880230-067c-4f06-8eaa-f86e7665b17f
+
+Conducting preliminary research and generating analysis plan...
+
+I'd be happy to help you with production percentages, but I need more 
+specific information to provide accurate data.
+
+What I need to know:
+
+Which material or product? (e.g., lithium, rare earth elements, cobalt, 
+semiconductors, solar panels, batteries)
+Which countries or regions? (global overview, specific countries, or 
+comparison between nations)
+What time period? (current/recent data, historical comparison, or 
+projections)
+Common critical materials production examples:
+
+Rare Earth Elements (2023):
+
+China: ~70%
+United States: ~14%
+Myanmar: ~8%
+Australia: ~5%
+Other: ~3%
+Lithium (2023):
+
+Australia: ~47%
+Chile: ~26%
+China: ~17%
+Argentina: ~6%
+Other: ~4%
+Cobalt (2023):
+
+Democratic Republic of Congo: ~70%
+Russia: ~4%
+Australia: ~3%
+Philippines: ~3%
+Other: ~20%
+Graphite (natural, 2023):
+
+China: ~65%
+Mozambique: ~12%
+Madagascar: ~8%
+Brazil: ~7%
+Other: ~8%
+Please specify which material you're interested in, and I'll provide the 
+precise production percentages with current data and relevant context about 
+supply chain implications.
+
+Session: 49880230-067c-4f06-8eaa-f86e7665b17f - Ask a follow-up question or 
+say 'done' to finish.
+
+what about mica?
+
+profile
+MICA - Materials Intelligence Co-Analyst 
+Processing follow-up question...
+
+Session: 49880230-067c-4f06-8eaa-f86e7665b17f
+
+Session: 49880230-067c-4f06-8eaa-f86e7665b17f - Ask a follow-up question or 
+say 'done' to finish.
+
+what about mica?
+
+profile
+MICA - Materials Intelligence Co-Analyst 
+Processing follow-up question...
+
+Session: 49880230-067c-4f06-8eaa-f86e7665b17f
+
+Session: 49880230-067c-4f06-8eaa-f86e7665b17f - Ask a follow-up question or 
+say 'done' to finish. 
+
+⏺ I see two issues:
+
+  1. "what is percentage..." created a new session - The is_new_query function is too aggressive, matching "what is..." even for follow-up questions
+  2. "what about mica?" returns empty - The follow-up isn't getting a response
+
+  Let me check the session and fix these:
+
+⏺ Bash(curl -s
+      http://localhost:8000/api/v1/session/49880230-067c-4f06-8eaa-f86e7665b17f
+      2>/dev/null | python3 -m json.tool 2>/dev/null | head -50)
+  ⎿  {                                                        
+         "session_id": "49880230-067c-4f06-8eaa-f86e7665b17f",
+         "status": "awaiting_feedback",
+     … +34 lines (ctrl+o to expand)
+
+⏺ The backend DID process the follow-up correctly - it has a new summary about mica. The issue is the pipelines server isn't detecting the change properly. Also, the is_new_query function is too aggressive.
+
+  Let me fix both issues:
+
+⏺ Update(ui/pipelines_server.py)
+  ⎿  Added 26 lines, removed 8 lines                                     
+       138        return None
+       139    
+       140    
+       141 -  def is_new_query(message: str) -> bool:
+       142 -      """Detect if a message looks like a new query rather 
+           -  than a follow-up."""
+       141 +  def is_new_query(message: str, has_prior_session: bool
+           +  ) -> bool:
+       142 +      """Detect if a message looks like a new query rather 
+           +  than a follow-up.
+       143 +  
+       144 +      Only treat as new query if it's the FIRST message (no 
+           + prior session in this chat)
+       145 +      or if it's clearly a topic change.
+       146 +      """
+       147 +      if not has_prior_session:
+       148 +          return True  # No prior session = definitely new 
+           + query
+       149 +  
+       150        msg_lower = message.lower().strip()
+       151 -      # New query patterns - questions that start a new topic
+       152 -      new_query_patterns = [
+       153 -          "what is ", "what are ", "how do ", "how does ", 
+           - "how is ",
+       154 -          "explain ", "describe ", "tell me about ", "define 
+           - ",
+       155 -          "who ", "where ", "when ", "why ", "which ",
+       151 +  
+       152 +      # Follow-up patterns - these are NOT new queries
+       153 +      followup_patterns = [
+       154 +          "what about", "how about", "and ", "also ", "what 
+           + percentage",
+       155 +          "what is the percentage", "can you", "could you", 
+           + "please ",
+       156 +          "more ", "tell me more", "elaborate", "expand", 
+           + "details",
+       157        ]
+       158 -      return any(msg_lower.startswith(p) for p in 
+           -  new_query_patterns)
+       158 +      if any(msg_lower.startswith(p) for p in 
+           +  followup_patterns):
+       159 +          return False
+       160    
+       161 +      # Only treat as new query if it's a complete new topic 
+           + introduction
+       162 +      # AND doesn't reference the previous conversation
+       163 +      new_topic_patterns = [
+       164 +          "what is lithium", "what is cobalt", "what are rare
+           +  earth",
+       165 +          "explain solar", "tell me about battery", "how does
+           +  nuclear",
+       166 +      ]
+       167 +      # For now, be conservative - only explicitly new topics
+           +  trigger new session
+       168 +      return any(p in msg_lower for p in new_topic_patterns)
+       169    
+       170 +  
+       171    def get_first_user_query(messages: List[Message]) -> str:
+       172        """Get the first user message to use as stable chat 
+             identifier."""
+       173        for msg in messages:
+
+⏺ Update(ui/pipelines_server.py)
+  ⎿  Added 3 lines, removed 2 lines                                    
+       215                # Check if we have an active session (prefer 
+             extracted, then stored)
+       216                session_id = extracted_session_id or 
+             sessions.get(chat_id)
+       217    
+       218 -              # If this looks like a completely new query
+           -  , don't try to use old session
+       219 -              if session_id and is_new_query(user_message):
+       218 +              # Check if 
+           +  this looks like a completely new query
+       219 +              has_prior_session = session_id is not None
+       220 +              if session_id and is_new_query(user_message, 
+           + has_prior_session):
+       221                    # Clear the stale session - user is 
+             starting fresh
+       222                    if chat_id in sessions:
+       223                        del sessions[chat_id]
+
+⏺ Now let me check why the follow-up summary comparison isn't working:
+
+⏺ Read(ui/pipelines_server.py)
+  ⎿  Read 70 lines
+
+⏺ The code looks correct but I think there might be a race condition. Let me add a fallback to handle the case where the summary changed but we miss detecting it, and also add handling for completed status:
+
+⏺ Update(ui/pipelines_server.py)
+  ⎿  Added 17 lines, removed 8 lines                                     
+       326    
+       327                                    # Poll until the summary 
+             changes or we hit a different status
+       328                                    for i in range(60):  # 10 
+             minutes max
+       329 -                                      await asyncio.sleep(5)
+       329 +                                      await asyncio.sleep(3)
+           +    # Faster polling
+       330    
+       331                                        status_res = await clie
+             nt.get(f"{MICA_BACKEND_URL}/api/v1/session/{session_id}")
+       332                                        status_data = 
+             status_res.json()
+     ...
+       343                                            yield "**Reply 
+             'approve' to execute this plan, or 'reject' to cancel.**"
+       344                                            return
+       345    
+       346 -                                      elif status == 
+           -  "awaiting_feedback" and current_summary != original_summary
+           -  :
+       347 -                                          # Summary has 
+           -  changed - we have a new answer
+       348 -                                          yield
+           -   current_summary
+       349 -                                          yield 
+           - f"\n\n---\n*Session: `{session_id}` - Ask a follow-up 
+           - question or say 'done' to finish.*"
+       350 -                                          return
+       346 +                                      elif status in [
+           +  "awaiting_feedback", "completed"]:
+       347 +                                          # Check if summary 
+           +  changed
+       348 +                                          if current_summary
+           +   and current_summary != original_summary:
+       349 +                                              yield 
+           + current_summary
+       350 +                                              yield 
+           + f"\n\n---\n*Session: `{session_id}` - Ask a follow-up 
+           + question or say 'done' to finish.*"
+       351 +                                              return
+       352    
+       353                                        elif status == 
+             "failed":
+       354                                            errors = 
+             status_data.get("errors", [])
+       355                                            yield f"Analysis 
+             failed: {errors[0].get('error') if errors else 'Unknown 
+             error'}"
+       356                                            return
+       357    
+       358 -                                      if i % 6
+           -   == 0 and i > 0:
+       358 +                                      if i % 10
+           +   == 0 and i > 0:
+       359                                            yield f"Still 
+             working... (status: {status})\n"
+       360    
+       361 -                                  yield "Analysis is taking 
+           - longer than expected. Check back later."
+       361 +                                  # Timeout - check one more 
+           + time for any summary
+       362 +                                  status_res = await client.g
+           + et(f"{MICA_BACKEND_URL}/api/v1/session/{session_id}")
+       363 +                                  status_data = 
+           + status_res.json()
+       364 +                                  final_summary = 
+           + status_data.get("final_summary", "")
+       365 +                                  if final_summary and 
+           + final_summary != original_summary:
+       366 +                                      yield final_summary
+       367 +                                      yield 
+           + f"\n\n---\n*Session: `{session_id}` - Ask a follow-up 
+           + question or say 'done' to finish.*"
+       368 +                                  else:
+       369 +                                      yield "Analysis is 
+           + taking longer than expected. Check back later."
+       370                                    return
+       371    
+       372                    except Exception as e:
+
+⏺ Actually, I think there might be duplicate code paths. Let me look at the full pipelines file to understand the flow better:
+
+⏺ Bash(grep -n "Ask a follow-up"
+      /Users/nesar/Projects/CM/codes/MICA/ui/pipelines_server.py)
+  ⎿ 270:                                        yield f"\n\n---\n*Session: 
+    `{session_id}` - Ask a follow-up question or say 'done' to finish.*"
+    350:                                            yield f"\n\n---\n*Sessi
+    … +6 lines (ctrl+o to expand)
+
+
+⏺ Read(ui/pipelines_server.py)
+  ⎿  Read 20 lines
+
+⏺ Let me improve the follow-up detection and also add missing patterns:
+
+⏺ Update(ui/pipelines_server.py)
+  ⎿  Added 8 lines, removed 16 lines                                     
+       141    def is_new_query(message: str, has_prior_session: bool) -> 
+             bool:
+       142        """Detect if a message looks like a new query rather 
+             than a follow-up.
+       143    
+       144 -      Only treat as new query if it's the FIRST message (no 
+           - prior session in this chat)
+       145 -      or if it's clearly a topic change.
+       144 +      Be VERY conservative - only start new session if 
+           + clearly changing topic.
+       145 +      Default to treating messages as follow-ups when we have
+           +  a prior session.
+       146        """
+       147        if not has_prior_session:
+       148            return True  # No prior session = definitely new 
+             query
+       149    
+       150 +      # If we have a prior session, almost everything is a 
+           + follow-up
+       151 +      # Only start new session for explicit topic changes
+       152        msg_lower = message.lower().strip()
+       153    
+       154 -      # Follow-up patterns - these are NOT new queries
+       155 -      followup_patterns = [
+       156 -          "what about", "how about", "and ", "also ", "what 
+           - percentage",
+       157 -          "what is the percentage", "can you", "could you", 
+           - "please ",
+       158 -          "more ", "tell me more", "elaborate", "expand", 
+           - "details",
+       159 -      ]
+       160 -      if any(msg_lower.startswith(p) for p in 
+           - followup_patterns):
+       161 -          return False
+       162 -  
+       163 -      # Only treat as new query if it's a complete new topic 
+           - introduction
+       164 -      # AND doesn't reference the previous conversation
+       154 +      # Explicit new topic patterns - completely different 
+           + subjects
+       155        new_topic_patterns = [
+       156 -          "what is lithium", "what is cobalt", "what are rare
+           -  earth",
+       157 -          "explain solar", "tell me about battery", "how does
+           -  nuclear",
+       156 +          "let's talk about ", "new question:", "different 
+           + topic:",
+       157 +          "changing subject", "unrelated question",
+       158        ]
+       159 -      # For now, be conservative - only explicitly new topics
+           -  trigger new session
+       159 +  
+       160        return any(p in msg_lower for p in new_topic_patterns)
+       161    
+       162    
+
+⏺ Now let me also add a more robust fallback for the follow-up response to ensure the summary is always shown:
+
+⏺ Update(ui/pipelines_server.py)
+  ⎿  Added 23 lines, removed 18 lines                                    
+       298                                    return
+       299                                else:
+       300                                    # Store the original 
+             summary to detect when it changes
+       301 -                                  original_summary = 
+           -  status_data.get("final_summary", "")
+       301 +                                  original_summary = 
+           +  status_data.get("final_summary", "") or ""
+       302 +                                  original_summary_hash = 
+           + hash(original_summary)
+       303    
+       304                                    # Submit as follow-up query
+       305 -                                  yield f"**Processing 
+           -  follow-up question...**\n\nSession: `{session_id}`\n\n"
+       305 +                                  yield f"**Processing 
+           +  follow-up...**\n\n"
+       306    
+       307                                    feedback_res = await 
+             client.post(
+       308                                        
+             f"{MICA_BACKEND_URL}/api/v1/session/{session_id}/feedback",
+     ...
+       317                                        return
+       318    
+       319                                    # Poll until the summary 
+             changes or we hit a different status
+       320 -                                  for i in range(60):  # 10 
+           - minutes max
+       321 -                                      await asyncio.sleep(3) 
+           -  # Faster polling
+       320 +                                  found_new_answer = False
+       321 +                                  for i in range(90):  # 4.5 
+           + minutes max (3s * 90)
+       322 +                                      await asyncio.sleep(3)
+       323    
+       324                                        status_res = await clie
+             nt.get(f"{MICA_BACKEND_URL}/api/v1/session/{session_id}")
+       325                                        status_data = 
+             status_res.json()
+       326                                        status = 
+             status_data.get("status", "")
+       327 -                                      current_summary = 
+           -  status_data.get("final_summary", "")
+       327 +                                      current_summary = 
+           +  status_data.get("final_summary", "") or ""
+       328    
+       329                                        if status in 
+             ["plan_proposed", "awaiting_approval"]:
+       330                                            plan = 
+             status_data.get("plan", [])
+     ...
+       336                                            return
+       337    
+       338                                        elif status in 
+             ["awaiting_feedback", "completed"]:
+       339 -                                          # Check if summary 
+           -  changed
+       340 -                                          if current_summary 
+           -  and current_summary != original_summary:
+       339 +                                          # Check if summary 
+           +  changed (use hash for reliable comparison)
+       340 +                                          if current_summary 
+           +  and hash(current_summary) != original_summary_hash:
+       341 +                                              
+           + found_new_answer = True
+       342                                                yield 
+             current_summary
+       343                                                yield 
+             f"\n\n---\n*Session: `{session_id}` - Ask a follow-up 
+             question or say 'done' to finish.*"
+       344                                                return
+     ...
+       347                                            yield f"Analysis 
+             failed: {errors[0].get('error') if errors else 'Unknown 
+             error'}"
+       348                                            return
+       349    
+       350 -                                      if i % 10 == 
+           -  0 and i > 0:
+       351 -                                          yield f"Still 
+           - working... (status: {status})\n"
+       350 +                                      # Show progress every 
+           +  30 seconds
+       351 +                                      if i > 0 and i % 10 == 
+           + 0:
+       352 +                                          yield f"Still 
+           + analyzing... ({i*3}s)\n"
+       353    
+       354 -                                  # Timeout - check one more 
+           -  time for any summary
+       355 -                                  status_res = await client.g
+           - et(f"{MICA_BACKEND_URL}/api/v1/session/{session_id}")
+       356 -                                  status_data = 
+           - status_res.json()
+       357 -                                  final_summary = 
+           - status_data.get("final_summary", "")
+       358 -                                  if final_summary and 
+           - final_summary != original_summary:
+       359 -                                      yield final_summary
+       360 -                                      yield 
+           - f"\n\n---\n*Session: `{session_id}` - Ask a follow-up 
+           - question or say 'done' to finish.*"
+       361 -                                  else:
+       362 -                                      yield "Analysis is 
+           - taking longer than expected. Check back later."
+       354 +                                  # Timeout - show whatever 
+           +  summary we have
+       355 +                                  if not found_new_answer:
+       356 +                                      status_res = await clie
+           + nt.get(f"{MICA_BACKEND_URL}/api/v1/session/{session_id}")
+       357 +                                      status_data = 
+           + status_res.json()
+       358 +                                      final_summary = 
+           + status_data.get("final_summary", "")
+       359 +                                      if final_summary:
+       360 +                                          yield final_summary
+       361 +                                          yield 
+           + f"\n\n---\n*Session: `{session_id}` - Ask a follow-up 
+           + question or say 'done' to finish.*"
+       362 +                                      else:
+       363 +                                          yield "Analysis is 
+           + taking longer than expected. Please check the session 
+           + status."
+       364                                    return
+       365    
+       366                    except Exception as e:
+
+⏺ Restart the pipelines server and test again:
+
+  cd ui
+  python pipelines_server.py
+
+  Key changes:
+  1. Much more conservative is_new_query - Now only explicit topic changes ("let's talk about", "new question:") will start a new session. Follow-up questions like "what is the percentage..." will stay in the same session.
+  2. More reliable summary comparison - Using hash comparison to detect changes more reliably.
+  3. Better fallback - At timeout, it will show whatever summary is available.
+
+  Try the full flow again:
+  1. "What is mica? How is it mined?"
+  2. "What is the percentage of production from each country?"
+  3. "What about the US specifically?"
+
+  All should use the same session ID now.
+
+> follow up questions did not work again (although the session id is fine 
+now): How is lithium mined?
+
+
+
+profile
+MICA - Materials Intelligence Co-Analyst 
+Submitting query to MICA...
+
+Session: 46d8f90b-e4ff-4c81-a17a-10db9daf039c
+
+Conducting preliminary research and generating analysis plan...
+
+How Lithium is Mined
+Lithium is extracted through two primary methods, depending on the deposit 
+type:
+
+1. Hard Rock Mining (Spodumene)
+Process : Conventional open-pit or underground mining of lithium-bearing 
+pegmatite ore (primarily spodumene)
+Steps :
+Ore is extracted, crushed, and concentrated
+Heated to convert to beta-spodumene
+Treated with sulfuric acid to produce lithium sulfate
+Further processed into lithium carbonate or hydroxide
+Key Locations : Australia (60% of global production), parts of China, 
+Zimbabwe
+Timeline : 12-18 months from ore to battery-grade material
+2. Brine Extraction (Evaporation)
+Process : Pumping lithium-rich brine from underground salt lakes (salars) to
+ surface evaporation ponds
+Steps :
+Brine pumped to large shallow ponds
+Solar evaporation over 12-24 months concentrates lithium
+Chemical processing produces lithium carbonate
+Key Locations : Chile, Argentina, Bolivia ("Lithium Triangle"), Nevada, 
+China
+Timeline : 18-24+ months from extraction to product
+Water Intensity : Requires ~500,000 gallons of water per ton of lithium
+3. Emerging Methods
+Direct Lithium Extraction (DLE) : Uses chemical processes or membranes to 
+extract lithium directly from brine in hours/days rather than months
+Reduces water use and land footprint
+Enables extraction from lower-grade brines
+Still being scaled commercially
+Supply Chain Context
+Current Production Split :
+
+~60% hard rock (Australia-dominant)
+~40% brine (South America-dominant)
+U.S. Position :
+
+Only one operating brine facility (Silver Peak, Nevada)
+Significant domestic resources but limited production
+Heavy reliance on imports (~50% from Argentina and Chile)
+Environmental Considerations :
+
+Hard rock: Higher energy use, traditional mining impacts
+Brine: Water stress in arid regions, long land use
+DLE: Potentially lower environmental footprint
+Processing Bottleneck : Most hard rock ore is shipped to China for 
+processing into battery-grade materials, creating supply chain vulnerability
+ even when ore is mined domestically.
+
+The choice of method depends on geology, economics, water availability, and 
+time-to-market requirements.
+
+Session: 46d8f90b-e4ff-4c81-a17a-10db9daf039c - Ask a follow-up question or 
+say 'done' to finish.
+
+What is the percentage of production from each country?
+
+profile
+MICA - Materials Intelligence Co-Analyst 
+Processing follow-up...
+
+I'd be happy to help you with production percentages, but I need more 
+specific information to provide an accurate answer.
+
+What I need to know:
+
+Which material or product? (e.g., lithium, rare earth elements, cobalt, 
+semiconductors, solar panels, etc.)
+Which year or time period? (Production shares change over time)
+Production stage? (mining, refining, processing, or manufacturing)
+Common examples in critical materials:
+
+Rare Earth Elements (mining, ~2022):
+
+China: ~70%
+United States: ~14%
+Myanmar: ~8%
+Australia: ~5%
+Others: ~3%
+Lithium (mining, ~2022):
+
+Australia: ~47%
+Chile: ~26%
+China: ~17%
+Argentina: ~6%
+Others: ~4%
+Cobalt (mining, ~2022):
+
+Democratic Republic of Congo: ~70%
+Russia: ~4%
+Australia: ~3%
+Philippines: ~3%
+Others: ~20%
+Refining often shows different concentrations - for example, China refines 
+over 90% of rare earths and ~60% of lithium, even though they don't mine the
+ majority of all these materials.
+
+Please clarify your question with:
+
+The specific material/product
+The year of interest
+Whether you mean mining, refining, or manufacturing
+I'll then provide the exact production percentages you're looking for.
+
+Session: 46d8f90b-e4ff-4c81-a17a-10db9daf039c - Ask a follow-up question or 
+say 'done' to finish.
+
+What about the US specifically?
+
+profile
+MICA - Materials Intelligence Co-Analyst 
+Processing follow-up...
+
+Still analyzing... (30s)
+
+Analysis Plan Generated
+Step 1: Clarify User Intent
+
+Tool: orchestrator
+Step 2: Gather Current US Production Data for Critical Battery Materials
+
+Tool: web_search
+Step 3: Gather US Production Data for Other Battery Critical Materials
+
+Tool: web_search
+Step 4: Obtain US Import Dependency Data
+
+Tool: web_search
+Step 5: Gather US Processing and Refining Capacity Data
+
+Tool: web_search
+Step 6: Identify Active US Production Facilities
+
+Tool: web_search
+Step 7: Compile Historical Trend Data
+
+Tool: web_search
+Step 8: Gather Projected Future Production Data
+
+Tool: web_search
+Step 9: Create Comparative Data Structure
+
+Tool: code_agent
+Step 10: Generate Visualizations
+
+Tool: code_agent
+Step 11: Synthesize Comprehensive Response
+
+Tool: orchestrator
+Reply 'approve' to execute this plan, or 'reject' to cancel. 
+
+⏺ The workflow is working now (same session ID, follow-ups are processed), but the LLM isn't getting enough context about the previous conversation. When you ask "What about the US?", the LLM doesn't know you were discussing lithium.
+
+  The issue is in handle_feedback - I'm clearing too much context. Let me fix it to preserve conversation history:
+
+⏺ Update(backend/mica/agents/orchestrator.py)
+  ⎿  Added 17 lines, removed 3 lines                                    
+       666        follow_up_query = state.get("metadata", 
+             {}).get("follow_up_query")
+       667        if follow_up_query:
+       668            logger.info(f"[{state['session_id']}] Processing 
+             follow-up query: {follow_up_query[:100]}")
+       669 +  
+       670 +          # Preserve context from previous conversation
+       671 +          previous_query = state.get("query", "")
+       672 +          previous_summary = state.get("final_summary", "")
+       673 +  
+       674 +          # Add previous conversation to clarifications for 
+           + context
+       675 +          if previous_query:
+       676 +              state["clarifications"].append(f"Previous 
+           + query: {previous_query}")
+       677 +          if previous_summary:
+       678 +              # Truncate summary to avoid overwhelming the 
+           + context
+       679 +              summary_preview = previous_summary[:1000] + 
+           + "..." if len(previous_summary) > 1000 else previous_summary
+       680 +              state["clarifications"].append(f"Previous 
+           + response summary: {summary_preview}")
+       681 +  
+       682 +          # Set the new follow-up as the current query
+       683            state["query"] = follow_up_query
+       684 -          # Reset for new analysis cycle
+       684 +  
+       685 +          # Reset only execution-related state, preserve 
+           + context
+       686            state["plan"] = []
+       687            state["tool_results"] = {}
+       688            state["intermediate_outputs"] = []
+       689 -          state["preliminary_research"] = {}
+       689            state["approved"] = None
+       690            state["approval_feedback"] = None
+       691 -          state["final_summary"] = None
+       691            state["errors"] = []
+       692 +  
+       693            # Clear the follow_up_query to prevent 
+             re-processing
+       694            state["metadata"]["follow_up_query"] = None
+       695            state["metadata"]["feedback"] = None
+
+⏺ Now let me also update the research function to better use this context:
+
+⏺ Read(backend/mica/agents/orchestrator.py)
+  ⎿  Read 15 lines
+
+⏺ Now let me update the simple query handling to also use context:
+
+⏺ Read(backend/mica/agents/orchestrator.py)
+  ⎿  Read 40 lines
+
+⏺ Update(backend/mica/agents/orchestrator.py)
+  ⎿  Added 6 lines, removed 1 line                                      
+       159        return False
+       160    
+       161    
+       162 -  def answer_simple_query(query: str, llm) -> str:
+       162 +  def answer_simple_query(query: str, llm, context: str = ""
+           +  ) -> str:
+       163        """
+       164        Generate a direct answer for simple queries without 
+             multi-step planning.
+       165 +  
+       166 +      Args:
+       167 +          query: The user's query
+       168 +          llm: The LLM instance to use
+       169 +          context: Previous conversation context for 
+           + follow-up questions
+       170        """
+       171        # Special handling for tool queries
+       172        query_lower = query.lower()
+
+⏺ Read(backend/mica/agents/orchestrator.py)
+  ⎿  Read 25 lines
+
+⏺ Update(backend/mica/agents/orchestrator.py)
+  ⎿  Added 15 lines, removed 3 lines                                     
+       206        # For other simple queries, use LLM directly
+       207        from langchain_core.messages import SystemMessage, 
+             HumanMessage
+       208    
+       209 -      prompt = f"""Answer this question directly and 
+           - concisely. This is a simple informational query.
+       209 +      # Build prompt with context if available
+       210 +      context_section = ""
+       211 +      if context:
+       212 +          context_section = f"""
+       213 +  IMPORTANT - Previous conversation context:
+       214 +  {context}
+       215    
+       216 -  Question: {query}
+       216 +  The user is asking a follow-up question. Use the context 
+           + above to understand what they're referring to.
+       217 +  """
+       218    
+       219 +      prompt = f"""Answer this question directly and 
+           + concisely. This is a simple informational query.
+       220 +  {context_section}
+       221 +  Current Question: {query}
+       222 +  
+       223    Provide a clear, helpful answer. If this relates to 
+             critical materials or supply chains,
+       224 -  include relevant context. Keep the response focused and 
+           -  under 500 words."""
+       224 +  include relevant context. Keep the response focused and 
+           +  under 500 words.
+       225    
+       226 +  If this is a follow-up question, make sure to answer in the
+           +  context of the previous discussion."""
+       227 +  
+       228        messages = [
+       229            SystemMessage(content=ORCHESTRATOR_SYSTEM_PROMPT),
+       230            HumanMessage(content=prompt),
+
+⏺ Now let me update the call to answer_simple_query to pass the context:
+
+⏺ Read(backend/mica/agents/orchestrator.py)
+  ⎿  Read 40 lines
+
+⏺ Update(backend/mica/agents/orchestrator.py)
+  ⎿  Added 7 lines, removed 2 lines                                      
+       267        try:
+       268            llm = get_llm()
+       269    
+       270 +          # Build context from any previous interactions (for
+           +  follow-ups)
+       271 +          context = ""
+       272 +          if state["clarifications"]:
+       273 +              context = "\n".join(state["clarifications"])
+       274 +  
+       275            # Check if this is a simple query that doesn't need
+              full planning
+       276            if is_simple_query(query):
+       277                logger.info(f"[{state['session_id']}] Simple 
+             query detected - fast-track response")
+       278    
+       279 -              # Generate direct answer
+       280 -              direct_answer = answer_simple_query(query, llm)
+       279 +              # Generate direct answer
+           +   with context for follow-ups
+       280 +              direct_answer = answer_simple_query(query, llm
+           +  , context)
+       281    
+       282                # Mark as simple query in metadata
+       283                state["metadata"]["simple_query"] = True
+
+⏺ Read(backend/mica/agents/orchestrator.py)
+  ⎿  Read 40 lines
+
+⏺ I see there's duplicate context building. Let me clean that up:
+
+⏺ Update(backend/mica/agents/orchestrator.py)
+  ⎿  Added 1 line, removed 6 lines                                       
+       312            # Complex query - proceed with full research
+       313            logger.info(f"[{state['session_id']}] Complex query
+              - proceeding with full research")
+       314    
+       315 -          # Build context from any previous interactions
+       316 -          context = ""
+       317 -          if state["clarifications"]:
+       318 -              context = "\n".join(state["clarifications"])
+       319 -  
+       320 -          # Generate research prompt
+       315 +          # Generate research prompt (context already built 
+           + above)
+       316            prompt = RESEARCH_PROMPT.format(
+       317                query=query,
+       318                context=context or "No previous context.",
+
+⏺ Now restart the backend to test:
+
+  cd backend
+  python -m mica.api.main
+
+  The key changes:
+  1. handle_feedback: Now preserves previous query and summary in clarifications for context
+  2. answer_simple_query: Now accepts and uses context for follow-up questions
+  3. Research prompt: Already uses context, but now gets richer context from previous conversation
+
+  Try the flow again:
+  1. "How is lithium mined?"
+  2. "What is the percentage of production from each country?" - should now understand you're asking about lithium
+  3. "What about the US specifically?" - should answer in context of lithium production
+
+
+
