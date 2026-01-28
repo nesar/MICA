@@ -19,7 +19,7 @@ services:
     environment:
       # LLM Configuration
       - MICA_LLM_PROVIDER=${MICA_LLM_PROVIDER:-argo}
-      - MICA_DEFAULT_MODEL=${MICA_DEFAULT_MODEL:-claudeopus4}
+      - MICA_DEFAULT_MODEL=${MICA_DEFAULT_MODEL:-claudesonnet45}
       - ARGO_USERNAME=${ARGO_USERNAME:-}
       - GOOGLE_API_KEY=${GOOGLE_API_KEY:-}
       # Server Configuration

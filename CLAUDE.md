@@ -96,7 +96,7 @@ Key interrupt points:
 
 Configuration uses Pydantic settings in `backend/mica/config.py`. Key environment variables:
 - `MICA_LLM_PROVIDER`: `argo` or `gemini`
-- `MICA_DEFAULT_MODEL`: Model ID (e.g., `claudeopus4`)
+- `MICA_DEFAULT_MODEL`: Model ID (e.g., `claudesonnet45`)
 - `ARGO_USERNAME`: For Argo provider
 - `GOOGLE_API_KEY`: For Gemini provider
 - `MICA_SESSION_DIR`: Session storage path (default: `./sessions`)

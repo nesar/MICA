@@ -47,7 +47,7 @@ def create_llm(
         llm = create_llm()
 
         # Specify provider and model
-        llm = create_llm(provider="argo", model_id="claudeopus4")
+        llm = create_llm(provider="argo", model_id="claudesonnet45")
 
         # Use Gemini with custom temperature
         llm = create_llm(provider="gemini", model_id="gemini-flash", temperature=0.5)
@@ -120,6 +120,7 @@ def get_available_models() -> dict[str, dict[str, str]]:
     Example:
         {
             "argo": {
+                "claudeopus45": "Claude Opus 4.5",
                 "claudesonnet45": "Claude Sonnet 4.5",
                 "gpt4o": "GPT-4o",
                 ...

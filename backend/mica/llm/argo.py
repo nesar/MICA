@@ -20,6 +20,7 @@ from .base import BaseLLM, LLMResponse
 ARGO_MODELS = {
     "gpt4o": {"name": "GPT-4o", "env": "prod"},
     "claudeopus4": {"name": "Claude Opus 4", "env": "dev"},
+    "claudeopus45": {"name": "Claude Opus 4.5", "env": "dev"},
     "claudesonnet4": {"name": "Claude Sonnet 4", "env": "dev"},
     "claudesonnet45": {"name": "Claude Sonnet 4.5", "env": "dev"},
     "gemini25flash": {"name": "Gemini 2.5 Flash", "env": "dev"},
@@ -74,7 +75,7 @@ class ArgoLLM(BaseLLM):
 
     def __init__(
         self,
-        model_id: str = "claudeopus4",
+        model_id: str = "claudesonnet45",
         username: Optional[str] = None,
         temperature: float = 0.7,
         max_tokens: int = 20000,
@@ -84,7 +85,7 @@ class ArgoLLM(BaseLLM):
         Initialize Argo LLM.
 
         Args:
-            model_id: The model to use (e.g., 'claudeopus4', 'claudesonnet45', 'gpt4o')
+            model_id: The model to use (e.g., 'claudesonnet45', 'claudeopus45', 'gpt4o')
             username: Argo username (defaults to ARGO_USERNAME env var)
             temperature: Sampling temperature
             max_tokens: Maximum tokens to generate

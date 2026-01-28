@@ -23,7 +23,7 @@ class LLMSettings(BaseSettings):
         description="LLM provider to use",
     )
     default_model: str = Field(
-        default="claudeopus4",
+        default="claudesonnet45",
         description="Default model ID",
     )
 
