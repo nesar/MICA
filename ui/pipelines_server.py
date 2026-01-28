@@ -335,6 +335,21 @@ async def process_message_stream(request: ChatRequest) -> AsyncGenerator[str, No
                                         yield "```\n</details>\n\n---\n\n"
                                         summary = exec_data.get("final_summary", "Analysis complete.")
                                         yield f"## Results\n\n{summary}"
+
+                                        # Check for plots/artifacts
+                                        try:
+                                            artifacts_res = await client.get(f"{MICA_BACKEND_URL}/api/v1/session/{session_id}/artifacts")
+                                            if artifacts_res.status_code == 200:
+                                                artifacts = artifacts_res.json().get("artifacts", {})
+                                                plots = artifacts.get("plots", [])
+                                                if plots:
+                                                    yield "\n\n### Generated Visualizations\n\n"
+                                                    for plot in plots:
+                                                        plot_url = f"{MICA_BACKEND_URL}/api/v1/session/{session_id}/artifact/plots/{plot}"
+                                                        yield f"![{plot}]({plot_url})\n\n"
+                                        except Exception:
+                                            pass  # Artifacts optional
+
                                         yield f"\n\n---\n*Session: `{session_id}` - Ask a follow-up question or say 'done' to finish.*"
                                         return
 
@@ -436,6 +451,21 @@ async def process_message_stream(request: ChatRequest) -> AsyncGenerator[str, No
                                         if current_summary and hash(current_summary) != original_summary_hash:
                                             found_new_answer = True
                                             yield current_summary
+
+                                            # Check for plots/artifacts
+                                            try:
+                                                artifacts_res = await client.get(f"{MICA_BACKEND_URL}/api/v1/session/{session_id}/artifacts")
+                                                if artifacts_res.status_code == 200:
+                                                    artifacts = artifacts_res.json().get("artifacts", {})
+                                                    plots = artifacts.get("plots", [])
+                                                    if plots:
+                                                        yield "\n\n### Generated Visualizations\n\n"
+                                                        for plot in plots:
+                                                            plot_url = f"{MICA_BACKEND_URL}/api/v1/session/{session_id}/artifact/plots/{plot}"
+                                                            yield f"![{plot}]({plot_url})\n\n"
+                                            except Exception:
+                                                pass  # Artifacts optional
+
                                             yield f"\n\n---\n*Session: `{session_id}` - Ask a follow-up question or say 'done' to finish.*"
                                             return
 
@@ -540,6 +570,21 @@ async def process_message_stream(request: ChatRequest) -> AsyncGenerator[str, No
                 elif status in ["completed", "awaiting_feedback"]:
                     summary = status_data.get("final_summary", "Analysis complete.")
                     yield summary
+
+                    # Check for plots/artifacts
+                    try:
+                        artifacts_res = await client.get(f"{MICA_BACKEND_URL}/api/v1/session/{session_id}/artifacts")
+                        if artifacts_res.status_code == 200:
+                            artifacts = artifacts_res.json().get("artifacts", {})
+                            plots = artifacts.get("plots", [])
+                            if plots:
+                                yield "\n\n### Generated Visualizations\n\n"
+                                for plot in plots:
+                                    plot_url = f"{MICA_BACKEND_URL}/api/v1/session/{session_id}/artifact/plots/{plot}"
+                                    yield f"![{plot}]({plot_url})\n\n"
+                    except Exception:
+                        pass  # Artifacts optional
+
                     # Keep session for follow-ups (don't delete from sessions dict)
                     yield f"\n\n---\n*Session: `{session_id}` - Ask a follow-up question or say 'done' to finish.*"
                     return

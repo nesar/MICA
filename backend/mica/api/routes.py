@@ -10,6 +10,7 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from fastapi import APIRouter, HTTPException, BackgroundTasks, Depends
+from fastapi.responses import FileResponse
 from pydantic import BaseModel, Field
 
 from ..agents import (
@@ -411,6 +412,73 @@ async def delete_session(session_id: str):
         return {"message": f"Session {session_id} deleted"}
     else:
         raise HTTPException(status_code=404, detail=f"Session not found: {session_id}")
+
+
+@router.get("/session/{session_id}/artifact/{artifact_type}/{filename}")
+async def get_artifact(session_id: str, artifact_type: str, filename: str):
+    """
+    Serve an artifact file from a session.
+
+    artifact_type: 'plots', 'reports', 'data', etc.
+    filename: name of the artifact file
+    """
+    import os
+    from pathlib import Path
+
+    # Validate session exists
+    if session_id not in _sessions:
+        raise HTTPException(status_code=404, detail=f"Session not found: {session_id}")
+
+    # Build path to artifact
+    session_dir = config.server.session_dir / session_id
+    artifact_path = session_dir / artifact_type / filename
+
+    # Security: ensure the path is within the session directory
+    try:
+        artifact_path = artifact_path.resolve()
+        session_dir_resolved = session_dir.resolve()
+        if not str(artifact_path).startswith(str(session_dir_resolved)):
+            raise HTTPException(status_code=403, detail="Access denied")
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid path")
+
+    if not artifact_path.exists():
+        raise HTTPException(status_code=404, detail=f"Artifact not found: {filename}")
+
+    # Determine media type
+    media_type = "application/octet-stream"
+    suffix = artifact_path.suffix.lower()
+    if suffix == ".png":
+        media_type = "image/png"
+    elif suffix == ".jpg" or suffix == ".jpeg":
+        media_type = "image/jpeg"
+    elif suffix == ".pdf":
+        media_type = "application/pdf"
+    elif suffix == ".json":
+        media_type = "application/json"
+    elif suffix == ".csv":
+        media_type = "text/csv"
+
+    return FileResponse(artifact_path, media_type=media_type, filename=filename)
+
+
+@router.get("/session/{session_id}/artifacts")
+async def list_artifacts(session_id: str):
+    """List all artifacts for a session."""
+    from pathlib import Path
+
+    if session_id not in _sessions:
+        raise HTTPException(status_code=404, detail=f"Session not found: {session_id}")
+
+    session_dir = config.server.session_dir / session_id
+    artifacts = {}
+
+    for artifact_type in ["plots", "reports", "data"]:
+        type_dir = session_dir / artifact_type
+        if type_dir.exists():
+            artifacts[artifact_type] = [f.name for f in type_dir.iterdir() if f.is_file()]
+
+    return {"session_id": session_id, "artifacts": artifacts}
 
 
 # Utility endpoints
