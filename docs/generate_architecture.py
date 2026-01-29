@@ -11,26 +11,162 @@ Usage:
 from graphviz import Digraph
 
 
+def mica_overview():
+    """
+    Simplified high-level overview of MICA.
+    Shows the big picture with abstract components.
+    """
+    dot = Digraph('MICA_Overview')
+    dot.attr(rankdir='TB',
+             fontsize='24',
+             fontname='Helvetica-Bold',
+             labelloc='t',
+             label='MICA: Materials Intelligence Co-Analyst\nHigh-Level Overview',
+             bgcolor='white',
+             pad='0.5',
+             nodesep='0.8',
+             ranksep='1.0',
+             dpi='300')
+
+    dot.node_attr.update(fontname='Helvetica', fontsize='14')
+    dot.edge_attr.update(fontname='Helvetica', fontsize='11')
+
+    # User
+    dot.node('user', 'User',
+             shape='ellipse',
+             style='filled',
+             fillcolor='#E3F2FD',
+             color='#1565C0',
+             fontcolor='#1565C0',
+             fontsize='16',
+             penwidth='3')
+
+    # Chat Interface
+    dot.node('chat', 'Chat Interface\n(Open WebUI)',
+             shape='box',
+             style='rounded,filled',
+             fillcolor='#42A5F5',
+             fontcolor='white',
+             fontsize='14',
+             penwidth='0',
+             width='2.5',
+             height='0.8')
+
+    # MICA Core - the main box
+    with dot.subgraph(name='cluster_core') as core:
+        core.attr(label='MICA Core',
+                  style='rounded,filled',
+                  fillcolor='#E8F5E9',
+                  color='#2E7D32',
+                  penwidth='3',
+                  fontsize='16',
+                  fontname='Helvetica-Bold',
+                  margin='20')
+
+        core.node('orchestrator', 'LangGraph\nOrchestrator',
+                  shape='box',
+                  style='rounded,filled',
+                  fillcolor='#FFCA28',
+                  fontcolor='#424242',
+                  fontsize='14',
+                  penwidth='0',
+                  width='2',
+                  height='0.8')
+
+        core.node('hitl', 'Human-in-the-Loop\nApproval',
+                  shape='diamond',
+                  style='filled',
+                  fillcolor='#FF7043',
+                  fontcolor='white',
+                  fontsize='12',
+                  penwidth='0',
+                  width='2',
+                  height='1.2')
+
+    # External Services row
+    dot.node('llm', 'LLM Providers\n(Claude, GPT, Gemini)',
+             shape='box',
+             style='rounded,filled',
+             fillcolor='#EF5350',
+             fontcolor='white',
+             fontsize='12',
+             penwidth='0',
+             width='2.5',
+             height='0.8')
+
+    dot.node('tools', 'MCP Tools\n(Search, PDF, Code, Reports)',
+             shape='box',
+             style='rounded,filled',
+             fillcolor='#AB47BC',
+             fontcolor='white',
+             fontsize='12',
+             penwidth='0',
+             width='3',
+             height='0.8')
+
+    dot.node('storage', 'Storage\n(Sessions, ChromaDB)',
+             shape='cylinder',
+             style='filled',
+             fillcolor='#78909C',
+             fontcolor='white',
+             fontsize='12',
+             penwidth='0')
+
+    # Outputs
+    dot.node('report', 'Analysis Report\n(PDF)',
+             shape='note',
+             style='filled',
+             fillcolor='#FFF9C4',
+             fontcolor='#F57F17',
+             fontsize='12',
+             penwidth='2',
+             color='#F57F17')
+
+    # Main flow - clean vertical layout
+    dot.edge('user', 'chat', label='Query', color='#1565C0', penwidth='2', arrowhead='vee')
+    dot.edge('chat', 'orchestrator', label='Streaming', color='#2E7D32', penwidth='2', arrowhead='vee')
+    dot.edge('orchestrator', 'hitl', color='#F9A825', penwidth='2', arrowhead='vee')
+    dot.edge('hitl', 'orchestrator', label='Feedback', color='#FF7043', penwidth='1.5', style='dashed', arrowhead='vee')
+
+    # Side connections - use constraint=false for horizontal
+    dot.edge('orchestrator', 'llm', color='#C62828', penwidth='1.5', style='dashed', constraint='false')
+    dot.edge('orchestrator', 'tools', color='#7B1FA2', penwidth='2', arrowhead='vee')
+    dot.edge('orchestrator', 'storage', color='#546E7A', penwidth='1.5', style='dashed')
+
+    # Output
+    dot.edge('tools', 'report', color='#F57F17', penwidth='2', arrowhead='vee')
+    dot.edge('report', 'user', label='Results', color='#F57F17', penwidth='2', arrowhead='vee', constraint='false')
+
+    # Force layout
+    with dot.subgraph() as s:
+        s.attr(rank='same')
+        s.node('llm')
+        s.node('tools')
+        s.node('storage')
+
+    return dot
+
+
 def mica_architecture():
     """
-    MICA (Materials Intelligence Co-Analyst) architecture diagram.
-    Shows the multi-agent workflow with human-in-the-loop pattern.
+    MICA detailed architecture diagram.
+    Clean layout with vertical MCP tools and structured arrows.
     """
     dot = Digraph('MICA_Architecture')
     dot.attr(rankdir='TB',
              fontsize='20',
              fontname='Helvetica-Bold',
              labelloc='t',
-             label='MICA: Materials Intelligence Co-Analyst',
+             label='MICA: Detailed Architecture',
              bgcolor='#FAFAFA',
-             pad='0.3',
-             nodesep='0.4',
-             ranksep='0.5',
-             dpi='300')
+             pad='0.4',
+             nodesep='0.5',
+             ranksep='0.6',
+             dpi='300',
+             splines='ortho')  # Orthogonal edges for cleaner lines
 
-    # Set default node attributes
-    dot.node_attr.update(fontname='Helvetica', fontsize='12')
-    dot.edge_attr.update(fontname='Helvetica', fontsize='10')
+    dot.node_attr.update(fontname='Helvetica', fontsize='11')
+    dot.edge_attr.update(fontname='Helvetica', fontsize='9')
 
     # User Interface Layer
     with dot.subgraph(name='cluster_ui') as ui:
@@ -39,146 +175,90 @@ def mica_architecture():
                 fillcolor='#E3F2FD',
                 color='#1565C0',
                 penwidth='2',
-                fontsize='14',
+                fontsize='13',
                 fontname='Helvetica-Bold')
-        ui.node('webui', 'Open WebUI\n\nChat Interface',
+        ui.node('webui', 'Open WebUI',
                 shape='box',
                 style='rounded,filled',
                 fillcolor='#42A5F5',
                 fontcolor='white',
-                fontsize='12',
                 penwidth='0')
-        ui.node('pipelines', 'Pipelines Server\n\nStreaming Protocol',
+        ui.node('pipelines', 'Pipelines Server',
                 shape='box',
                 style='rounded,filled',
                 fillcolor='#64B5F6',
                 fontcolor='white',
-                fontsize='12',
                 penwidth='0')
 
-    # MICA Backend
-    with dot.subgraph(name='cluster_backend') as backend:
-        backend.attr(label='MICA Backend',
-                     style='rounded,filled',
-                     fillcolor='#E8F5E9',
-                     color='#2E7D32',
-                     penwidth='2',
-                     fontsize='14',
-                     fontname='Helvetica-Bold')
+    # API Layer
+    dot.node('api', 'FastAPI Backend',
+             shape='box',
+             style='rounded,filled',
+             fillcolor='#66BB6A',
+             fontcolor='white',
+             penwidth='0')
 
-        backend.node('api', 'FastAPI\n\nREST + WebSocket',
-                     shape='box',
-                     style='rounded,filled',
-                     fillcolor='#66BB6A',
-                     fontcolor='white',
-                     fontsize='12',
-                     penwidth='0')
+    # LangGraph Orchestrator
+    with dot.subgraph(name='cluster_orchestrator') as orch:
+        orch.attr(label='LangGraph Orchestrator',
+                  style='rounded,filled',
+                  fillcolor='#FFF8E1',
+                  color='#F9A825',
+                  penwidth='2',
+                  fontsize='13',
+                  fontname='Helvetica-Bold')
 
-        # LangGraph Orchestrator
-        with backend.subgraph(name='cluster_orchestrator') as orch:
-            orch.attr(label='LangGraph Orchestrator',
-                      style='rounded,filled',
-                      fillcolor='#FFF8E1',
-                      color='#F9A825',
-                      penwidth='1.5',
-                      fontsize='12',
-                      fontname='Helvetica-Bold')
+        # Workflow nodes in a row
+        orch.node('research', 'Research',
+                  shape='box', style='rounded,filled', fillcolor='#FFCA28',
+                  fontcolor='#424242', penwidth='0')
+        orch.node('plan', 'Plan',
+                  shape='box', style='rounded,filled', fillcolor='#FFCA28',
+                  fontcolor='#424242', penwidth='0')
+        orch.node('approval', 'Approval',
+                  shape='diamond', style='filled', fillcolor='#FF7043',
+                  fontcolor='white', penwidth='0')
+        orch.node('execute', 'Execute',
+                  shape='box', style='rounded,filled', fillcolor='#FFCA28',
+                  fontcolor='#424242', penwidth='0')
+        orch.node('summary', 'Summary',
+                  shape='box', style='rounded,filled', fillcolor='#FFCA28',
+                  fontcolor='#424242', penwidth='0')
 
-            orch.node('research', 'Preliminary\nResearch',
-                      shape='box',
-                      style='rounded,filled',
-                      fillcolor='#FFCA28',
-                      fontcolor='#424242',
-                      fontsize='11',
-                      penwidth='0')
-            orch.node('plan', 'Plan\nGeneration',
-                      shape='box',
-                      style='rounded,filled',
-                      fillcolor='#FFCA28',
-                      fontcolor='#424242',
-                      fontsize='11',
-                      penwidth='0')
-            orch.node('approval', 'Human\nApproval',
-                      shape='diamond',
-                      style='filled',
-                      fillcolor='#FF7043',
-                      fontcolor='white',
-                      fontsize='11',
-                      penwidth='0')
-            orch.node('execute', 'Plan\nExecution',
-                      shape='box',
-                      style='rounded,filled',
-                      fillcolor='#FFCA28',
-                      fontcolor='#424242',
-                      fontsize='11',
-                      penwidth='0')
-            orch.node('summary', 'Summary\nGeneration',
-                      shape='box',
-                      style='rounded,filled',
-                      fillcolor='#FFCA28',
-                      fontcolor='#424242',
-                      fontsize='11',
-                      penwidth='0')
-            orch.node('feedback', 'User\nFeedback',
-                      shape='diamond',
-                      style='filled',
-                      fillcolor='#FF7043',
-                      fontcolor='white',
-                      fontsize='11',
-                      penwidth='0')
-
-    # MCP Tools
+    # MCP Tools - Vertical layout in its own cluster
     with dot.subgraph(name='cluster_tools') as tools:
         tools.attr(label='MCP Tools',
                    style='rounded,filled',
                    fillcolor='#F3E5F5',
                    color='#7B1FA2',
                    penwidth='2',
-                   fontsize='14',
-                   fontname='Helvetica-Bold')
+                   fontsize='13',
+                   fontname='Helvetica-Bold',
+                   rankdir='TB')
 
-        tools.node('web_search', 'Web Search\n\nFederal Docs',
+        # Single column of tools
+        tools.node('tool_hub', 'Tool\nDispatcher',
                    shape='box',
                    style='rounded,filled',
-                   fillcolor='#AB47BC',
+                   fillcolor='#9C27B0',
                    fontcolor='white',
-                   fontsize='11',
                    penwidth='0')
-        tools.node('pdf_rag', 'PDF RAG\n\nChromaDB',
-                   shape='box',
-                   style='rounded,filled',
-                   fillcolor='#AB47BC',
-                   fontcolor='white',
-                   fontsize='11',
-                   penwidth='0')
-        tools.node('excel', 'Excel Handler\n\nData Analysis',
-                   shape='box',
-                   style='rounded,filled',
-                   fillcolor='#AB47BC',
-                   fontcolor='white',
-                   fontsize='11',
-                   penwidth='0')
-        tools.node('code_agent', 'Code Agent\n\nPython Exec',
-                   shape='box',
-                   style='rounded,filled',
-                   fillcolor='#AB47BC',
-                   fontcolor='white',
-                   fontsize='11',
-                   penwidth='0')
-        tools.node('doc_gen', 'Doc Generator\n\nPDF Reports',
-                   shape='box',
-                   style='rounded,filled',
-                   fillcolor='#AB47BC',
-                   fontcolor='white',
-                   fontsize='11',
-                   penwidth='0')
-        tools.node('simulation', 'Simulation\n\nSupply Chain',
-                   shape='box',
-                   style='rounded,filled',
-                   fillcolor='#CE93D8',
-                   fontcolor='#4A148C',
-                   fontsize='11',
-                   penwidth='0')
+
+        tools.node('web_search', 'Web Search',
+                   shape='box', style='rounded,filled', fillcolor='#AB47BC',
+                   fontcolor='white', penwidth='0')
+        tools.node('pdf_rag', 'PDF RAG',
+                   shape='box', style='rounded,filled', fillcolor='#AB47BC',
+                   fontcolor='white', penwidth='0')
+        tools.node('code_agent', 'Code Agent',
+                   shape='box', style='rounded,filled', fillcolor='#AB47BC',
+                   fontcolor='white', penwidth='0')
+        tools.node('doc_gen', 'Doc Generator',
+                   shape='box', style='rounded,filled', fillcolor='#AB47BC',
+                   fontcolor='white', penwidth='0')
+        tools.node('excel', 'Excel Handler',
+                   shape='box', style='rounded,filled', fillcolor='#CE93D8',
+                   fontcolor='#4A148C', penwidth='0')
 
     # LLM Providers
     with dot.subgraph(name='cluster_llm') as llm:
@@ -187,23 +267,14 @@ def mica_architecture():
                  fillcolor='#FFEBEE',
                  color='#C62828',
                  penwidth='2',
-                 fontsize='14',
+                 fontsize='13',
                  fontname='Helvetica-Bold')
-
-        llm.node('argo', 'Argo API\n\nClaude, GPT',
-                 shape='ellipse',
-                 style='filled',
-                 fillcolor='#EF5350',
-                 fontcolor='white',
-                 fontsize='11',
-                 penwidth='0')
-        llm.node('gemini', 'Google API\n\nGemini',
-                 shape='ellipse',
-                 style='filled',
-                 fillcolor='#EF5350',
-                 fontcolor='white',
-                 fontsize='11',
-                 penwidth='0')
+        llm.node('argo', 'Argo API\n(Claude, GPT)',
+                 shape='ellipse', style='filled', fillcolor='#EF5350',
+                 fontcolor='white', penwidth='0')
+        llm.node('gemini', 'Gemini API',
+                 shape='ellipse', style='filled', fillcolor='#EF5350',
+                 fontcolor='white', penwidth='0')
 
     # Storage
     with dot.subgraph(name='cluster_storage') as storage:
@@ -212,55 +283,42 @@ def mica_architecture():
                      fillcolor='#ECEFF1',
                      color='#546E7A',
                      penwidth='2',
-                     fontsize='14',
+                     fontsize='13',
                      fontname='Helvetica-Bold')
+        storage.node('sessions', 'Sessions',
+                     shape='cylinder', style='filled', fillcolor='#78909C',
+                     fontcolor='white', penwidth='0')
+        storage.node('chroma', 'ChromaDB',
+                     shape='cylinder', style='filled', fillcolor='#78909C',
+                     fontcolor='white', penwidth='0')
 
-        storage.node('sessions', 'Session Logs\n\nJSON + Artifacts',
-                     shape='cylinder',
-                     style='filled',
-                     fillcolor='#78909C',
-                     fontcolor='white',
-                     fontsize='11',
-                     penwidth='0')
-        storage.node('chroma', 'ChromaDB\n\nVector Store',
-                     shape='cylinder',
-                     style='filled',
-                     fillcolor='#78909C',
-                     fontcolor='white',
-                     fontsize='11',
-                     penwidth='0')
-
-    # Main flow connections
-    dot.edge('webui', 'pipelines', color='#1565C0', penwidth='2', arrowhead='vee')
-    dot.edge('pipelines', 'api', label='HTTP\nStreaming', color='#1565C0', penwidth='2', arrowhead='vee')
+    # Main vertical flow
+    dot.edge('webui', 'pipelines', color='#1565C0', penwidth='2')
+    dot.edge('pipelines', 'api', color='#1565C0', penwidth='2')
+    dot.edge('api', 'research', color='#2E7D32', penwidth='2')
 
     # Orchestrator internal flow
-    dot.edge('api', 'research', color='#2E7D32', penwidth='2', arrowhead='vee')
-    dot.edge('research', 'plan', color='#F9A825', penwidth='1.5', arrowhead='vee')
-    dot.edge('plan', 'approval', color='#F9A825', penwidth='1.5', arrowhead='vee')
-    dot.edge('approval', 'execute', label='approved', color='#4CAF50', penwidth='1.5', arrowhead='vee')
-    dot.edge('approval', 'plan', label='rejected', color='#F44336', penwidth='1', style='dashed', arrowhead='vee')
-    dot.edge('execute', 'summary', color='#F9A825', penwidth='1.5', arrowhead='vee')
-    dot.edge('summary', 'feedback', color='#F9A825', penwidth='1.5', arrowhead='vee')
-    dot.edge('feedback', 'research', label='follow-up', color='#2196F3', penwidth='1', style='dashed', arrowhead='vee')
+    dot.edge('research', 'plan', color='#F9A825', penwidth='1.5')
+    dot.edge('plan', 'approval', color='#F9A825', penwidth='1.5')
+    dot.edge('approval', 'execute', color='#4CAF50', penwidth='1.5')
+    dot.edge('execute', 'summary', color='#F9A825', penwidth='1.5')
 
-    # Execute to tools
-    dot.edge('execute', 'web_search', color='#7B1FA2', penwidth='1.5', arrowhead='vee')
-    dot.edge('execute', 'pdf_rag', color='#7B1FA2', penwidth='1.5', arrowhead='vee')
-    dot.edge('execute', 'excel', color='#7B1FA2', penwidth='1.5', arrowhead='vee')
-    dot.edge('execute', 'code_agent', color='#7B1FA2', penwidth='1.5', arrowhead='vee')
-    dot.edge('execute', 'doc_gen', color='#7B1FA2', penwidth='1.5', arrowhead='vee')
-    dot.edge('execute', 'simulation', color='#7B1FA2', penwidth='1.5', style='dashed', arrowhead='vee')
+    # Single connection from execute to tool hub
+    dot.edge('execute', 'tool_hub', color='#7B1FA2', penwidth='2')
 
-    # LLM connections
-    dot.edge('research', 'argo', style='dashed', color='#C62828', penwidth='1', arrowhead='open')
-    dot.edge('plan', 'argo', style='dashed', color='#C62828', penwidth='1', arrowhead='open')
-    dot.edge('summary', 'argo', style='dashed', color='#C62828', penwidth='1', arrowhead='open')
-    dot.edge('code_agent', 'argo', style='dashed', color='#C62828', penwidth='1', arrowhead='open')
+    # Tool hub to individual tools
+    dot.edge('tool_hub', 'web_search', color='#7B1FA2', penwidth='1')
+    dot.edge('tool_hub', 'pdf_rag', color='#7B1FA2', penwidth='1')
+    dot.edge('tool_hub', 'code_agent', color='#7B1FA2', penwidth='1')
+    dot.edge('tool_hub', 'doc_gen', color='#7B1FA2', penwidth='1')
+    dot.edge('tool_hub', 'excel', color='#7B1FA2', penwidth='1')
+
+    # LLM connection - single arrow from orchestrator cluster
+    dot.edge('research', 'argo', style='dashed', color='#C62828', penwidth='1.5', constraint='false')
 
     # Storage connections
-    dot.edge('api', 'sessions', style='dashed', color='#546E7A', penwidth='1', arrowhead='open')
-    dot.edge('pdf_rag', 'chroma', style='dashed', color='#546E7A', penwidth='1', arrowhead='open')
+    dot.edge('api', 'sessions', style='dashed', color='#546E7A', penwidth='1')
+    dot.edge('pdf_rag', 'chroma', style='dashed', color='#546E7A', penwidth='1')
 
     return dot
 
@@ -494,7 +552,12 @@ def mica_tools_detail():
 if __name__ == '__main__':
     print("Generating MICA architecture diagrams...")
 
-    # Main architecture
+    # High-level overview (new)
+    d0 = mica_overview()
+    d0.render('mica_overview', format='png', cleanup=True)
+    print("  Generated mica_overview.png")
+
+    # Detailed architecture (cleaned up)
     d1 = mica_architecture()
     d1.render('mica_architecture', format='png', cleanup=True)
     print("  Generated mica_architecture.png")
@@ -509,4 +572,4 @@ if __name__ == '__main__':
     d3.render('mica_tools', format='png', cleanup=True)
     print("  Generated mica_tools.png")
 
-    print("\nDone! Generated 3 architecture diagrams.")
+    print("\nDone! Generated 4 architecture diagrams.")

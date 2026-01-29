@@ -54,7 +54,13 @@ MICA (Materials Intelligence Co-Analyst) is a multi-agent system for critical ma
 └───────┘          └───────────┘        └───────────┘
 ```
 
-### Complete System Architecture
+### High-Level Overview
+
+![MICA Overview](mica_overview.png)
+
+A simplified view showing the main components and data flow.
+
+### Detailed System Architecture
 
 ![MICA Architecture](mica_architecture.png)
 
