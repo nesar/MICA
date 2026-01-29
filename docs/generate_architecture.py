@@ -10,6 +10,36 @@ Usage:
 
 from graphviz import Digraph
 
+# Common style settings
+COMMON_GRAPH_ATTRS = {
+    'fontname': 'Helvetica-Bold',
+    'bgcolor': '#FAFAFA',
+    'dpi': '300',
+    'splines': 'ortho',  # Orthogonal edges everywhere
+}
+
+COMMON_NODE_ATTRS = {
+    'fontname': 'Helvetica',
+    'fontsize': '10',
+}
+
+COMMON_EDGE_ATTRS = {
+    'fontname': 'Helvetica',
+    'fontsize': '9',
+}
+
+# Color palette
+COLORS = {
+    'ui': {'fill': '#E3F2FD', 'border': '#1565C0', 'node': '#42A5F5'},
+    'backend': {'fill': '#E8F5E9', 'border': '#2E7D32', 'node': '#66BB6A'},
+    'orchestrator': {'fill': '#FFF8E1', 'border': '#F9A825', 'node': '#FFCA28'},
+    'hitl': {'fill': '#FF7043', 'border': '#E64A19'},
+    'tools': {'fill': '#F3E5F5', 'border': '#7B1FA2', 'node': '#AB47BC'},
+    'llm': {'fill': '#FFEBEE', 'border': '#C62828', 'node': '#EF5350'},
+    'storage': {'fill': '#ECEFF1', 'border': '#546E7A', 'node': '#78909C'},
+    'output': {'fill': '#FFF9C4', 'border': '#F57F17'},
+}
+
 
 def mica_overview():
     """
@@ -18,131 +48,102 @@ def mica_overview():
     """
     dot = Digraph('MICA_Overview')
     dot.attr(rankdir='TB',
-             fontsize='24',
-             fontname='Helvetica-Bold',
+             fontsize='16',
              labelloc='t',
-             label='MICA: Materials Intelligence Co-Analyst\nHigh-Level Overview',
-             bgcolor='white',
-             pad='0.5',
-             nodesep='0.8',
-             ranksep='1.0',
-             dpi='300')
+             label='MICA: High-Level Overview',
+             pad='0.2',
+             nodesep='0.3',
+             ranksep='0.4',
+             margin='0.1',
+             **COMMON_GRAPH_ATTRS)
 
-    dot.node_attr.update(fontname='Helvetica', fontsize='14')
-    dot.edge_attr.update(fontname='Helvetica', fontsize='11')
+    dot.node_attr.update(**COMMON_NODE_ATTRS)
+    dot.edge_attr.update(**COMMON_EDGE_ATTRS)
 
     # User
     dot.node('user', 'User',
-             shape='ellipse',
-             style='filled',
-             fillcolor='#E3F2FD',
-             color='#1565C0',
-             fontcolor='#1565C0',
-             fontsize='16',
-             penwidth='3')
+             shape='ellipse', style='filled',
+             fillcolor=COLORS['ui']['fill'],
+             color=COLORS['ui']['border'],
+             fontcolor=COLORS['ui']['border'],
+             fontsize='12', penwidth='2')
 
     # Chat Interface
-    dot.node('chat', 'Chat Interface\n(Open WebUI)',
-             shape='box',
-             style='rounded,filled',
-             fillcolor='#42A5F5',
-             fontcolor='white',
-             fontsize='14',
-             penwidth='0',
-             width='2.5',
-             height='0.8')
+    dot.node('chat', 'Chat Interface',
+             shape='box', style='rounded,filled',
+             fillcolor=COLORS['ui']['node'],
+             fontcolor='white', penwidth='0')
 
-    # MICA Core - the main box
+    # MICA Core cluster
     with dot.subgraph(name='cluster_core') as core:
         core.attr(label='MICA Core',
                   style='rounded,filled',
-                  fillcolor='#E8F5E9',
-                  color='#2E7D32',
-                  penwidth='3',
-                  fontsize='16',
+                  fillcolor=COLORS['backend']['fill'],
+                  color=COLORS['backend']['border'],
+                  penwidth='2', fontsize='11',
                   fontname='Helvetica-Bold',
-                  margin='20')
+                  margin='8')
 
         core.node('orchestrator', 'LangGraph\nOrchestrator',
-                  shape='box',
-                  style='rounded,filled',
-                  fillcolor='#FFCA28',
-                  fontcolor='#424242',
-                  fontsize='14',
-                  penwidth='0',
-                  width='2',
-                  height='0.8')
+                  shape='box', style='rounded,filled',
+                  fillcolor=COLORS['orchestrator']['node'],
+                  fontcolor='#424242', penwidth='0')
 
-        core.node('hitl', 'Human-in-the-Loop\nApproval',
-                  shape='diamond',
-                  style='filled',
-                  fillcolor='#FF7043',
-                  fontcolor='white',
-                  fontsize='12',
-                  penwidth='0',
-                  width='2',
-                  height='1.2')
+        core.node('hitl', 'Human-in-Loop',
+                  shape='diamond', style='filled',
+                  fillcolor=COLORS['hitl']['fill'],
+                  fontcolor='white', penwidth='0',
+                  width='1.2', height='0.8')
 
-    # External Services row
-    dot.node('llm', 'LLM Providers\n(Claude, GPT, Gemini)',
-             shape='box',
-             style='rounded,filled',
-             fillcolor='#EF5350',
-             fontcolor='white',
-             fontsize='12',
-             penwidth='0',
-             width='2.5',
-             height='0.8')
+    # External services - vertical stack
+    with dot.subgraph(name='cluster_services') as svc:
+        svc.attr(label='External Services',
+                 style='rounded,filled',
+                 fillcolor='#FAFAFA',
+                 color='#9E9E9E',
+                 penwidth='1', fontsize='10',
+                 fontname='Helvetica-Bold',
+                 margin='8')
 
-    dot.node('tools', 'MCP Tools\n(Search, PDF, Code, Reports)',
-             shape='box',
-             style='rounded,filled',
-             fillcolor='#AB47BC',
-             fontcolor='white',
-             fontsize='12',
-             penwidth='0',
-             width='3',
-             height='0.8')
+        svc.node('llm', 'LLM Providers',
+                 shape='box', style='rounded,filled',
+                 fillcolor=COLORS['llm']['node'],
+                 fontcolor='white', penwidth='0')
 
-    dot.node('storage', 'Storage\n(Sessions, ChromaDB)',
-             shape='cylinder',
-             style='filled',
-             fillcolor='#78909C',
-             fontcolor='white',
-             fontsize='12',
-             penwidth='0')
+        svc.node('tools', 'MCP Tools',
+                 shape='box', style='rounded,filled',
+                 fillcolor=COLORS['tools']['node'],
+                 fontcolor='white', penwidth='0')
 
-    # Outputs
-    dot.node('report', 'Analysis Report\n(PDF)',
-             shape='note',
-             style='filled',
-             fillcolor='#FFF9C4',
-             fontcolor='#F57F17',
-             fontsize='12',
-             penwidth='2',
-             color='#F57F17')
-
-    # Main flow - clean vertical layout
-    dot.edge('user', 'chat', label='Query', color='#1565C0', penwidth='2', arrowhead='vee')
-    dot.edge('chat', 'orchestrator', label='Streaming', color='#2E7D32', penwidth='2', arrowhead='vee')
-    dot.edge('orchestrator', 'hitl', color='#F9A825', penwidth='2', arrowhead='vee')
-    dot.edge('hitl', 'orchestrator', label='Feedback', color='#FF7043', penwidth='1.5', style='dashed', arrowhead='vee')
-
-    # Side connections - use constraint=false for horizontal
-    dot.edge('orchestrator', 'llm', color='#C62828', penwidth='1.5', style='dashed', constraint='false')
-    dot.edge('orchestrator', 'tools', color='#7B1FA2', penwidth='2', arrowhead='vee')
-    dot.edge('orchestrator', 'storage', color='#546E7A', penwidth='1.5', style='dashed')
+        svc.node('storage', 'Storage',
+                 shape='cylinder', style='filled',
+                 fillcolor=COLORS['storage']['node'],
+                 fontcolor='white', penwidth='0')
 
     # Output
-    dot.edge('tools', 'report', color='#F57F17', penwidth='2', arrowhead='vee')
-    dot.edge('report', 'user', label='Results', color='#F57F17', penwidth='2', arrowhead='vee', constraint='false')
+    dot.node('report', 'PDF Report',
+             shape='note', style='filled',
+             fillcolor=COLORS['output']['fill'],
+             fontcolor=COLORS['output']['border'],
+             penwidth='1', color=COLORS['output']['border'])
 
-    # Force layout
-    with dot.subgraph() as s:
-        s.attr(rank='same')
-        s.node('llm')
-        s.node('tools')
-        s.node('storage')
+    # Edges - main flow
+    dot.edge('user', 'chat', color=COLORS['ui']['border'], penwidth='1.5')
+    dot.edge('chat', 'orchestrator', color=COLORS['backend']['border'], penwidth='1.5')
+    dot.edge('orchestrator', 'hitl', color=COLORS['orchestrator']['border'], penwidth='1.5')
+
+    # Core to services
+    dot.edge('orchestrator', 'llm', color=COLORS['llm']['border'], penwidth='1', style='dashed')
+    dot.edge('orchestrator', 'tools', color=COLORS['tools']['border'], penwidth='1.5')
+    dot.edge('orchestrator', 'storage', color=COLORS['storage']['border'], penwidth='1', style='dashed')
+
+    # Vertical chain in services
+    dot.edge('llm', 'tools', style='invis')
+    dot.edge('tools', 'storage', style='invis')
+
+    # Output
+    dot.edge('tools', 'report', color=COLORS['output']['border'], penwidth='1.5')
+    dot.edge('report', 'user', color=COLORS['output']['border'], penwidth='1.5', style='dashed')
 
     return dot
 
@@ -154,171 +155,168 @@ def mica_architecture():
     """
     dot = Digraph('MICA_Architecture')
     dot.attr(rankdir='TB',
-             fontsize='20',
-             fontname='Helvetica-Bold',
+             fontsize='14',
              labelloc='t',
              label='MICA: Detailed Architecture',
-             bgcolor='#FAFAFA',
-             pad='0.4',
-             nodesep='0.5',
-             ranksep='0.6',
-             dpi='300',
-             splines='ortho')  # Orthogonal edges for cleaner lines
+             pad='0.2',
+             nodesep='0.25',
+             ranksep='0.35',
+             margin='0.1',
+             **COMMON_GRAPH_ATTRS)
 
-    dot.node_attr.update(fontname='Helvetica', fontsize='11')
-    dot.edge_attr.update(fontname='Helvetica', fontsize='9')
+    dot.node_attr.update(**COMMON_NODE_ATTRS)
+    dot.edge_attr.update(**COMMON_EDGE_ATTRS)
 
     # User Interface Layer
     with dot.subgraph(name='cluster_ui') as ui:
         ui.attr(label='User Interface',
                 style='rounded,filled',
-                fillcolor='#E3F2FD',
-                color='#1565C0',
-                penwidth='2',
-                fontsize='13',
-                fontname='Helvetica-Bold')
+                fillcolor=COLORS['ui']['fill'],
+                color=COLORS['ui']['border'],
+                penwidth='2', fontsize='10',
+                fontname='Helvetica-Bold',
+                margin='8')
         ui.node('webui', 'Open WebUI',
-                shape='box',
-                style='rounded,filled',
-                fillcolor='#42A5F5',
-                fontcolor='white',
-                penwidth='0')
-        ui.node('pipelines', 'Pipelines Server',
-                shape='box',
-                style='rounded,filled',
+                shape='box', style='rounded,filled',
+                fillcolor=COLORS['ui']['node'],
+                fontcolor='white', penwidth='0')
+        ui.node('pipelines', 'Pipelines',
+                shape='box', style='rounded,filled',
                 fillcolor='#64B5F6',
-                fontcolor='white',
-                penwidth='0')
+                fontcolor='white', penwidth='0')
 
     # API Layer
-    dot.node('api', 'FastAPI Backend',
-             shape='box',
-             style='rounded,filled',
-             fillcolor='#66BB6A',
-             fontcolor='white',
-             penwidth='0')
+    dot.node('api', 'FastAPI',
+             shape='box', style='rounded,filled',
+             fillcolor=COLORS['backend']['node'],
+             fontcolor='white', penwidth='0')
 
     # LangGraph Orchestrator
     with dot.subgraph(name='cluster_orchestrator') as orch:
         orch.attr(label='LangGraph Orchestrator',
                   style='rounded,filled',
-                  fillcolor='#FFF8E1',
-                  color='#F9A825',
-                  penwidth='2',
-                  fontsize='13',
-                  fontname='Helvetica-Bold')
+                  fillcolor=COLORS['orchestrator']['fill'],
+                  color=COLORS['orchestrator']['border'],
+                  penwidth='2', fontsize='10',
+                  fontname='Helvetica-Bold',
+                  margin='8')
 
-        # Workflow nodes in a row
         orch.node('research', 'Research',
-                  shape='box', style='rounded,filled', fillcolor='#FFCA28',
+                  shape='box', style='rounded,filled',
+                  fillcolor=COLORS['orchestrator']['node'],
                   fontcolor='#424242', penwidth='0')
         orch.node('plan', 'Plan',
-                  shape='box', style='rounded,filled', fillcolor='#FFCA28',
+                  shape='box', style='rounded,filled',
+                  fillcolor=COLORS['orchestrator']['node'],
                   fontcolor='#424242', penwidth='0')
         orch.node('approval', 'Approval',
-                  shape='diamond', style='filled', fillcolor='#FF7043',
+                  shape='diamond', style='filled',
+                  fillcolor=COLORS['hitl']['fill'],
                   fontcolor='white', penwidth='0')
         orch.node('execute', 'Execute',
-                  shape='box', style='rounded,filled', fillcolor='#FFCA28',
+                  shape='box', style='rounded,filled',
+                  fillcolor=COLORS['orchestrator']['node'],
                   fontcolor='#424242', penwidth='0')
         orch.node('summary', 'Summary',
-                  shape='box', style='rounded,filled', fillcolor='#FFCA28',
+                  shape='box', style='rounded,filled',
+                  fillcolor=COLORS['orchestrator']['node'],
                   fontcolor='#424242', penwidth='0')
 
-    # MCP Tools - Vertical layout in its own cluster
+    # MCP Tools - Vertical
     with dot.subgraph(name='cluster_tools') as tools:
         tools.attr(label='MCP Tools',
                    style='rounded,filled',
-                   fillcolor='#F3E5F5',
-                   color='#7B1FA2',
-                   penwidth='2',
-                   fontsize='13',
+                   fillcolor=COLORS['tools']['fill'],
+                   color=COLORS['tools']['border'],
+                   penwidth='2', fontsize='10',
                    fontname='Helvetica-Bold',
-                   rankdir='TB')
+                   margin='8')
 
-        # Single column of tools
-        tools.node('tool_hub', 'Tool\nDispatcher',
-                   shape='box',
-                   style='rounded,filled',
+        tools.node('tool_hub', 'Dispatcher',
+                   shape='box', style='rounded,filled',
                    fillcolor='#9C27B0',
-                   fontcolor='white',
-                   penwidth='0')
-
+                   fontcolor='white', penwidth='0')
         tools.node('web_search', 'Web Search',
-                   shape='box', style='rounded,filled', fillcolor='#AB47BC',
+                   shape='box', style='rounded,filled',
+                   fillcolor=COLORS['tools']['node'],
                    fontcolor='white', penwidth='0')
         tools.node('pdf_rag', 'PDF RAG',
-                   shape='box', style='rounded,filled', fillcolor='#AB47BC',
+                   shape='box', style='rounded,filled',
+                   fillcolor=COLORS['tools']['node'],
                    fontcolor='white', penwidth='0')
         tools.node('code_agent', 'Code Agent',
-                   shape='box', style='rounded,filled', fillcolor='#AB47BC',
+                   shape='box', style='rounded,filled',
+                   fillcolor=COLORS['tools']['node'],
                    fontcolor='white', penwidth='0')
-        tools.node('doc_gen', 'Doc Generator',
-                   shape='box', style='rounded,filled', fillcolor='#AB47BC',
+        tools.node('doc_gen', 'Doc Gen',
+                   shape='box', style='rounded,filled',
+                   fillcolor=COLORS['tools']['node'],
                    fontcolor='white', penwidth='0')
-        tools.node('excel', 'Excel Handler',
-                   shape='box', style='rounded,filled', fillcolor='#CE93D8',
-                   fontcolor='#4A148C', penwidth='0')
 
-    # LLM Providers
+    # LLM Providers - Vertical
     with dot.subgraph(name='cluster_llm') as llm:
-        llm.attr(label='LLM Providers',
+        llm.attr(label='LLM',
                  style='rounded,filled',
-                 fillcolor='#FFEBEE',
-                 color='#C62828',
-                 penwidth='2',
-                 fontsize='13',
-                 fontname='Helvetica-Bold')
-        llm.node('argo', 'Argo API\n(Claude, GPT)',
-                 shape='ellipse', style='filled', fillcolor='#EF5350',
+                 fillcolor=COLORS['llm']['fill'],
+                 color=COLORS['llm']['border'],
+                 penwidth='2', fontsize='10',
+                 fontname='Helvetica-Bold',
+                 margin='8')
+        llm.node('argo', 'Argo',
+                 shape='ellipse', style='filled',
+                 fillcolor=COLORS['llm']['node'],
                  fontcolor='white', penwidth='0')
-        llm.node('gemini', 'Gemini API',
-                 shape='ellipse', style='filled', fillcolor='#EF5350',
+        llm.node('gemini', 'Gemini',
+                 shape='ellipse', style='filled',
+                 fillcolor=COLORS['llm']['node'],
                  fontcolor='white', penwidth='0')
 
-    # Storage
+    # Storage - Vertical
     with dot.subgraph(name='cluster_storage') as storage:
         storage.attr(label='Storage',
                      style='rounded,filled',
-                     fillcolor='#ECEFF1',
-                     color='#546E7A',
-                     penwidth='2',
-                     fontsize='13',
-                     fontname='Helvetica-Bold')
+                     fillcolor=COLORS['storage']['fill'],
+                     color=COLORS['storage']['border'],
+                     penwidth='2', fontsize='10',
+                     fontname='Helvetica-Bold',
+                     margin='8')
         storage.node('sessions', 'Sessions',
-                     shape='cylinder', style='filled', fillcolor='#78909C',
+                     shape='cylinder', style='filled',
+                     fillcolor=COLORS['storage']['node'],
                      fontcolor='white', penwidth='0')
         storage.node('chroma', 'ChromaDB',
-                     shape='cylinder', style='filled', fillcolor='#78909C',
+                     shape='cylinder', style='filled',
+                     fillcolor=COLORS['storage']['node'],
                      fontcolor='white', penwidth='0')
 
     # Main vertical flow
-    dot.edge('webui', 'pipelines', color='#1565C0', penwidth='2')
-    dot.edge('pipelines', 'api', color='#1565C0', penwidth='2')
-    dot.edge('api', 'research', color='#2E7D32', penwidth='2')
+    dot.edge('webui', 'pipelines', color=COLORS['ui']['border'], penwidth='1.5')
+    dot.edge('pipelines', 'api', color=COLORS['ui']['border'], penwidth='1.5')
+    dot.edge('api', 'research', color=COLORS['backend']['border'], penwidth='1.5')
 
-    # Orchestrator internal flow
-    dot.edge('research', 'plan', color='#F9A825', penwidth='1.5')
-    dot.edge('plan', 'approval', color='#F9A825', penwidth='1.5')
-    dot.edge('approval', 'execute', color='#4CAF50', penwidth='1.5')
-    dot.edge('execute', 'summary', color='#F9A825', penwidth='1.5')
+    # Orchestrator flow
+    dot.edge('research', 'plan', color=COLORS['orchestrator']['border'], penwidth='1')
+    dot.edge('plan', 'approval', color=COLORS['orchestrator']['border'], penwidth='1')
+    dot.edge('approval', 'execute', color='#4CAF50', penwidth='1')
+    dot.edge('execute', 'summary', color=COLORS['orchestrator']['border'], penwidth='1')
 
-    # Single connection from execute to tool hub
-    dot.edge('execute', 'tool_hub', color='#7B1FA2', penwidth='2')
+    # Execute to tools
+    dot.edge('execute', 'tool_hub', color=COLORS['tools']['border'], penwidth='1.5')
+    dot.edge('tool_hub', 'web_search', color=COLORS['tools']['border'], penwidth='1')
+    dot.edge('tool_hub', 'pdf_rag', color=COLORS['tools']['border'], penwidth='1')
+    dot.edge('tool_hub', 'code_agent', color=COLORS['tools']['border'], penwidth='1')
+    dot.edge('tool_hub', 'doc_gen', color=COLORS['tools']['border'], penwidth='1')
 
-    # Tool hub to individual tools
-    dot.edge('tool_hub', 'web_search', color='#7B1FA2', penwidth='1')
-    dot.edge('tool_hub', 'pdf_rag', color='#7B1FA2', penwidth='1')
-    dot.edge('tool_hub', 'code_agent', color='#7B1FA2', penwidth='1')
-    dot.edge('tool_hub', 'doc_gen', color='#7B1FA2', penwidth='1')
-    dot.edge('tool_hub', 'excel', color='#7B1FA2', penwidth='1')
-
-    # LLM connection - single arrow from orchestrator cluster
-    dot.edge('research', 'argo', style='dashed', color='#C62828', penwidth='1.5', constraint='false')
+    # LLM connection
+    dot.edge('research', 'argo', style='dashed', color=COLORS['llm']['border'], penwidth='1')
 
     # Storage connections
-    dot.edge('api', 'sessions', style='dashed', color='#546E7A', penwidth='1')
-    dot.edge('pdf_rag', 'chroma', style='dashed', color='#546E7A', penwidth='1')
+    dot.edge('api', 'sessions', style='dashed', color=COLORS['storage']['border'], penwidth='1')
+    dot.edge('pdf_rag', 'chroma', style='dashed', color=COLORS['storage']['border'], penwidth='1')
+
+    # Invisible edges for layout
+    dot.edge('argo', 'gemini', style='invis')
+    dot.edge('sessions', 'chroma', style='invis')
 
     return dot
 
@@ -326,225 +324,167 @@ def mica_architecture():
 def mica_workflow():
     """
     MICA workflow state machine diagram.
-    Shows the LangGraph state transitions.
     """
     dot = Digraph('MICA_Workflow')
     dot.attr(rankdir='LR',
-             fontsize='18',
-             fontname='Helvetica-Bold',
+             fontsize='14',
              labelloc='t',
              label='MICA Workflow State Machine',
-             bgcolor='#FAFAFA',
-             pad='0.3',
-             nodesep='0.6',
-             ranksep='0.8',
-             dpi='300')
+             pad='0.2',
+             nodesep='0.4',
+             ranksep='0.5',
+             margin='0.1',
+             **COMMON_GRAPH_ATTRS)
 
-    dot.node_attr.update(fontname='Helvetica', fontsize='11')
-    dot.edge_attr.update(fontname='Helvetica', fontsize='10')
+    dot.node_attr.update(**COMMON_NODE_ATTRS)
+    dot.edge_attr.update(**COMMON_EDGE_ATTRS)
 
     # States
     dot.node('initial', 'INITIAL',
-             shape='circle',
-             style='filled',
-             fillcolor='#90CAF9',
-             fontcolor='#1565C0',
-             penwidth='2',
-             color='#1565C0')
+             shape='circle', style='filled',
+             fillcolor='#90CAF9', fontcolor=COLORS['ui']['border'],
+             penwidth='2', color=COLORS['ui']['border'])
 
-    dot.node('researching', 'RESEARCHING',
-             shape='box',
-             style='rounded,filled',
-             fillcolor='#A5D6A7',
-             fontcolor='#2E7D32',
-             penwidth='0')
+    dot.node('researching', 'RESEARCH',
+             shape='box', style='rounded,filled',
+             fillcolor='#A5D6A7', fontcolor='#2E7D32', penwidth='0')
 
-    dot.node('plan_proposed', 'PLAN\nPROPOSED',
-             shape='box',
-             style='rounded,filled',
-             fillcolor='#FFE082',
-             fontcolor='#F57F17',
-             penwidth='0')
+    dot.node('plan_proposed', 'PLAN',
+             shape='box', style='rounded,filled',
+             fillcolor='#FFE082', fontcolor='#F57F17', penwidth='0')
 
-    dot.node('awaiting_approval', 'AWAITING\nAPPROVAL',
-             shape='diamond',
-             style='filled',
-             fillcolor='#FFAB91',
-             fontcolor='#BF360C',
-             penwidth='0')
+    dot.node('awaiting_approval', 'APPROVAL',
+             shape='diamond', style='filled',
+             fillcolor='#FFAB91', fontcolor='#BF360C', penwidth='0')
 
-    dot.node('executing', 'EXECUTING',
-             shape='box',
-             style='rounded,filled',
-             fillcolor='#CE93D8',
-             fontcolor='#6A1B9A',
-             penwidth='0')
+    dot.node('executing', 'EXECUTE',
+             shape='box', style='rounded,filled',
+             fillcolor='#CE93D8', fontcolor='#6A1B9A', penwidth='0')
 
-    dot.node('completed', 'COMPLETED',
-             shape='box',
-             style='rounded,filled',
-             fillcolor='#80CBC4',
-             fontcolor='#00695C',
-             penwidth='0')
+    dot.node('completed', 'COMPLETE',
+             shape='box', style='rounded,filled',
+             fillcolor='#80CBC4', fontcolor='#00695C', penwidth='0')
 
-    dot.node('awaiting_feedback', 'AWAITING\nFEEDBACK',
-             shape='diamond',
-             style='filled',
-             fillcolor='#FFAB91',
-             fontcolor='#BF360C',
-             penwidth='0')
-
-    dot.node('failed', 'FAILED',
-             shape='box',
-             style='rounded,filled',
-             fillcolor='#EF9A9A',
-             fontcolor='#B71C1C',
-             penwidth='0')
+    dot.node('feedback', 'FEEDBACK',
+             shape='diamond', style='filled',
+             fillcolor='#FFAB91', fontcolor='#BF360C', penwidth='0')
 
     dot.node('end', 'END',
-             shape='doublecircle',
-             style='filled',
-             fillcolor='#78909C',
-             fontcolor='white',
-             penwidth='2',
-             color='#455A64')
+             shape='doublecircle', style='filled',
+             fillcolor='#78909C', fontcolor='white',
+             penwidth='2', color='#455A64')
 
-    # Transitions
-    dot.edge('initial', 'researching', label='query', color='#2E7D32', penwidth='2')
-    dot.edge('researching', 'plan_proposed', label='complex', color='#F57F17', penwidth='2')
-    dot.edge('researching', 'awaiting_feedback', label='simple', color='#00695C', penwidth='2')
-    dot.edge('plan_proposed', 'awaiting_approval', color='#BF360C', penwidth='2')
-    dot.edge('awaiting_approval', 'executing', label='approved', color='#4CAF50', penwidth='2')
-    dot.edge('awaiting_approval', 'plan_proposed', label='rejected', color='#F44336', penwidth='1.5', style='dashed')
-    dot.edge('executing', 'completed', color='#00695C', penwidth='2')
-    dot.edge('completed', 'awaiting_feedback', color='#BF360C', penwidth='2')
-    dot.edge('awaiting_feedback', 'researching', label='follow-up', color='#2196F3', penwidth='1.5', style='dashed')
-    dot.edge('awaiting_feedback', 'end', label='done', color='#455A64', penwidth='2')
-
-    # Error paths
-    dot.edge('researching', 'failed', style='dashed', color='#B71C1C', penwidth='1')
-    dot.edge('executing', 'failed', style='dashed', color='#B71C1C', penwidth='1')
-    dot.edge('failed', 'end', color='#B71C1C', penwidth='1.5')
+    # Transitions (use xlabel for ortho compatibility)
+    dot.edge('initial', 'researching', xlabel='query', color='#2E7D32', penwidth='1.5')
+    dot.edge('researching', 'plan_proposed', color='#F57F17', penwidth='1.5')
+    dot.edge('plan_proposed', 'awaiting_approval', color='#BF360C', penwidth='1.5')
+    dot.edge('awaiting_approval', 'executing', xlabel='ok', color='#4CAF50', penwidth='1.5')
+    dot.edge('awaiting_approval', 'plan_proposed', xlabel='reject', color='#F44336', penwidth='1', style='dashed')
+    dot.edge('executing', 'completed', color='#00695C', penwidth='1.5')
+    dot.edge('completed', 'feedback', color='#BF360C', penwidth='1.5')
+    dot.edge('feedback', 'researching', xlabel='more', color='#2196F3', penwidth='1', style='dashed')
+    dot.edge('feedback', 'end', xlabel='done', color='#455A64', penwidth='1.5')
 
     return dot
 
 
 def mica_tools_detail():
     """
-    Detailed view of MICA MCP tools and their capabilities.
+    Detailed view of MICA MCP tools.
     """
     dot = Digraph('MICA_Tools')
     dot.attr(rankdir='TB',
-             fontsize='18',
-             fontname='Helvetica-Bold',
+             fontsize='14',
              labelloc='t',
              label='MICA MCP Tools',
-             bgcolor='#FAFAFA',
-             pad='0.3',
-             nodesep='0.3',
-             ranksep='0.4',
-             dpi='300')
+             pad='0.2',
+             nodesep='0.2',
+             ranksep='0.3',
+             margin='0.1',
+             **COMMON_GRAPH_ATTRS)
 
-    dot.node_attr.update(fontname='Helvetica', fontsize='10')
-    dot.edge_attr.update(fontname='Helvetica', fontsize='9')
+    dot.node_attr.update(**COMMON_NODE_ATTRS)
+    dot.edge_attr.update(**COMMON_EDGE_ATTRS)
 
-    # Web Search Tool
-    with dot.subgraph(name='cluster_websearch') as ws:
+    # Web Search
+    with dot.subgraph(name='cluster_ws') as ws:
         ws.attr(label='web_search',
                 style='rounded,filled',
-                fillcolor='#E3F2FD',
-                color='#1565C0',
-                penwidth='2',
-                fontsize='12',
-                fontname='Helvetica-Bold')
-        ws.node('ws_main', 'Federal Document Search',
-                shape='box', style='rounded,filled', fillcolor='#42A5F5', fontcolor='white', penwidth='0')
-        ws.node('ws_duck', 'DuckDuckGo', shape='ellipse', style='filled', fillcolor='#90CAF9', penwidth='0')
-        ws.node('ws_tavily', 'Tavily', shape='ellipse', style='filled', fillcolor='#90CAF9', penwidth='0')
-        ws.node('ws_serp', 'SerpAPI', shape='ellipse', style='filled', fillcolor='#90CAF9', penwidth='0')
+                fillcolor=COLORS['ui']['fill'],
+                color=COLORS['ui']['border'],
+                penwidth='2', fontsize='10',
+                fontname='Helvetica-Bold', margin='6')
+        ws.node('ws_main', 'Federal Search',
+                shape='box', style='rounded,filled',
+                fillcolor=COLORS['ui']['node'], fontcolor='white', penwidth='0')
+        ws.node('ws_duck', 'DuckDuckGo',
+                shape='ellipse', style='filled', fillcolor='#90CAF9', penwidth='0')
+        ws.node('ws_tavily', 'Tavily',
+                shape='ellipse', style='filled', fillcolor='#90CAF9', penwidth='0')
 
-    # PDF RAG Tool
-    with dot.subgraph(name='cluster_pdfrag') as pr:
+    # PDF RAG
+    with dot.subgraph(name='cluster_pdf') as pr:
         pr.attr(label='pdf_rag',
                 style='rounded,filled',
-                fillcolor='#E8F5E9',
-                color='#2E7D32',
-                penwidth='2',
-                fontsize='12',
-                fontname='Helvetica-Bold')
-        pr.node('pr_main', 'Document Analysis',
-                shape='box', style='rounded,filled', fillcolor='#66BB6A', fontcolor='white', penwidth='0')
-        pr.node('pr_parse', 'PDF Parsing', shape='ellipse', style='filled', fillcolor='#A5D6A7', penwidth='0')
-        pr.node('pr_chunk', 'Chunking', shape='ellipse', style='filled', fillcolor='#A5D6A7', penwidth='0')
-        pr.node('pr_embed', 'Embeddings', shape='ellipse', style='filled', fillcolor='#A5D6A7', penwidth='0')
-        pr.node('pr_search', 'Semantic Search', shape='ellipse', style='filled', fillcolor='#A5D6A7', penwidth='0')
+                fillcolor=COLORS['backend']['fill'],
+                color=COLORS['backend']['border'],
+                penwidth='2', fontsize='10',
+                fontname='Helvetica-Bold', margin='6')
+        pr.node('pr_main', 'Doc Analysis',
+                shape='box', style='rounded,filled',
+                fillcolor=COLORS['backend']['node'], fontcolor='white', penwidth='0')
+        pr.node('pr_parse', 'Parse',
+                shape='ellipse', style='filled', fillcolor='#A5D6A7', penwidth='0')
+        pr.node('pr_embed', 'Embed',
+                shape='ellipse', style='filled', fillcolor='#A5D6A7', penwidth='0')
+        pr.node('pr_search', 'Search',
+                shape='ellipse', style='filled', fillcolor='#A5D6A7', penwidth='0')
 
-    # Code Agent Tool
+    # Code Agent
     with dot.subgraph(name='cluster_code') as ca:
         ca.attr(label='code_agent',
                 style='rounded,filled',
                 fillcolor='#FFF3E0',
                 color='#E65100',
-                penwidth='2',
-                fontsize='12',
-                fontname='Helvetica-Bold')
-        ca.node('ca_main', 'Python Execution',
-                shape='box', style='rounded,filled', fillcolor='#FF9800', fontcolor='white', penwidth='0')
-        ca.node('ca_analysis', 'Data Analysis', shape='ellipse', style='filled', fillcolor='#FFCC80', penwidth='0')
-        ca.node('ca_viz', 'Visualization', shape='ellipse', style='filled', fillcolor='#FFCC80', penwidth='0')
-        ca.node('ca_stats', 'Statistics', shape='ellipse', style='filled', fillcolor='#FFCC80', penwidth='0')
+                penwidth='2', fontsize='10',
+                fontname='Helvetica-Bold', margin='6')
+        ca.node('ca_main', 'Python Exec',
+                shape='box', style='rounded,filled',
+                fillcolor='#FF9800', fontcolor='white', penwidth='0')
+        ca.node('ca_analysis', 'Analysis',
+                shape='ellipse', style='filled', fillcolor='#FFCC80', penwidth='0')
+        ca.node('ca_viz', 'Plots',
+                shape='ellipse', style='filled', fillcolor='#FFCC80', penwidth='0')
 
-    # Document Generator Tool
-    with dot.subgraph(name='cluster_docgen') as dg:
+    # Doc Generator
+    with dot.subgraph(name='cluster_doc') as dg:
         dg.attr(label='doc_generator',
                 style='rounded,filled',
-                fillcolor='#F3E5F5',
-                color='#7B1FA2',
-                penwidth='2',
-                fontsize='12',
-                fontname='Helvetica-Bold')
-        dg.node('dg_main', 'PDF Report Generation',
-                shape='box', style='rounded,filled', fillcolor='#AB47BC', fontcolor='white', penwidth='0')
-        dg.node('dg_template', 'Templates', shape='ellipse', style='filled', fillcolor='#CE93D8', penwidth='0')
-        dg.node('dg_style', 'Professional Styling', shape='ellipse', style='filled', fillcolor='#CE93D8', penwidth='0')
-        dg.node('dg_refs', 'References', shape='ellipse', style='filled', fillcolor='#CE93D8', penwidth='0')
+                fillcolor=COLORS['tools']['fill'],
+                color=COLORS['tools']['border'],
+                penwidth='2', fontsize='10',
+                fontname='Helvetica-Bold', margin='6')
+        dg.node('dg_main', 'PDF Reports',
+                shape='box', style='rounded,filled',
+                fillcolor=COLORS['tools']['node'], fontcolor='white', penwidth='0')
+        dg.node('dg_style', 'Styling',
+                shape='ellipse', style='filled', fillcolor='#CE93D8', penwidth='0')
+        dg.node('dg_refs', 'References',
+                shape='ellipse', style='filled', fillcolor='#CE93D8', penwidth='0')
 
-    # Excel Handler Tool
-    with dot.subgraph(name='cluster_excel') as ex:
-        ex.attr(label='excel_handler',
-                style='rounded,filled',
-                fillcolor='#ECEFF1',
-                color='#455A64',
-                penwidth='2',
-                fontsize='12',
-                fontname='Helvetica-Bold')
-        ex.node('ex_main', 'Spreadsheet Analysis',
-                shape='box', style='rounded,filled', fillcolor='#607D8B', fontcolor='white', penwidth='0')
-        ex.node('ex_read', 'Read Excel/CSV', shape='ellipse', style='filled', fillcolor='#B0BEC5', penwidth='0')
-        ex.node('ex_filter', 'Filter/Query', shape='ellipse', style='filled', fillcolor='#B0BEC5', penwidth='0')
-        ex.node('ex_transform', 'Transform', shape='ellipse', style='filled', fillcolor='#B0BEC5', penwidth='0')
+    # Connections
+    dot.edge('ws_main', 'ws_duck', color=COLORS['ui']['border'], penwidth='1')
+    dot.edge('ws_main', 'ws_tavily', color=COLORS['ui']['border'], penwidth='1')
 
-    # Internal connections
-    dot.edge('ws_main', 'ws_duck', penwidth='1', color='#1565C0')
-    dot.edge('ws_main', 'ws_tavily', penwidth='1', color='#1565C0')
-    dot.edge('ws_main', 'ws_serp', penwidth='1', color='#1565C0')
+    dot.edge('pr_main', 'pr_parse', color=COLORS['backend']['border'], penwidth='1')
+    dot.edge('pr_parse', 'pr_embed', color=COLORS['backend']['border'], penwidth='1')
+    dot.edge('pr_embed', 'pr_search', color=COLORS['backend']['border'], penwidth='1')
 
-    dot.edge('pr_main', 'pr_parse', penwidth='1', color='#2E7D32')
-    dot.edge('pr_parse', 'pr_chunk', penwidth='1', color='#2E7D32')
-    dot.edge('pr_chunk', 'pr_embed', penwidth='1', color='#2E7D32')
-    dot.edge('pr_embed', 'pr_search', penwidth='1', color='#2E7D32')
+    dot.edge('ca_main', 'ca_analysis', color='#E65100', penwidth='1')
+    dot.edge('ca_main', 'ca_viz', color='#E65100', penwidth='1')
 
-    dot.edge('ca_main', 'ca_analysis', penwidth='1', color='#E65100')
-    dot.edge('ca_main', 'ca_viz', penwidth='1', color='#E65100')
-    dot.edge('ca_main', 'ca_stats', penwidth='1', color='#E65100')
-
-    dot.edge('dg_main', 'dg_template', penwidth='1', color='#7B1FA2')
-    dot.edge('dg_main', 'dg_style', penwidth='1', color='#7B1FA2')
-    dot.edge('dg_main', 'dg_refs', penwidth='1', color='#7B1FA2')
-
-    dot.edge('ex_main', 'ex_read', penwidth='1', color='#455A64')
-    dot.edge('ex_main', 'ex_filter', penwidth='1', color='#455A64')
-    dot.edge('ex_main', 'ex_transform', penwidth='1', color='#455A64')
+    dot.edge('dg_main', 'dg_style', color=COLORS['tools']['border'], penwidth='1')
+    dot.edge('dg_main', 'dg_refs', color=COLORS['tools']['border'], penwidth='1')
 
     return dot
 
@@ -552,22 +492,18 @@ def mica_tools_detail():
 if __name__ == '__main__':
     print("Generating MICA architecture diagrams...")
 
-    # High-level overview (new)
     d0 = mica_overview()
     d0.render('mica_overview', format='png', cleanup=True)
     print("  Generated mica_overview.png")
 
-    # Detailed architecture (cleaned up)
     d1 = mica_architecture()
     d1.render('mica_architecture', format='png', cleanup=True)
     print("  Generated mica_architecture.png")
 
-    # Workflow state machine
     d2 = mica_workflow()
     d2.render('mica_workflow', format='png', cleanup=True)
     print("  Generated mica_workflow.png")
 
-    # Tools detail
     d3 = mica_tools_detail()
     d3.render('mica_tools', format='png', cleanup=True)
     print("  Generated mica_tools.png")
