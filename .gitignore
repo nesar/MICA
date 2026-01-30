@@ -36,6 +36,12 @@ backend/chroma_db/
 chroma_db/
 *.sqlite3
 
+# Local database - keep directories but ignore contents
+database/pdf/*
+database/data/*
+!database/pdf/.gitkeep
+!database/data/.gitkeep
+
 # Build artifacts
 *.egg-info/
 dist/

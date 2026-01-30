@@ -27,6 +27,8 @@ from ..mcp_tools import (
     CodeAgentTool,
     SimulationTool,
     DocumentGeneratorTool,
+    LocalDocumentSearchTool,
+    LocalDataAnalysisTool,
     tool_registry,
 )
 from .state import (
@@ -120,11 +122,16 @@ Create a step-by-step plan with specific actions. For each step, specify:
 
 Available tools:
 - web_search: Search for information from federal documents and web sources
-- pdf_rag: Search and extract information from PDF documents
-- excel_handler: Read and analyze Excel data files
+- local_doc_search: Search local PDF documents in the MICA database (USGS reports, DOE documents, etc.)
+- local_data_analysis: Analyze local Excel/CSV data files (production data, trade statistics, etc.)
+- pdf_rag: Search and extract information from specific PDF documents (provide path)
+- excel_handler: Read and analyze specific Excel data files (provide path)
 - code_agent: Run statistical analysis and create visualizations
 - simulation: Run supply chain simulations (GCMat, RELOG)
 - doc_generator: Generate PDF reports
+
+IMPORTANT: Prefer using local_doc_search and local_data_analysis tools when analyzing supply chain data,
+as these provide access to curated USGS, DOE, and other authoritative data sources in the local database.
 
 Format your plan as a numbered list of specific, actionable steps.
 """
@@ -525,6 +532,8 @@ def execute_plan(state: AgentState) -> AgentState:
         "code_agent": CodeAgentTool(session_logger=session),
         "simulation": SimulationTool(session_logger=session),
         "doc_generator": DocumentGeneratorTool(session_logger=session),
+        "local_doc_search": LocalDocumentSearchTool(session_logger=session),
+        "local_data_analysis": LocalDataAnalysisTool(session_logger=session),
     }
 
     for step in state["plan"]:

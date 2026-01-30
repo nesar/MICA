@@ -7,6 +7,8 @@ from .excel_handler import ExcelHandlerTool, ExcelAnalysisTool
 from .code_agent import CodeAgentTool, StatisticsAgentTool
 from .simulation import SimulationTool, ScenarioComparisonTool
 from .doc_generator import DocumentGeneratorTool, ReportTemplateTool
+from .local_document_search import LocalDocumentSearchTool
+from .local_data_analysis import LocalDataAnalysisTool
 
 __all__ = [
     # Base
@@ -33,4 +35,7 @@ __all__ = [
     # Documentation
     "DocumentGeneratorTool",
     "ReportTemplateTool",
+    # Local Database
+    "LocalDocumentSearchTool",
+    "LocalDataAnalysisTool",
 ]

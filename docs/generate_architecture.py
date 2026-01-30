@@ -115,6 +115,11 @@ def mica_overview():
                  fillcolor=COLORS['tools']['node'],
                  fontcolor='white', penwidth='0')
 
+        svc.node('local_db', 'Local Database',
+                 shape='folder', style='filled',
+                 fillcolor='#7E57C2',
+                 fontcolor='white', penwidth='0')
+
         svc.node('storage', 'Storage',
                  shape='cylinder', style='filled',
                  fillcolor=COLORS['storage']['node'],
@@ -139,7 +144,11 @@ def mica_overview():
 
     # Vertical chain in services
     dot.edge('llm', 'tools', style='invis')
-    dot.edge('tools', 'storage', style='invis')
+    dot.edge('tools', 'local_db', style='invis')
+    dot.edge('local_db', 'storage', style='invis')
+
+    # Local database connection
+    dot.edge('tools', 'local_db', color='#512DA8', penwidth='1', style='dashed')
 
     # Output
     dot.edge('tools', 'report', color=COLORS['output']['border'], penwidth='1.5')
@@ -240,6 +249,14 @@ def mica_architecture():
                    shape='box', style='rounded,filled',
                    fillcolor=COLORS['tools']['node'],
                    fontcolor='white', penwidth='0')
+        tools.node('local_doc', 'Local Docs',
+                   shape='box', style='rounded,filled',
+                   fillcolor='#7E57C2',
+                   fontcolor='white', penwidth='0')
+        tools.node('local_data', 'Local Data',
+                   shape='box', style='rounded,filled',
+                   fillcolor='#7E57C2',
+                   fontcolor='white', penwidth='0')
         tools.node('pdf_rag', 'PDF RAG',
                    shape='box', style='rounded,filled',
                    fillcolor=COLORS['tools']['node'],
@@ -288,6 +305,10 @@ def mica_architecture():
                      shape='cylinder', style='filled',
                      fillcolor=COLORS['storage']['node'],
                      fontcolor='white', penwidth='0')
+        storage.node('local_database', 'Local DB',
+                     shape='folder', style='filled',
+                     fillcolor='#7E57C2',
+                     fontcolor='white', penwidth='0')
 
     # Main vertical flow
     dot.edge('webui', 'pipelines', color=COLORS['ui']['border'], penwidth='1.5')
@@ -303,6 +324,8 @@ def mica_architecture():
     # Execute to tools
     dot.edge('execute', 'tool_hub', color=COLORS['tools']['border'], penwidth='1.5')
     dot.edge('tool_hub', 'web_search', color=COLORS['tools']['border'], penwidth='1')
+    dot.edge('tool_hub', 'local_doc', color=COLORS['tools']['border'], penwidth='1')
+    dot.edge('tool_hub', 'local_data', color=COLORS['tools']['border'], penwidth='1')
     dot.edge('tool_hub', 'pdf_rag', color=COLORS['tools']['border'], penwidth='1')
     dot.edge('tool_hub', 'code_agent', color=COLORS['tools']['border'], penwidth='1')
     dot.edge('tool_hub', 'doc_gen', color=COLORS['tools']['border'], penwidth='1')
@@ -314,9 +337,15 @@ def mica_architecture():
     dot.edge('api', 'sessions', style='dashed', color=COLORS['storage']['border'], penwidth='1')
     dot.edge('pdf_rag', 'chroma', style='dashed', color=COLORS['storage']['border'], penwidth='1')
 
+    # Local database connections
+    dot.edge('local_doc', 'local_database', style='dashed', color='#512DA8', penwidth='1')
+    dot.edge('local_data', 'local_database', style='dashed', color='#512DA8', penwidth='1')
+    dot.edge('local_doc', 'chroma', style='dashed', color=COLORS['storage']['border'], penwidth='1')
+
     # Invisible edges for layout
     dot.edge('argo', 'gemini', style='invis')
     dot.edge('sessions', 'chroma', style='invis')
+    dot.edge('chroma', 'local_database', style='invis')
 
     return dot
 
@@ -472,6 +501,38 @@ def mica_tools_detail():
         dg.node('dg_refs', 'References',
                 shape='ellipse', style='filled', fillcolor='#CE93D8', penwidth='0')
 
+    # Local Document Search
+    with dot.subgraph(name='cluster_local_doc') as ld:
+        ld.attr(label='local_doc_search',
+                style='rounded,filled',
+                fillcolor='#EDE7F6',
+                color='#512DA8',
+                penwidth='2', fontsize='10',
+                fontname='Helvetica-Bold', margin='6')
+        ld.node('ld_main', 'Local PDFs',
+                shape='box', style='rounded,filled',
+                fillcolor='#7E57C2', fontcolor='white', penwidth='0')
+        ld.node('ld_index', 'Index',
+                shape='ellipse', style='filled', fillcolor='#B39DDB', penwidth='0')
+        ld.node('ld_search', 'Search',
+                shape='ellipse', style='filled', fillcolor='#B39DDB', penwidth='0')
+
+    # Local Data Analysis
+    with dot.subgraph(name='cluster_local_data') as lda:
+        lda.attr(label='local_data_analysis',
+                 style='rounded,filled',
+                 fillcolor='#E8EAF6',
+                 color='#303F9F',
+                 penwidth='2', fontsize='10',
+                 fontname='Helvetica-Bold', margin='6')
+        lda.node('lda_main', 'Excel/CSV',
+                 shape='box', style='rounded,filled',
+                 fillcolor='#5C6BC0', fontcolor='white', penwidth='0')
+        lda.node('lda_stats', 'Statistics',
+                 shape='ellipse', style='filled', fillcolor='#9FA8DA', penwidth='0')
+        lda.node('lda_viz', 'Visualize',
+                 shape='ellipse', style='filled', fillcolor='#9FA8DA', penwidth='0')
+
     # Connections
     dot.edge('ws_main', 'ws_duck', color=COLORS['ui']['border'], penwidth='1')
     dot.edge('ws_main', 'ws_tavily', color=COLORS['ui']['border'], penwidth='1')
@@ -485,6 +546,12 @@ def mica_tools_detail():
 
     dot.edge('dg_main', 'dg_style', color=COLORS['tools']['border'], penwidth='1')
     dot.edge('dg_main', 'dg_refs', color=COLORS['tools']['border'], penwidth='1')
+
+    dot.edge('ld_main', 'ld_index', color='#512DA8', penwidth='1')
+    dot.edge('ld_index', 'ld_search', color='#512DA8', penwidth='1')
+
+    dot.edge('lda_main', 'lda_stats', color='#303F9F', penwidth='1')
+    dot.edge('lda_main', 'lda_viz', color='#303F9F', penwidth='1')
 
     return dot
 

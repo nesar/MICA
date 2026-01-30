@@ -171,11 +171,59 @@ INITIAL → RESEARCHING → PLAN_PROPOSED → AWAITING_APPROVAL
 | Tool | Purpose | Key Features |
 |------|---------|--------------|
 | `web_search` | Federal document search | DuckDuckGo, Tavily, SerpAPI providers |
-| `pdf_rag` | PDF analysis | ChromaDB for semantic search |
-| `excel_handler` | Spreadsheet analysis | Read/filter/transform Excel/CSV |
+| `local_doc_search` | Local PDF database search | ChromaDB semantic search over local USGS/DOE documents |
+| `local_data_analysis` | Local data file analysis | Excel/CSV analysis, statistics, visualization |
+| `pdf_rag` | PDF analysis | ChromaDB for semantic search on specific PDFs |
+| `excel_handler` | Spreadsheet operations | Read/filter/transform Excel/CSV |
 | `code_agent` | Python execution | Data analysis, visualization |
 | `doc_generator` | PDF reports | Professional formatting, references |
 | `simulation` | Supply chain models | Placeholder for GCMat, RELOG |
+
+#### Local Database Tools
+
+MICA includes tools for analyzing curated local documents and data files:
+
+**`local_doc_search`** - Searches the local PDF database
+- Indexes all PDFs in `database/pdf/` directory
+- Uses ChromaDB for semantic similarity search
+- Auto-indexes on first search
+- Returns relevant passages with source attribution
+
+```python
+# Operations: search, index, reindex, list
+result = local_doc_search.execute({
+    "operation": "search",
+    "query": "rare earth element production capacity",
+    "num_results": 5
+})
+```
+
+**`local_data_analysis`** - Analyzes local Excel/CSV files
+- Scans `database/data/` for data files
+- Operations: list, summary, read, analyze, visualize, query
+- Statistical analysis: describe, correlation, trend, group_by
+- Visualization: bar, line, scatter, pie, histogram
+
+```python
+# List available files
+result = local_data_analysis.execute({"operation": "list"})
+
+# Analyze a specific file
+result = local_data_analysis.execute({
+    "operation": "analyze",
+    "file_name": "production_data.xlsx",
+    "analysis_type": "describe"
+})
+
+# Create visualization
+result = local_data_analysis.execute({
+    "operation": "visualize",
+    "file_name": "trade_stats.csv",
+    "chart_type": "bar",
+    "x_column": "Country",
+    "y_column": "Import_Volume"
+})
+```
 
 ![MICA Tools](mica_tools.png)
 
@@ -253,6 +301,9 @@ MICA_SEARCH_PROVIDER=duckduckgo     # duckduckgo, tavily, serpapi
 # RAG Configuration
 MICA_CHROMA_DIR=./chroma_db
 MICA_EMBEDDING_MODEL=all-MiniLM-L6-v2
+
+# Local Database Configuration
+MICA_DATABASE_DIR=./database        # Root directory for local database
 ```
 
 ### Pydantic Settings
@@ -356,6 +407,8 @@ MICA/
 │   │   ├── mcp_tools/        # Analysis tools
 │   │   │   ├── web_search.py
 │   │   │   ├── pdf_rag.py
+│   │   │   ├── local_document_search.py  # Local PDF database search
+│   │   │   ├── local_data_analysis.py    # Local Excel/CSV analysis
 │   │   │   ├── code_agent.py
 │   │   │   ├── doc_generator.py
 │   │   │   └── ...
@@ -363,6 +416,11 @@ MICA/
 │   │   └── config.py         # Configuration
 │   ├── sessions/             # Session storage
 │   └── requirements.txt
+├── database/                 # Local database for analysis
+│   ├── pdf/                  # PDF documents (USGS, DOE reports, etc.)
+│   │   └── .gitkeep
+│   └── data/                 # Excel/CSV data files
+│       └── .gitkeep
 ├── ui/
 │   ├── pipelines_server.py   # Open WebUI integration
 │   └── pipes/                # Legacy pipe implementation
@@ -374,3 +432,23 @@ MICA/
 ├── docker-compose.yml
 └── README.md
 ```
+
+### Local Database Structure
+
+The `database/` directory contains curated documents and data for analysis:
+
+```
+database/
+├── pdf/                      # PDF documents
+│   ├── doe-critical-material-assessment.pdf
+│   ├── usgs-mineral-commodity-summaries.pdf
+│   ├── federal-register-critical-minerals.pdf
+│   └── ...
+└── data/                     # Excel/CSV data files
+    ├── production_data.xlsx
+    ├── trade_statistics.csv
+    └── ...
+```
+
+- **pdf/**: Store USGS reports, DOE documents, Federal Register notices, and other relevant PDFs. These are automatically indexed by `local_doc_search`.
+- **data/**: Store Excel and CSV files containing production data, trade statistics, and other quantitative data for analysis with `local_data_analysis`.

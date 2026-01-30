@@ -161,6 +161,63 @@ class LoggingSettings(BaseSettings):
     )
 
 
+class DatabaseSettings(BaseSettings):
+    """Local database configuration for PDFs and data files."""
+
+    model_config = SettingsConfigDict(env_prefix="MICA_", extra="ignore")
+
+    database_dir: Path = Field(
+        default=Path(__file__).parent.parent.parent / "database",
+        description="Root directory for local database (PDFs and data files)",
+    )
+    pdf_subdir: str = Field(
+        default="pdf",
+        description="Subdirectory name for PDF documents",
+    )
+    data_subdir: str = Field(
+        default="data",
+        description="Subdirectory name for Excel/CSV data files",
+    )
+    auto_index_pdfs: bool = Field(
+        default=True,
+        description="Automatically index PDFs on startup",
+    )
+    max_pdf_pages: int = Field(
+        default=100,
+        description="Maximum pages to index per PDF",
+    )
+
+    @property
+    def pdf_dir(self) -> Path:
+        """Get the full path to the PDF directory."""
+        return self.database_dir / self.pdf_subdir
+
+    @property
+    def data_dir(self) -> Path:
+        """Get the full path to the data directory."""
+        return self.database_dir / self.data_subdir
+
+    @property
+    def is_configured(self) -> bool:
+        """Check if database directory exists and has content."""
+        return self.database_dir.exists()
+
+    def get_pdf_files(self) -> list[Path]:
+        """Get list of all PDF files in the database."""
+        if not self.pdf_dir.exists():
+            return []
+        return list(self.pdf_dir.glob("*.pdf")) + list(self.pdf_dir.glob("**/*.pdf"))
+
+    def get_data_files(self) -> list[Path]:
+        """Get list of all Excel/CSV files in the database."""
+        if not self.data_dir.exists():
+            return []
+        files = []
+        for pattern in ["*.xlsx", "*.xls", "*.csv", "**/*.xlsx", "**/*.xls", "**/*.csv"]:
+            files.extend(self.data_dir.glob(pattern))
+        return list(set(files))  # Remove duplicates
+
+
 class MICAConfig:
     """
     Main configuration container for MICA.
@@ -190,6 +247,7 @@ class MICAConfig:
         self.serpapi = SerpAPISettings()
         self.rag = RAGSettings()
         self.logging = LoggingSettings()
+        self.database = DatabaseSettings()
 
     def _load_dotenv(self):
         """Load .env file if it exists."""
@@ -238,6 +296,10 @@ class MICAConfig:
         """Create required directories if they don't exist."""
         self.server.session_dir.mkdir(parents=True, exist_ok=True)
         self.rag.chroma_dir.mkdir(parents=True, exist_ok=True)
+        # Create database directories if they don't exist
+        self.database.database_dir.mkdir(parents=True, exist_ok=True)
+        self.database.pdf_dir.mkdir(parents=True, exist_ok=True)
+        self.database.data_dir.mkdir(parents=True, exist_ok=True)
 
     def validate(self) -> list[str]:
         """Validate configuration and return list of warnings/errors."""

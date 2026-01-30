@@ -262,6 +262,15 @@ class AnalysisPlan:
             "doc_generator": "doc_generator",
             "document": "doc_generator",
             "report": "doc_generator",
+            # Local database tools
+            "local_doc_search": "local_doc_search",
+            "local_document_search": "local_doc_search",
+            "local_docs": "local_doc_search",
+            "local_pdf": "local_doc_search",
+            "local_data_analysis": "local_data_analysis",
+            "local_data": "local_data_analysis",
+            "local_excel": "local_data_analysis",
+            "data_analysis": "local_data_analysis",
         }
 
         # Try to parse structured format with ## Step headers
@@ -361,7 +370,13 @@ class AnalysisPlan:
         """Infer tool from text content."""
         text_lower = text.lower()
 
-        if any(w in text_lower for w in ["search", "find", "look up", "query", "usgs", "federal"]):
+        # Check for local database tools first (they should be preferred)
+        if any(w in text_lower for w in ["local doc", "local pdf", "local document", "database doc"]):
+            return "local_doc_search"
+        elif any(w in text_lower for w in ["local data", "local excel", "local csv", "database data"]):
+            return "local_data_analysis"
+        # Web search for external sources
+        elif any(w in text_lower for w in ["search", "find", "look up", "query", "usgs", "federal"]):
             return "web_search"
         elif any(w in text_lower for w in ["pdf", "document analysis", "extract from"]):
             return "pdf_rag"
