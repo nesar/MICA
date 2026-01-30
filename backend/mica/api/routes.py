@@ -259,9 +259,14 @@ async def get_session_plan(session_id: str):
     """Get the current plan for a session."""
     state = get_session(session_id)
 
+    # Get query analysis from preliminary research
+    preliminary_research = state.get("preliminary_research", {})
+    query_analysis = preliminary_research.get("query_analysis", {})
+
     return {
         "session_id": session_id,
         "status": state["status"].value if isinstance(state["status"], WorkflowStatus) else state["status"],
+        "query_analysis": query_analysis,
         "plan": [dict(s) for s in state.get("plan", [])],
         "plan_summary": get_plan_summary(state),
         "reasoning": state.get("plan_reasoning"),

@@ -77,6 +77,33 @@ Provide a brief summary of your understanding and initial findings.
 Focus on identifying the key aspects that need to be addressed.
 """
 
+QUERY_ANALYSIS_PROMPT = """Analyze the following query about critical materials supply chains. Provide a structured analysis.
+
+Query: {query}
+
+Provide your analysis in the following JSON format:
+{{
+    "problem_summary": "A 2-3 sentence summary of what the user is asking for",
+    "key_topics": ["List of main topics/aspects that need to be addressed"],
+    "materials_mentioned": ["List of specific materials or elements mentioned"],
+    "data_requirements": ["Types of data needed to answer this query"],
+    "potential_issues": [
+        {{
+            "issue": "Description of any inconsistency, ambiguity, or concern",
+            "explanation": "Why this is an issue and how to address it"
+        }}
+    ],
+    "clarifications_needed": ["Any questions that would help clarify the request (can be empty)"],
+    "scope_assessment": "Brief assessment of query complexity and scope"
+}}
+
+Be thorough in identifying potential issues. For example:
+- If materials are incorrectly categorized
+- If the query mixes unrelated topics
+- If there are conflicting requirements
+
+Respond ONLY with the JSON object, no additional text."""
+
 PLAN_PROMPT = """Based on the user's query and preliminary research, create a detailed analysis plan.
 
 Query: {query}
@@ -126,6 +153,54 @@ def get_llm():
     except Exception as e:
         logger.error(f"Failed to create LLM: {e}")
         raise
+
+
+def _parse_query_analysis(response: str) -> Dict[str, Any]:
+    """
+    Parse the query analysis JSON response from the LLM.
+
+    Args:
+        response: Raw LLM response containing JSON
+
+    Returns:
+        Parsed query analysis dictionary
+    """
+    import json
+    import re
+
+    # Try to extract JSON from the response
+    # Handle cases where LLM might wrap JSON in markdown code blocks
+    json_match = re.search(r'```(?:json)?\s*([\s\S]*?)```', response)
+    if json_match:
+        json_str = json_match.group(1).strip()
+    else:
+        json_str = response.strip()
+
+    try:
+        analysis = json.loads(json_str)
+        # Ensure required fields exist with defaults
+        return {
+            "problem_summary": analysis.get("problem_summary", "Unable to parse problem summary"),
+            "key_topics": analysis.get("key_topics", []),
+            "materials_mentioned": analysis.get("materials_mentioned", []),
+            "data_requirements": analysis.get("data_requirements", []),
+            "potential_issues": analysis.get("potential_issues", []),
+            "clarifications_needed": analysis.get("clarifications_needed", []),
+            "scope_assessment": analysis.get("scope_assessment", "Standard complexity"),
+        }
+    except json.JSONDecodeError as e:
+        logger.warning(f"Failed to parse query analysis JSON: {e}")
+        # Return a basic structure with the raw response
+        return {
+            "problem_summary": response[:500] if len(response) > 500 else response,
+            "key_topics": [],
+            "materials_mentioned": [],
+            "data_requirements": [],
+            "potential_issues": [],
+            "clarifications_needed": [],
+            "scope_assessment": "Unable to parse structured analysis",
+            "raw_response": response,
+        }
 
 
 def is_simple_query(query: str) -> bool:
@@ -312,7 +387,20 @@ def conduct_preliminary_research(state: AgentState) -> AgentState:
         # Complex query - proceed with full research
         logger.info(f"[{state['session_id']}] Complex query - proceeding with full research")
 
-        # Generate research prompt (context already built above)
+        # Step 1: Generate structured query analysis
+        logger.info(f"[{state['session_id']}] Generating query analysis")
+        analysis_prompt = QUERY_ANALYSIS_PROMPT.format(query=query)
+        analysis_messages = [
+            SystemMessage(content=ORCHESTRATOR_SYSTEM_PROMPT),
+            HumanMessage(content=analysis_prompt),
+        ]
+
+        analysis_response = llm.invoke(analysis_messages)
+        query_analysis = _parse_query_analysis(analysis_response.content)
+
+        logger.info(f"[{state['session_id']}] Query analysis completed: {len(query_analysis.get('potential_issues', []))} issues identified")
+
+        # Step 2: Generate research prompt (context already built above)
         prompt = RESEARCH_PROMPT.format(
             query=query,
             context=context or "No previous context.",
@@ -327,15 +415,16 @@ def conduct_preliminary_research(state: AgentState) -> AgentState:
         response = llm.invoke(messages)
         research_summary = response.content
 
-        # Do a quick web search for context
+        # Step 3: Do a quick web search for context
         web_search = WebSearchTool(session_logger=session)
         search_result = web_search.execute({
             "query": query,
             "num_results": 5,
         })
 
-        # Compile preliminary research
+        # Compile preliminary research with query analysis
         state["preliminary_research"] = {
+            "query_analysis": query_analysis,
             "summary": research_summary,
             "web_search_results": search_result.data if search_result.data else [],
             "timestamp": datetime.utcnow().isoformat(),

@@ -313,9 +313,80 @@ class Pipe:
         except Exception as e:
             return f"Error: {str(e)}"
 
+    def _format_query_analysis(self, query_analysis: dict) -> str:
+        """Format the query analysis for display."""
+        if not query_analysis:
+            return ""
+
+        lines = ["## Query Analysis\n"]
+
+        # Problem summary
+        problem_summary = query_analysis.get("problem_summary", "")
+        if problem_summary:
+            lines.append(f"**Understanding:** {problem_summary}\n")
+
+        # Key topics
+        key_topics = query_analysis.get("key_topics", [])
+        if key_topics:
+            lines.append("**Key Topics to Address:**")
+            for topic in key_topics:
+                lines.append(f"- {topic}")
+            lines.append("")
+
+        # Materials mentioned
+        materials = query_analysis.get("materials_mentioned", [])
+        if materials:
+            lines.append(f"**Materials Identified:** {', '.join(materials)}\n")
+
+        # Potential issues (IMPORTANT - this is the critique!)
+        potential_issues = query_analysis.get("potential_issues", [])
+        if potential_issues:
+            lines.append("### ⚠️ Important Notes & Critiques:\n")
+            for issue in potential_issues:
+                if isinstance(issue, dict):
+                    issue_text = issue.get("issue", "")
+                    explanation = issue.get("explanation", "")
+                    lines.append(f"**{issue_text}**")
+                    if explanation:
+                        lines.append(f"  - {explanation}")
+                else:
+                    lines.append(f"- {issue}")
+            lines.append("")
+
+        # Data requirements
+        data_reqs = query_analysis.get("data_requirements", [])
+        if data_reqs:
+            lines.append("**Data Requirements:**")
+            for req in data_reqs:
+                lines.append(f"- {req}")
+            lines.append("")
+
+        # Scope assessment
+        scope = query_analysis.get("scope_assessment", "")
+        if scope:
+            lines.append(f"**Scope Assessment:** {scope}\n")
+
+        # Clarifications needed
+        clarifications = query_analysis.get("clarifications_needed", [])
+        if clarifications:
+            lines.append("**Clarifications Needed:**")
+            for clarification in clarifications:
+                lines.append(f"- {clarification}")
+            lines.append("")
+
+        lines.append("---\n")
+        return "\n".join(lines)
+
     def _format_plan_message(self, plan_data: dict) -> str:
         """Format the plan for display."""
-        lines = ["## Analysis Plan\n"]
+        lines = []
+
+        # First, display the query analysis
+        query_analysis = plan_data.get("query_analysis", {})
+        if query_analysis:
+            lines.append(self._format_query_analysis(query_analysis))
+
+        lines.append("## Analysis Plan\n")
 
         reasoning = plan_data.get("reasoning", "")
         if reasoning:
@@ -326,9 +397,17 @@ class Pipe:
         for i, step in enumerate(plan_data.get("plan", []), 1):
             tool = step.get("tool", "analysis")
             description = step.get("description", "")
-            lines.append(f"{i}. **[{tool}]** {description}")
+            # Get inputs if available for more detail
+            inputs = step.get("inputs", {})
+            queries = inputs.get("queries", [])
 
-        lines.append("\n---")
+            lines.append(f"**Step {i}: {description}**")
+            lines.append(f"  - Tool: `{tool}`")
+            if queries:
+                lines.append(f"  - Queries: {', '.join(queries[:2])}")
+            lines.append("")
+
+        lines.append("---")
         lines.append("\n**Do you approve this plan?**")
         lines.append("Reply with 'yes' to proceed, or provide feedback for revisions.")
 
