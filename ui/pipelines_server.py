@@ -447,6 +447,45 @@ async def process_message_stream(request: ChatRequest) -> AsyncGenerator[str, No
                                     plan = status_data.get("plan", [])
 
                                     if status in ["plan_proposed", "awaiting_approval"]:
+                                        # Fetch full plan data including query analysis
+                                        plan_res = await client.get(f"{MICA_BACKEND_URL}/api/v1/session/{session_id}/plan")
+                                        if plan_res.status_code == 200:
+                                            plan_data = plan_res.json()
+                                            query_analysis = plan_data.get("query_analysis", {})
+
+                                            # Display Query Analysis first
+                                            if query_analysis:
+                                                yield "## Query Analysis\n\n"
+
+                                                problem_summary = query_analysis.get("problem_summary", "")
+                                                if problem_summary:
+                                                    yield f"**Understanding:** {problem_summary}\n\n"
+
+                                                materials = query_analysis.get("materials_mentioned", [])
+                                                if materials:
+                                                    yield f"**Materials Identified:** {', '.join(materials)}\n\n"
+
+                                                # Critical - show issues/critiques prominently
+                                                potential_issues = query_analysis.get("potential_issues", [])
+                                                if potential_issues:
+                                                    yield "### Important Notes & Critiques\n\n"
+                                                    for issue in potential_issues:
+                                                        if isinstance(issue, dict):
+                                                            issue_text = issue.get("issue", "")
+                                                            explanation = issue.get("explanation", "")
+                                                            yield f"**{issue_text}**\n"
+                                                            if explanation:
+                                                                yield f"- {explanation}\n\n"
+                                                        else:
+                                                            yield f"- {issue}\n"
+                                                    yield "\n"
+
+                                                scope = query_analysis.get("scope_assessment", "")
+                                                if scope:
+                                                    yield f"**Scope:** {scope}\n\n"
+
+                                                yield "---\n\n"
+
                                         yield "## Analysis Plan Generated\n\n"
                                         for j, step in enumerate(plan):
                                             yield f"**Step {j+1}:** {step.get('description', 'N/A')}\n"
@@ -568,6 +607,45 @@ async def process_message_stream(request: ChatRequest) -> AsyncGenerator[str, No
 
                 if status in ["plan_proposed", "awaiting_approval"]:
                     plan = status_data.get("plan", [])
+
+                    # Fetch full plan data including query analysis
+                    plan_res = await client.get(f"{MICA_BACKEND_URL}/api/v1/session/{session_id}/plan")
+                    if plan_res.status_code == 200:
+                        plan_data = plan_res.json()
+                        query_analysis = plan_data.get("query_analysis", {})
+
+                        # Display Query Analysis first
+                        if query_analysis:
+                            yield "## Query Analysis\n\n"
+
+                            problem_summary = query_analysis.get("problem_summary", "")
+                            if problem_summary:
+                                yield f"**Understanding:** {problem_summary}\n\n"
+
+                            materials = query_analysis.get("materials_mentioned", [])
+                            if materials:
+                                yield f"**Materials Identified:** {', '.join(materials)}\n\n"
+
+                            # Critical - show issues/critiques prominently
+                            potential_issues = query_analysis.get("potential_issues", [])
+                            if potential_issues:
+                                yield "### Important Notes & Critiques\n\n"
+                                for issue in potential_issues:
+                                    if isinstance(issue, dict):
+                                        issue_text = issue.get("issue", "")
+                                        explanation = issue.get("explanation", "")
+                                        yield f"**{issue_text}**\n"
+                                        if explanation:
+                                            yield f"- {explanation}\n\n"
+                                    else:
+                                        yield f"- {issue}\n"
+                                yield "\n"
+
+                            scope = query_analysis.get("scope_assessment", "")
+                            if scope:
+                                yield f"**Scope:** {scope}\n\n"
+
+                            yield "---\n\n"
 
                     yield "## Analysis Plan Generated\n\n"
 

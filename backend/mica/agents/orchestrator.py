@@ -403,6 +403,12 @@ def conduct_preliminary_research(state: AgentState) -> AgentState:
         ]
 
         analysis_response = llm.invoke(analysis_messages)
+
+        # Check if LLM returned an error
+        if analysis_response.content.startswith("Error:"):
+            logger.error(f"[{state['session_id']}] LLM error during query analysis: {analysis_response.content}")
+            raise Exception(f"LLM request failed: {analysis_response.content}")
+
         query_analysis = _parse_query_analysis(analysis_response.content)
 
         logger.info(f"[{state['session_id']}] Query analysis completed: {len(query_analysis.get('potential_issues', []))} issues identified")
@@ -420,6 +426,12 @@ def conduct_preliminary_research(state: AgentState) -> AgentState:
         ]
 
         response = llm.invoke(messages)
+
+        # Check if LLM returned an error
+        if response.content.startswith("Error:"):
+            logger.error(f"[{state['session_id']}] LLM error during research: {response.content}")
+            raise Exception(f"LLM request failed: {response.content}")
+
         research_summary = response.content
 
         # Step 3: Do a quick web search for context
