@@ -33,7 +33,7 @@ GEMINI_MODELS = {
 GEMINI_API_BASE = "https://generativelanguage.googleapis.com/v1beta/openai"
 
 # Default timeout in seconds (3 minutes for complex queries)
-DEFAULT_TIMEOUT = 180
+DEFAULT_TIMEOUT = 480
 
 
 class GeminiLLM(BaseLLM):

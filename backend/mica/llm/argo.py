@@ -43,8 +43,8 @@ ARGO_URLS = {
     "test": "https://apps-test.inside.anl.gov/argoapi/api/v1/resource/chat/",
 }
 
-# Default timeout in seconds (3 minutes for complex queries)
-DEFAULT_TIMEOUT = 180
+# Default timeout in seconds (8 minutes for complex queries)
+DEFAULT_TIMEOUT = 480
 
 
 def _count_tokens(text: str) -> int:

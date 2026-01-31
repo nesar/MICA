@@ -323,7 +323,7 @@ async def process_message_stream(request: ChatRequest) -> AsyncGenerator[str, No
                                 # Poll for execution results
                                 shown_steps = set()
 
-                                for i in range(180):  # 30 minutes max (180 * 10s)
+                                for i in range(480):  # 30 minutes max (180 * 10s)
                                     await asyncio.sleep(10)
 
                                     exec_res = await client.get(f"{MICA_BACKEND_URL}/api/v1/session/{session_id}")
@@ -437,7 +437,7 @@ async def process_message_stream(request: ChatRequest) -> AsyncGenerator[str, No
                                 found_new_answer = False
                                 shown_steps = set()
 
-                                for i in range(180):  # 15 minutes max (180 * 5s)
+                                for i in range(480):  # 15 minutes max (180 * 5s)
                                     await asyncio.sleep(5)
 
                                     status_res = await client.get(f"{MICA_BACKEND_URL}/api/v1/session/{session_id}")
