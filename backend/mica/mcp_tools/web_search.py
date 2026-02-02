@@ -1,15 +1,15 @@
 """
 MCP Tool: Web Search
-Description: Searches the web for information, with focus on federal government documents
+Description: Searches the web for information, with strong prioritization of federal government documents
 Inputs: query (str), num_results (int), site_filter (list[str])
-Outputs: List of search results with titles, URLs, and snippets
+Outputs: List of search results with titles, URLs, and snippets, sorted by source authority
 
 AGENT_INSTRUCTIONS:
 You are a web search agent specialized in finding information from authoritative sources,
 particularly federal government documents and official publications. Your task is to:
 
 1. Formulate effective search queries based on the user's information needs
-2. Prioritize .gov domains and official sources when searching for policy/regulatory info
+2. STRONGLY prioritize .gov domains and official sources in ALL searches
 3. Search for technical reports, assessments, and official documents
 4. Extract and summarize relevant information from search results
 5. Identify the most credible and relevant sources
@@ -20,8 +20,12 @@ When searching for critical materials information, focus on:
 - Trade data from Commerce/Census (commerce.gov, census.gov)
 - EPA environmental assessments (epa.gov)
 - Congressional Research Service reports
+- IEA (International Energy Agency) reports
+- World Bank data and reports
 
-Always verify source credibility and prefer primary sources over secondary reporting.
+IMPORTANT: Always verify source credibility and prefer primary sources over secondary reporting.
+News articles and market commentary should be de-prioritized in favor of official data.
+Results are automatically scored and ranked by source authority.
 """
 
 import hashlib
@@ -52,14 +56,16 @@ class WebSearchTool(MCPTool):
     - DuckDuckGo (default, no API key required)
     - Tavily (requires TAVILY_API_KEY)
     - SerpAPI (requires SERPAPI_API_KEY)
+
+    Automatically scores and prioritizes results from official sources.
     """
 
     name = "web_search"
-    description = "Search the web for information, with focus on federal government documents"
-    version = "1.0.0"
+    description = "Search the web for information, with strong prioritization of federal government documents"
+    version = "1.1.0"
     AGENT_INSTRUCTIONS = AGENT_INSTRUCTIONS
 
-    # Federal government domains to prioritize
+    # Federal government domains to prioritize (highest authority)
     FEDERAL_DOMAINS = [
         "energy.gov",
         "doe.gov",
@@ -73,7 +79,68 @@ class WebSearchTool(MCPTool):
         "state.gov",
         "treasury.gov",
         "trade.gov",
+        "defense.gov",
+        "nist.gov",
+        "nsf.gov",
+        "nasa.gov",
     ]
+
+    # International authoritative sources (high authority)
+    INTERNATIONAL_AUTHORITY_DOMAINS = [
+        "iea.org",           # International Energy Agency
+        "worldbank.org",     # World Bank
+        "imf.org",           # IMF
+        "oecd.org",          # OECD
+        "un.org",            # United Nations
+        "wto.org",           # World Trade Organization
+    ]
+
+    # Academic and research institutions (good authority)
+    ACADEMIC_DOMAINS = [
+        ".edu",
+        "nature.com",
+        "sciencedirect.com",
+        "springer.com",
+        "wiley.com",
+        "researchgate.net",
+    ]
+
+    # Industry/professional sources (moderate authority)
+    INDUSTRY_DOMAINS = [
+        "mining.com",
+        "mining-technology.com",
+        "spglobal.com",
+        "woodmac.com",
+        "mckinsey.com",
+    ]
+
+    # Low authority sources (news, blogs, stock sites)
+    LOW_AUTHORITY_PATTERNS = [
+        "msn.com",
+        "yahoo.com",
+        "reddit.com",
+        "twitter.com",
+        "facebook.com",
+        "seekingalpha.com",
+        "investopedia.com",
+        "fool.com",
+        "benzinga.com",
+        "marketwatch.com",
+        "zacks.com",
+        "stocknews.com",
+        "medium.com",
+        "substack.com",
+    ]
+
+    # Source authority scores (higher = more authoritative)
+    SOURCE_SCORES = {
+        "federal": 100,
+        "international": 85,
+        "academic": 70,
+        "industry": 50,
+        "general": 30,
+        "low_authority": 10,
+    }
 
     def __init__(
         self,
@@ -89,6 +156,74 @@ class WebSearchTool(MCPTool):
         """
         super().__init__(session_logger)
         self.provider = provider or config.search.search_provider
+
+    def _score_source(self, url: str) -> tuple[int, str]:
+        """
+        Score a source URL based on its authority level.
+
+        Args:
+            url: The URL to score
+
+        Returns:
+            Tuple of (score, category) where higher scores = more authoritative
+        """
+        url_lower = url.lower()
+
+        # Check federal sources (highest priority)
+        for domain in self.FEDERAL_DOMAINS:
+            if domain in url_lower:
+                return (self.SOURCE_SCORES["federal"], "federal")
+
+        # Check international authority sources
+        for domain in self.INTERNATIONAL_AUTHORITY_DOMAINS:
+            if domain in url_lower:
+                return (self.SOURCE_SCORES["international"], "international")
+
+        # Check academic sources
+        for domain in self.ACADEMIC_DOMAINS:
+            if domain in url_lower:
+                return (self.SOURCE_SCORES["academic"], "academic")
+
+        # Check industry sources
+        for domain in self.INDUSTRY_DOMAINS:
+            if domain in url_lower:
+                return (self.SOURCE_SCORES["industry"], "industry")
+
+        # Check low authority sources
+        for pattern in self.LOW_AUTHORITY_PATTERNS:
+            if pattern in url_lower:
+                return (self.SOURCE_SCORES["low_authority"], "low_authority")
+
+        # Default score for general sources
+        return (self.SOURCE_SCORES["general"], "general")
+
+    def _rank_results(self, results: list[dict]) -> list[dict]:
+        """
+        Rank search results by source authority, placing official sources first.
+
+        Args:
+            results: List of search result dictionaries
+
+        Returns:
+            Sorted list with authoritative sources first
+        """
+        for result in results:
+            url = result.get("url", "")
+            score, category = self._score_source(url)
+            result["authority_score"] = score
+            result["source_category"] = category
+
+        # Sort by authority score (descending)
+        sorted_results = sorted(results, key=lambda x: x.get("authority_score", 0), reverse=True)
+
+        logger.info(
+            f"Ranked {len(sorted_results)} results: "
+            f"{sum(1 for r in sorted_results if r.get('source_category') == 'federal')} federal, "
+            f"{sum(1 for r in sorted_results if r.get('source_category') == 'international')} international, "
+            f"{sum(1 for r in sorted_results if r.get('source_category') == 'academic')} academic"
+        )
+
+        return sorted_results
 
     def execute(self, input_data: dict) -> ToolResult:
         """
@@ -127,6 +262,22 @@ class WebSearchTool(MCPTool):
             else:
                 results = self._search_duckduckgo(query, num_results, site_filter)
 
+            # Always rank results by source authority
+            results = self._rank_results(results)
+
+            # If we have very few official sources, do a supplementary search
+            federal_count = sum(1 for r in results if r.get("source_category") == "federal")
+            if federal_count < 2 and not federal_only and not site_filter:
+                logger.info(f"Low federal source count ({federal_count}), performing supplementary .gov search")
+                supplementary_results = self._search_federal_supplement(query, num_results=5)
+                if supplementary_results:
+                    # Merge and re-rank
+                    existing_urls = {r.get("url") for r in results}
+                    for supp in supplementary_results:
+                        if supp.get("url") not in existing_urls:
+                            results.append(supp)
+                    results = self._rank_results(results)
+
             execution_time = (datetime.now() - start_time).total_seconds()
 
             # Log search if session logger available
@@ -139,24 +290,126 @@ class WebSearchTool(MCPTool):
                         "provider": self.provider,
                         "num_results": len(results),
                         "results": results,
+                        "federal_count": sum(1 for r in results if r.get("source_category") == "federal"),
                     },
                 )
 
             return ToolResult(
                 status=ToolResult.success(None).status,
                 data=results,
-                message=f"Found {len(results)} results",
+                message=f"Found {len(results)} results ({sum(1 for r in results if r.get('source_category') in ['federal', 'international'])} from official sources)",
                 execution_time=execution_time,
                 metadata={
                     "query": query,
                     "provider": self.provider,
                     "num_results": len(results),
+                    "federal_count": sum(1 for r in results if r.get("source_category") == "federal"),
                 },
             )
 
         except Exception as e:
             logger.error(f"Web search error: {e}")
             return ToolResult.error(str(e))
+
+    def _enhance_query_for_authority(self, query: str) -> str:
+        """
+        Enhance a query to improve chances of finding authoritative sources.
+
+        Adds terms that help surface government reports and official data.
+
+        Args:
+            query: The original search query
+
+        Returns:
+            Enhanced query string
+        """
+        query_lower = query.lower()
+
+        # Detect if this is a critical materials query
+        critical_materials_keywords = [
+            "rare earth", "ree", "lithium", "cobalt", "nickel", "graphite",
+            "critical mineral", "supply chain", "mining", "processing",
+            "magnet", "battery", "semiconductor", "tungsten", "gallium",
+            "germanium", "indium", "tantalum", "neodymium", "praseodymium",
+        ]
+
+        is_materials_query = any(kw in query_lower for kw in critical_materials_keywords)
+
+        if is_materials_query:
+            # Add terms that help surface official reports
+            enhancement_terms = []
+
+            # Add report type terms
+            if "investment" in query_lower or "cost" in query_lower or "capital" in query_lower:
+                enhancement_terms.append("(report OR assessment OR study)")
+            elif "production" in query_lower or "capacity" in query_lower:
+                enhancement_terms.append("(statistics OR data OR USGS)")
+            elif "supply chain" in query_lower:
+                enhancement_terms.append("(DOE OR report OR assessment)")
+            else:
+                enhancement_terms.append("(report OR data)")
+
+            if enhancement_terms:
+                return f"{query} {' '.join(enhancement_terms)}"
+
+        return query
+
+    def _search_federal_supplement(self, query: str, num_results: int = 5) -> list[dict]:
+        """
+        Perform a supplementary search specifically targeting federal .gov sources.
+
+        This is called when the main search returns too few official sources.
+
+        Args:
+            query: The search query
+            num_results: Number of results to fetch
+
+        Returns:
+            List of search results from federal sources
+        """
+        # Key federal domains for critical materials
+        priority_domains = [
+            "usgs.gov",
+            "energy.gov",
+            "doe.gov",
+            "commerce.gov",
+            "epa.gov",
+            "gao.gov",
+        ]
+
+        all_results = []
+
+        # Search with site restrictions for top federal sources
+        site_query = " OR ".join([f"site:{domain}" for domain in priority_domains[:3]])
+        federal_query = f"({query}) ({site_query})"
+
+        try:
+            from duckduckgo_search import DDGS
+            import warnings
+            warnings.filterwarnings("ignore", category=RuntimeWarning)
+
+            with DDGS() as ddgs:
+                search_results = list(ddgs.text(federal_query, max_results=num_results))
+
+                for item in search_results:
+                    result = {
+                        "title": item.get("title", ""),
+                        "url": item.get("href", item.get("link", item.get("url", ""))),
+                        "snippet": item.get("body", item.get("snippet", item.get("excerpt", ""))),
+                        "source": urlparse(item.get("href", item.get("link", item.get("url", "")))).netloc,
+                    }
+                    # Score this result
+                    score, category = self._score_source(result["url"])
+                    result["authority_score"] = score
+                    result["source_category"] = category
+                    all_results.append(result)
+
+            logger.info(f"Federal supplement search returned {len(all_results)} results")
+
+        except Exception as e:
+            logger.warning(f"Federal supplement search failed: {e}")
+
+        return all_results
 
     def _search_duckduckgo(
         self,
@@ -166,13 +419,17 @@ class WebSearchTool(MCPTool):
     ) -> list[dict]:
         """
         Search using DuckDuckGo via the duckduckgo-search package.
+
+        Automatically enhances queries for critical materials topics to
+        improve chances of finding authoritative sources.
         """
         # Build query with site restrictions
         if site_filter:
             site_query = " OR ".join([f"site:{domain}" for domain in site_filter])
             full_query = f"({query}) ({site_query})"
         else:
-            full_query = query
+            # Enhance query for critical materials topics
+            full_query = self._enhance_query_for_authority(query)
 
         try:
             # Try using the duckduckgo-search package (more reliable)

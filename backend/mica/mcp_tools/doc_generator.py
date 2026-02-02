@@ -447,6 +447,19 @@ class DocumentGeneratorTool(MCPTool):
         buffer.seek(0)
         return buffer.getvalue()
 
+    def _apply_inline_formatting(self, text: str) -> str:
+        """Apply inline markdown formatting (bold, italic, links) to text."""
+        import re
+        # Bold: **text** or __text__
+        text = re.sub(r'\*\*(.+?)\*\*', r'<b>\1</b>', text)
+        text = re.sub(r'__(.+?)__', r'<b>\1</b>', text)
+        # Italic: *text* or _text_ (but not if it's a bullet point marker)
+        text = re.sub(r'(?<!\*)\*([^*]+?)\*(?!\*)', r'<i>\1</i>', text)
+        text = re.sub(r'(?<!_)_([^_]+?)_(?!_)', r'<i>\1</i>', text)
+        # Links: [text](url)
+        text = re.sub(r'\[(.+?)\]\((.+?)\)', r'<link href="\2">\1</link>', text)
+        return text
+
     def _process_text_content(
         self,
         story: list,
@@ -466,67 +479,50 @@ class DocumentGeneratorTool(MCPTool):
         current_list = []
         in_list = False
 
+        def flush_list():
+            """Flush current list items with formatting applied."""
+            nonlocal current_list, in_list
+            if current_list:
+                for item in current_list:
+                    formatted_item = self._apply_inline_formatting(item)
+                    story.append(Paragraph(f"• {formatted_item}", bullet_style))
+                current_list = []
+                in_list = False
+
         for line in lines:
             line = line.strip()
             if not line:
-                if in_list and current_list:
-                    # End current list
-                    for item in current_list:
-                        story.append(Paragraph(f"* {item}", bullet_style))
-                    current_list = []
-                    in_list = False
+                flush_list()
                 continue
 
             # Check for headings (## or ###)
             if line.startswith("### "):
-                if in_list and current_list:
-                    for item in current_list:
-                        story.append(Paragraph(f"* {item}", bullet_style))
-                    current_list = []
-                    in_list = False
-                story.append(Paragraph(line[4:], heading3_style))
+                flush_list()
+                heading_text = self._apply_inline_formatting(line[4:])
+                story.append(Paragraph(heading_text, heading3_style))
             elif line.startswith("## "):
-                if in_list and current_list:
-                    for item in current_list:
-                        story.append(Paragraph(f"* {item}", bullet_style))
-                    current_list = []
-                    in_list = False
-                story.append(Paragraph(line[3:], heading2_style))
+                flush_list()
+                heading_text = self._apply_inline_formatting(line[3:])
+                story.append(Paragraph(heading_text, heading2_style))
             # Check for bullet points
             elif line.startswith("- ") or line.startswith("* "):
                 in_list = True
                 current_list.append(line[2:])
             # Check for numbered lists
             elif re.match(r"^\d+\.\s", line):
-                if in_list and current_list:
-                    for item in current_list:
-                        story.append(Paragraph(f"* {item}", bullet_style))
-                    current_list = []
-                story.append(Paragraph(line, bullet_style))
+                flush_list()
+                # Apply inline formatting to numbered list items
+                formatted_line = self._apply_inline_formatting(line)
+                story.append(Paragraph(formatted_line, bullet_style))
             # Regular paragraph
             else:
-                if in_list and current_list:
-                    for item in current_list:
-                        story.append(Paragraph(f"* {item}", bullet_style))
-                    current_list = []
-                    in_list = False
-
+                flush_list()
                 # Process inline formatting
-                # Bold: **text** or __text__
-                line = re.sub(r'\*\*(.+?)\*\*', r'<b>\1</b>', line)
-                line = re.sub(r'__(.+?)__', r'<b>\1</b>', line)
-                # Italic: *text* or _text_
-                line = re.sub(r'\*(.+?)\*', r'<i>\1</i>', line)
-                line = re.sub(r'_(.+?)_', r'<i>\1</i>', line)
-                # Links: [text](url)
-                line = re.sub(r'\[(.+?)\]\((.+?)\)', r'<link href="\2">\1</link>', line)
-
-                story.append(Paragraph(line, body_style))
+                formatted_line = self._apply_inline_formatting(line)
+                story.append(Paragraph(formatted_line, body_style))
 
         # Flush remaining list items
-        if current_list:
-            for item in current_list:
-                story.append(Paragraph(f"* {item}", bullet_style))
+        flush_list()
 
     def _add_content_item(
         self,
