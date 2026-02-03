@@ -60,6 +60,8 @@ services:
       - WEBUI_AUTH=false  # Set to true in production
       - ENABLE_SIGNUP=true
       - ENABLE_ADMIN_EXPORT=true
+      # Disable Arena Model feature
+      - ENABLE_EVALUATION_ARENA_MODELS=false
       # MICA Integration
       - MICA_BACKEND_URL=http://mica-backend:8000
       - MICA_API_KEY=${MICA_API_KEY:-}
