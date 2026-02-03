@@ -1,8 +1,8 @@
 # MICA: Materials Intelligence Co-Analyst
 
-## Your AI Research Partner for Critical Materials Analysis
+## AI Research Agent for Critical Materials Analysis
 
-MICA is an intelligent research assistant designed to help analysts, researchers, and decision-makers investigate questions about critical materials supply chains. MICA combines the power of artificial intelligence with human expertise to deliver thorough, trustworthy analysis.
+MICA is an AI agent designed to help analysts, researchers, and decision-makers investigate questions about critical materials supply chains. MICA combines the power of large language models with human expertise to deliver thorough, trustworthy analysis using a variety of analysis tools, documents, and data at its disposal.  
 
 ![MICA Overview](mica_overview.png)
 
@@ -10,24 +10,26 @@ MICA is an intelligent research assistant designed to help analysts, researchers
 
 ## What MICA Does
 
-MICA acts as a knowledgeable research partner that can:
+MICA acts as a knowledgeable research agent that can:
 
-- **Search and analyze** federal documents, scientific reports, and authoritative sources
+- **Search and analyze** documents, scientific reports, and authoritative web sources. 
 - **Process and understand** PDF reports, Excel spreadsheets, and data files
 - **Generate insights** through data analysis and visualization
 - **Produce professional reports** with proper citations and references
 
-Whether you're researching rare earth element supply chains, analyzing mineral production trends, or investigating trade patterns, MICA helps you find answers faster while keeping you in control.
+MICA helps you find answers faster while keeping you in control while researching rare earth element supply chains, analyzing mineral production trends, or investigating trade patterns. 
 
 ---
 
 ## How It Works
 
 ### 1. Ask Your Question
-Start by asking MICA any question about critical materials. For example:
+Start by asking MICA any question about critical materials. Simple question, for instance:
 - *"What are the current supply risks for lithium?"*
 - *"How has cobalt production changed over the past decade?"*
 - *"What federal policies address critical mineral supply chains?"*
+
+Simple queries can be answered with the backend LLM alone. MICA can handle complex queries with a full agentic workflow. 
 
 ### 2. Review the Plan
 For complex questions, MICA creates an analysis plan outlining the steps it will take. You review and approve this plan before any analysis begins, ensuring the approach aligns with your needs.
@@ -40,10 +42,10 @@ MICA delivers a comprehensive summary with:
 - Key findings and insights
 - Supporting evidence and citations
 - Data visualizations when relevant
-- A downloadable PDF report
+- A PDF report
 
 ### 5. Ask Follow-Up Questions
-The conversation doesn't end there. Ask follow-up questions, request deeper analysis, or explore related topics. MICA remembers the context of your session.
+Ask follow-up questions, request deeper analysis, or explore related topics. MICA remembers the context of your session.
 
 ---
 
@@ -53,7 +55,7 @@ The conversation doesn't end there. Ask follow-up questions, request deeper anal
 MICA keeps humans in control. You approve analysis plans before execution and can guide the research direction at any point. This ensures the AI works *with* you, not *for* you.
 
 ### Trusted Sources
-MICA prioritizes authoritative sources including USGS mineral commodity reports, DOE assessments, federal register documents, and peer-reviewed research.
+MICA prioritizes authoritative sources including USGS mineral commodity reports, DOE assessments, documents, and peer-reviewed research.
 
 ### Local Document Analysis
 Upload your own PDFs and data files. MICA can search and analyze your private document collections alongside public sources.
@@ -93,18 +95,6 @@ Combine multiple data sources and analysis approaches to answer specific researc
 
 ---
 
-## Why MICA?
-
-| Traditional Research | With MICA |
-|---------------------|-----------|
-| Hours searching multiple databases | Comprehensive searches in minutes |
-| Manual document review | AI-assisted document analysis |
-| Scattered notes and bookmarks | Organized session logs and citations |
-| Starting from scratch each time | Build on previous analysis sessions |
-| Text-only insights | Integrated data visualization |
-
----
-
 ## Built for Trust
 
 MICA is designed with transparency in mind:
@@ -115,13 +105,3 @@ MICA is designed with transparency in mind:
 - **Human Oversight**: You remain in control throughout the process
 
 ---
-
-## Getting Started
-
-MICA provides a familiar chat interface. Simply type your question and let MICA guide you through the process. No special training required.
-
-For questions that require deeper analysis, MICA will present a plan for your approval. Review the proposed steps, request modifications if needed, and approve when ready.
-
----
-
-*MICA is developed for the U.S. Department of Energy to support critical materials research and analysis.*
