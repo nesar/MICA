@@ -2,7 +2,7 @@
 
 ## Your AI Research Partner for Critical Materials Analysis
 
-MICA is an intelligent research assistant designed to help analysts, researchers, and decision-makers investigate questions about critical materials supply chains. Built for the Department of Energy, MICA combines the power of artificial intelligence with human expertise to deliver thorough, trustworthy analysis.
+MICA is an intelligent research assistant designed to help analysts, researchers, and decision-makers investigate questions about critical materials supply chains. MICA combines the power of artificial intelligence with human expertise to deliver thorough, trustworthy analysis.
 
 ![MICA Overview](mica_overview.png)
 
